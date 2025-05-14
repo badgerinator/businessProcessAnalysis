@@ -1,6 +1,6 @@
 {
   "name": "interview-platform",
- "homepage": "https://badgerinator.github.io/businessProcessAnalysis",
+  "homepage": "https://badgerinator.github.io/businessProcessAnalysis/",
   "private": true,
   "version": "0.1.0",
   "type": "module",
