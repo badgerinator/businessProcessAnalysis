@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mir Holding | Süreç Mükemmelliği ile Geleceğinizi Şekillendiriyoruz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- 
+    Application Structure Plan: 
+    Hedef, "Mir Holding Süreç İyileştirme Projesi" anasayfasını, ilgi çekici bir hikaye anlatan dinamik ve profesyonel bir tek sayfa uygulamasına dönüştürmektir. "Yaklaşımımız" bölümü, stratejik hedeflerden dijital inovasyonlara doğru ilerleyen, kullanıcı kaydırdıkça ilerleyen ve görsellerin değiştiği bir "serüven" veya "patika" olarak yeniden tasarlandı.
+    1. Navigasyon Çubuğu (Sticky).
+    2. Kahraman (Hero) Bölümü.
+    3. "Giriş / Fırsat" Bölümü.
+    4. "Yaklaşımımız: Serüvenimiz": Kaydırma ile tetiklenen, patika üzerinde ilerleme gösteren ve her adımda değişen görsellerle zenginleştirilmiş yeni bölüm. Süreç detayları için modal pencere işlevselliği korunmuştur.
+    5. "Etkimiz: Başarı Öyküleri / Ölçülebilir Sonuçlar".
+    6. "Neden Mir Holding?" Bölümü.
+    7. Harekete Geçirici Mesaj (CTA) Bölümü.
+    8. Altbilgi (Footer).
+    Bu yapı, kullanıcıyı mantıksal bir akışla yönlendirirken, "Yaklaşımımız" bölümünde yenilikçi bir sunumla etkileşimi artırmayı hedefler. API entegrasyonu KULLANILMAYACAKTIR.
+    -->
+
+    <!-- 
+    Visualization & Content Choices:
+    - Kahraman: Animasyonlu başlık ve arka plan.
+    - Giriş: Kısa metinler, soyut görsel.
+    - Yaklaşımımız (Serüvenimiz): 
+        - Dikey bir "patika" ve üzerinde ilerleyen bir gösterge.
+        - Kullanıcı kaydırdıkça, patikanın farklı aşamalarına gelindiğinde ilgili sürecin (başlık, açıklama, ikon) ve görselinin (kayarak/soluklaşarak değişen) görüntülenmesi.
+        - Her aşama için "Detayları Gör" butonu ile modal pencere açma.
+        - Amaç: Süreçleri doğrusal bir yolculuk olarak sunmak, etkileşimi ve anlaşılırlığı artırmak.
+        - Yöntem: Tailwind, JS (Intersection Observer ve scroll event listener kombinasyonu).
+    - Etkimiz: Animasyonlu sayılar, Chart.js grafiği.
+    - Neden Biz: İkonlu metin blokları.
+    - CTA: Belirgin düğme.
+    - Genel Animasyon: Kaydırma tetiklemeli giriş animasyonları, hover efektleri.
+    - İçerik: Mevcut içerik korunmuş, "Yaklaşımımız" bölümü yeni konsepte göre uyarlanmıştır.
+    -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #212529;
+            scroll-behavior: smooth;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #0A2463 0%, #3E92CC 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+            animation: heroShine 15s linear infinite;
+        }
+        @keyframes heroShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .nav-link {
+            @apply px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white transition-colors;
+        }
+        .nav-link-active {
+            @apply bg-gray-900 text-white;
+        }
+        .section-title {
+            @apply text-3xl sm:text-4xl font-bold text-[#0A2463] mb-4 text-center;
+        }
+        .section-subtitle {
+            @apply text-lg text-gray-600 mb-10 md:mb-12 text-center max-w-2xl mx-auto;
+        }
+        .cta-button {
+            @apply bg-[#FFD100] text-[#0A2463] hover:bg-yellow-400 transition-all duration-300 ease-in-out;
+        }
+        .cta-button-secondary {
+            @apply bg-[#0A2463] text-white hover:bg-blue-800 transition-all duration-300 ease-in-out;
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.75);
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 90vh; 
+            max-width: 700px;
+        }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; 
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .counter-number {
+            font-size: 3rem; 
+            font-weight: 800;
+            color: #0A2463; 
+        }
+         .animated-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .animated-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: #FFD100; 
+            transition: width .3s ease;
+            -webkit-transition: width .3s ease;
+        }
+        .animated-underline:hover::after, .nav-link-active::after {
+             width: 100%;
+            left: 0;
+            background: #FFD100;
+        }
+
+        /* Journey Section Styles */
+        .journey-container {
+            position: relative;
+            min-height: 100vh; /* Ensure enough scroll space for journey */
+        }
+        .journey-path-container {
+            position: sticky;
+            top: 120px; /* Adjust based on navbar height */
+            height: calc(100vh - 160px); /* Adjust based on navbar height and some padding */
+            max-height: 600px; /* Limit path height */
+        }
+        .journey-path {
+            position: relative;
+            width: 4px;
+            background-color: #e0e0e0; /* Light gray for the path */
+            margin: 0 auto;
+            height: 100%;
+        }
+        .journey-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #3E92CC; /* Medium blue for progress */
+            height: 0%; /* Initially 0, will be updated by JS */
+            transition: height 0.2s linear;
+        }
+        .journey-milestone-indicator {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #3E92CC;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .journey-milestone-indicator.active {
+            background-color: #FFD100; /* Yellow when active */
+            box-shadow: 0 0 0 3px #0A2463;
+        }
+        .journey-stage {
+            min-height: 80vh; /* Make each stage take significant scroll space */
+            padding-top: 80px; /* Space for sticky elements */
+            padding-bottom: 80px;
+            opacity: 0.3; /* Non-active stages are faded */
+            transition: opacity 0.5s ease-in-out;
+            position: relative; /* For z-indexing if needed */
+        }
+        .journey-stage.active-stage {
+            opacity: 1;
+        }
+        .journey-stage-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .journey-stage-image-container {
+            position: relative;
+            overflow: hidden; /* For sliding effect */
+            border-radius: 0.5rem;
+            min-height: 300px; /* Ensure container has height */
+        }
+        .journey-stage-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.7s ease-in-out;
+            transform: translateX(100%); /* Start off-screen to the right */
+            opacity: 0;
+        }
+        .journey-stage-image.active-image {
+            transform: translateX(0%);
+            opacity: 1;
+        }
+        .journey-stage-image.previous-image {
+            transform: translateX(-100%); /* Slide out to the left */
+            opacity: 0;
+        }
+         .journey-stage-icon {
+            font-size: 3rem;
+            color: #3E92CC;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="bg-[#0A2463] fixed w-full z-50 top-0 transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <a href="#hero" class="text-2xl font-bold text-white">Mir Holding</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#hero" class="nav-link animated-underline nav-link-active">Giriş</a>
+                        <a href="#introduction" class="nav-link animated-underline">Hakkımızda</a>
+                        <a href="#approach" class="nav-link animated-underline">Yaklaşımımız</a>
+                        <a href="#impact" class="nav-link animated-underline">Etkimiz</a>
+                        <a href="#why-us" class="nav-link animated-underline">Neden Biz?</a>
+                        <a href="#cta" class="nav-link animated-underline">İletişim</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-[#0A2463] bg-opacity-95">
+            <a href="#hero" class="block nav-link text-center py-3">Giriş</a>
+            <a href="#introduction" class="block nav-link text-center py-3">Hakkımızda</a>
+            <a href="#approach" class="block nav-link text-center py-3">Yaklaşımımız</a>
+            <a href="#impact" class="block nav-link text-center py-3">Etkimiz</a>
+            <a href="#why-us" class="block nav-link text-center py-3">Neden Biz?</a>
+            <a href="#cta" class="block nav-link text-center py-3">İletişim</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="hero-bg min-h-screen flex items-center justify-center text-white pt-20">
+        <div class="text-center px-4 py-16 sm:py-24 relative z-10">
+            <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
+                <span class="block">Mir Holding:</span>
+                <span class="block text-[#FFD100] mt-2">Süreç Mükemmelliği ile</span>
+                <span class="block">Geleceğinizi Şekillendiriyoruz.</span>
+            </h1>
+            <p class="max-w-xl md:max-w-2xl mx-auto text-lg sm:text-xl text-gray-200 mb-10">
+                İşletmenizin potansiyelini en üst düzeye çıkarmak için yenilikçi süreç iyileştirme çözümleri sunuyoruz. Verimliliği artırın, maliyetleri düşürün ve sürdürülebilir başarıya ulaşın.
+            </p>
+            <a href="#approach" class="cta-button inline-block text-lg font-semibold py-4 px-10 rounded-lg shadow-lg transform hover:scale-105">
+                Serüvenimize Katılın
+            </a>
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <svg class="w-8 h-8 text-white" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <section id="introduction" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="section-title fade-in-up">Dönüşümün Gücü: Süreç İyileştirmenin Önemi</h2>
+                <p class="section-subtitle fade-in-up">
+                    Mir Holding olarak, işletmelerin karmaşık zorlukların üstesinden gelmelerine ve kalıcı değer yaratmalarına yardımcı olmak için süreç iyileştirmenin dönüştürücü gücüne inanıyoruz. Amacımız, operasyonel mükemmelliği stratejik hedeflerinizle uyumlu hale getirerek sizi sektörünüzde liderliğe taşımaktır.
+                </p>
+            </div>
+            <div class="mt-12 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div class="fade-in-up">
+                    <h3 class="text-2xl font-semibold text-[#0A2463] mb-4">Biz Kimiz?</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Mir Holding, çeşitli sektörlerde faaliyet gösteren kuruluşlara özel süreç iyileştirme danışmanlığı ve uygulama hizmetleri sunan deneyimli bir ekipten oluşmaktadır. Müşterilerimizin benzersiz ihtiyaçlarını anlayarak, onlara özel, ölçülebilir sonuçlar üreten çözümler geliştiriyoruz.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-[#0A2463] mb-4 mt-6">Proje Amacımız</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Bu proje, Mir Holding'in süreç iyileştirme alanındaki uzmanlığını ve yenilikçi yaklaşımını sergileyerek, potansiyel müşterilere ve iş ortaklarına değer önerimizi etkili bir şekilde sunmayı amaçlamaktadır. Süreçlerimizi, metodolojilerimizi ve başarı hikayelerimizi şeffaf bir şekilde paylaşarak güven inşa etmeyi hedefliyoruz.
+                    </p>
+                </div>
+                <div class="fade-in-up rounded-lg overflow-hidden shadow-xl">
+                    <img src="https://placehold.co/600x400/0A2463/F8F9FA?text=Stratejik+%C4%B0lerleme" alt="Stratejik İlerleme" class="w-full h-auto object-cover" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=G%C3%B6rsel+Y%C3%BCklenemedi';">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="approach" class="py-16 md:py-24 journey-container bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="section-title fade-in-up">Yaklaşımımız: Dönüşüm Serüvenimiz</h2>
+                <p class="section-subtitle fade-in-up">
+                    Stratejik planlamadan dijital inovasyonlara uzanan bu yolculukta, işletmenizin potansiyelini nasıl açığa çıkardığımızı adım adım keşfedin. Her bir kilometre taşı, mükemmelliğe giden yolda size özel çözümler sunduğumuz bir durağı temsil eder.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-1/4 lg:w-1/5">
+                    <div class="journey-path-container">
+                        <div class="journey-path">
+                            <div id="journeyProgressBar" class="journey-progress"></div>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-3/4 lg:w-4/5">
+                    <div id="journeyStagesContainer">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="impact" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title fade-in-up">Yarattığımız Değer: Süreç İyileştirmenin Somut Etkileri</h2>
+            <p class="section-subtitle fade-in-up">
+                Süreç iyileştirme çözümlerimiz, işletmeniz için sadece teorik faydalar değil, aynı zamanda ölçülebilir ve somut sonuçlar üretir. Verimlilikten maliyet tasarrufuna, müşteri memnuniyetinden pazar payı artışına kadar geniş bir yelpazede pozitif etki yaratıyoruz.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8 mt-12 text-center">
+                <div class="p-6 fade-in-up">
+                    <div class="text-6xl text-[#3E92CC] mb-4">📈</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463] mb-2">Verimlilik Artışı</h3>
+                    <p class="counter-number" data-target="25">0%</p>
+                    <p class="text-gray-600">Operasyonel süreçlerde ortalama %25'e varan verimlilik artışı sağlıyoruz.</p>
+                </div>
+                <div class="p-6 fade-in-up" style="transition-delay: 0.2s;">
+                     <div class="text-6xl text-[#F7882F] mb-4">💰</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463] mb-2">Maliyet Tasarrufu</h3>
+                    <p class="counter-number" data-target="15">0%</p>
+                    <p class="text-gray-600">Gereksiz harcamaları ortadan kaldırarak maliyetlerde ortalama %15 azalma.</p>
+                </div>
+                <div class="p-6 fade-in-up" style="transition-delay: 0.4s;">
+                     <div class="text-6xl text-[#FFD100] mb-4">😊</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463] mb-2">Müşteri Memnuniyeti</h3>
+                    <p class="counter-number" data-target="30">0%</p>
+                    <p class="text-gray-600">Hizmet kalitesini artırarak müşteri memnuniyetinde %30'a varan iyileşme.</p>
+                </div>
+            </div>
+             <div class="mt-12 fade-in-up">
+                <h3 class="text-2xl font-semibold text-[#0A2463] mb-6 text-center">Proje Başarı Oranları</h3>
+                <div class="chart-container">
+                    <canvas id="successRateChart"></canvas>
+                </div>
+                <p class="text-center text-gray-600 mt-4">
+                    Tamamladığımız projelerin %95'i, hedeflenen iyileştirme metriklerine ulaşmış veya aşmıştır.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="why-us" class="py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title fade-in-up">Uzmanlığımız ve Farkımız: Neden Mir Holding?</h2>
+            <p class="section-subtitle fade-in-up">
+                Mir Holding'i tercih etmeniz için birçok neden var. Sektördeki derin tecrübemiz, müşteri odaklı yaklaşımımız ve kanıtlanmış metodolojilerimizle işletmenize değer katıyoruz.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8 mt-12">
+                <div class="bg-white p-8 rounded-lg shadow-lg fade-in-up">
+                    <div class="flex items-center justify-center w-16 h-16 bg-[#3E92CC] text-white rounded-full text-3xl mb-6 mx-auto">🎯</div>
+                    <h3 class="text-xl font-bold text-[#0A2463] mb-3 text-center">Sonuç Odaklı Yaklaşım</h3>
+                    <p class="text-gray-600 text-center">Sadece planlar değil, ölçülebilir ve sürdürülebilir sonuçlar üretiyoruz. Başarınız, bizim başarımızdır.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="flex items-center justify-center w-16 h-16 bg-[#F7882F] text-white rounded-full text-3xl mb-6 mx-auto">💡</div>
+                    <h3 class="text-xl font-bold text-[#0A2463] mb-3 text-center">Yenilikçi Çözümler</h3>
+                    <p class="text-gray-600 text-center">Sektördeki en son trendleri ve teknolojileri takip ederek, size özel yenilikçi çözümler geliştiriyoruz.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg fade-in-up" style="transition-delay: 0.4s;">
+                    <div class="flex items-center justify-center w-16 h-16 bg-[#FFD100] text-[#0A2463] rounded-full text-3xl mb-6 mx-auto">🤝</div>
+                    <h3 class="text-xl font-bold text-[#0A2463] mb-3 text-center">Deneyimli Ekip</h3>
+                    <p class="text-gray-600 text-center">Alanında uzman, tutkulu ve deneyimli danışman kadromuzla projenizin her aşamasında yanınızdayız.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta" class="py-16 md:py-24 bg-[#0A2463] text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6 fade-in-up">Dönüşüme Hazır Mısınız?</h2>
+            <p class="text-lg text-gray-300 mb-10 fade-in-up">
+                İşletmenizin süreçlerini optimize ederek rekabette bir adım öne geçmek ve sürdürülebilir büyüme sağlamak için ilk adımı atın. Mir Holding uzmanlığıyla tanışın.
+            </p>
+            <a href="mailto:info@mirholding.com.tr?subject=Süreç İyileştirme Projesi Hakkında Bilgi Talebi" class="cta-button inline-block text-lg font-semibold py-4 px-10 rounded-lg shadow-lg transform hover:scale-105 fade-in-up">
+                Bizimle İletişime Geçin
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-[#212529] text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="mb-2">&copy; <span id="currentYear"></span> Mir Holding. Tüm Hakları Saklıdır.</p>
+            <p class="text-sm">Bu web sitesi, süreç iyileştirme projeleri hakkında genel bilgilendirme amacıyla hazırlanmıştır.</p>
+            <div class="mt-4">
+                <a href="#" class="px-2 hover:text-[#FFD100]">Gizlilik Politikası</a>
+                <span class="px-1">|</span>
+                <a href="#" class="px-2 hover:text-[#FFD100]">Kullanım Şartları</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="processModal" class="modal fixed inset-0 w-full h-full flex items-center justify-center p-4 hidden opacity-0">
+        <div id="modalOverlay" class="absolute inset-0 w-full h-full"></div>
+        <div id="modalContent" class="modal-content bg-white p-6 sm:p-8 rounded-xl shadow-2xl w-full relative z-10 transform scale-95 opacity-0 overflow-y-auto">
+            <div class="flex justify-between items-start mb-6">
+                <h3 id="modalTitle" class="text-2xl sm:text-3xl font-bold text-[#0A2463] mr-4">Süreç Detayı</h3>
+                <button id="closeModalButton" class="text-gray-500 hover:text-red-600 transition-colors text-4xl leading-none -mt-1">&times;</button>
+            </div>
+            <img id="modalImage" src="https://placehold.co/600x300/3E92CC/FFFFFF?text=S%C3%BCre%C3%A7+G%C3%B6rseli" alt="Süreç Görseli" class="w-full h-48 sm:h-64 object-cover rounded-lg mb-6" onerror="this.src='https://placehold.co/600x300/cccccc/333333?text=G%C3%B6rsel+Yok';">
+            <div class="prose max-w-none text-gray-700 leading-relaxed mb-6">
+                 <p id="modalDescription">Detaylı süreç açıklaması burada yer alacaktır.</p>
+            </div>
+            <div class="text-right mt-8">
+                 <button id="closeModalButtonFooter" class="cta-button-secondary font-semibold py-3 px-8 rounded-md">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const processes = [
+                {
+                    id: 1,
+                    name: "Stratejik Planlama ve Hedef Belirleme",
+                    icon: "🎯",
+                    description: "İşletmenizin uzun vadeli hedeflerini netleştiriyor, bu hedeflere ulaşmak için stratejik yol haritaları oluşturuyoruz.",
+                    details: "Stratejik planlama sürecimiz, pazar analizi, rakip değerlendirmesi, SWOT analizi ve paydaş beklentilerinin belirlenmesi gibi adımları içerir. Bu sayede, işletmenizin vizyonuyla uyumlu, gerçekçi ve ölçülebilir hedefler tanımlanır. Bu hedefler, tüm iyileştirme çabalarımızın temelini oluşturur ve başarıyı ölçmek için net kriterler sunar. Örneğin, bir üretim şirketi için %15 pazar payı artışı hedefi belirlenebilir ve bu hedefe yönelik olarak yeni ürün geliştirme, pazarlama stratejileri ve dağıtım kanalı optimizasyonu gibi alt stratejiler oluşturulur.",
+                    image: "https://placehold.co/800x500/0A2463/FFFFFF?text=Stratejik+Hedefler"
+                },
+                {
+                    id: 2,
+                    name: "Mevcut Durum Analizi ve Değerlendirme",
+                    icon: "📊",
+                    description: "Mevcut süreçlerinizi derinlemesine analiz ediyor, darboğazları, verimsizlikleri ve iyileştirme fırsatlarını belirliyoruz.",
+                    details: "Kapsamlı bir mevcut durum analizi yaparak süreçlerinizin performansını objektif bir şekilde değerlendiriyoruz. Veri toplama, süreç haritalama (Value Stream Mapping gibi), performans metrikleri analizi (örneğin, çevrim süresi, hata oranları) ve çalışanlarla yapılan odak grup görüşmeleri gibi yöntemlerle güçlü ve zayıf yönlerinizi ortaya koyuyoruz. Bu analiz, iyileştirme çabalarının hangi alanlara odaklanması gerektiğini (örneğin, en çok zaman kaybının yaşandığı veya en yüksek maliyetli adıma) netleştirir.",
+                    image: "https://placehold.co/800x500/3E92CC/FFFFFF?text=Analiz+ve+Değerlendirme"
+                },
+                {
+                    id: 3,
+                    name: "Süreç Yeniden Tasarımı ve Optimizasyonu",
+                    icon: "⚙️",
+                    description: "Verimliliği artırmak, maliyetleri düşürmek ve kaliteyi yükseltmek için süreçlerinizi yeniden tasarlıyor ve optimize ediyoruz.",
+                    details: "Analiz sonuçlarına dayanarak, süreçlerinizi daha yalın, daha hızlı ve daha etkili hale getirmek için yeniden tasarlıyoruz. Yalın (Lean) prensipleri, Altı Sigma (Six Sigma) metodolojileri ve en iyi endüstri uygulamalarını kullanarak gereksiz adımları (israfı) ortadan kaldırıyor, otomasyon fırsatlarını (RPA gibi) değerlendiriyor ve süreç akışlarını optimize ediyoruz. Amaç, kaynaklarınızı (zaman, insan, malzeme) en verimli şekilde kullanmanızı ve müşteri değerini maksimize etmenizi sağlamaktır.",
+                    image: "https://placehold.co/800x500/F7882F/FFFFFF?text=Optimizasyon"
+                },
+                {
+                    id: 4,
+                    name: "Uygulama ve Değişim Yönetimi",
+                    icon: "🚀",
+                    description: "Yeniden tasarlanan süreçlerin etkin bir şekilde uygulanmasını sağlıyor, değişim yönetimi stratejileriyle çalışan adaptasyonunu destekliyoruz.",
+                    details: "Yeni süreçlerin başarılı bir şekilde hayata geçirilmesi, detaylı bir uygulama planı ve güçlü bir değişim yönetimi stratejisi (örneğin, Kotter'ın 8 Adımlı Değişim Modeli) gerektirir. Çalışanlarınızı yeni süreçlere hazırlamak, kapsamlı eğitim programları düzenlemek, açık ve sürekli iletişim kanalları kurmak, pilot uygulamalar yapmak ve olası dirençleri proaktif bir şekilde yönetmek bu aşamanın kritik unsurlarıdır. Uygulama sürecini yakından takip ederek ve performans göstergelerini izleyerek sorunsuz bir geçiş ve sürdürülebilir başarı sağlıyoruz.",
+                    image: "https://placehold.co/800x500/FFD100/0A2463?text=Uygulama+Aşaması"
+                },
+                {
+                    id: 5,
+                    name: "Performans İzleme ve Sürekli İyileştirme",
+                    icon: "📈",
+                    description: "Uygulanan süreçlerin performansını düzenli olarak izliyor, sürekli iyileştirme kültürü oluşturarak kalıcı başarı sağlıyoruz.",
+                    details: "İyileştirme bir defalık bir proje değil, sürekli bir yolculuktur (Kaizen). Uygulanan yeni süreçlerin performansını belirlediğimiz anahtar performans göstergeleri (KPI'lar) ile düzenli olarak izliyor, çalışanlardan ve müşterilerden geri bildirimler topluyor ve elde edilen sonuçları periyodik olarak (örneğin, aylık veya üç aylık) değerlendiriyoruz. Bu veriler ışığında, süreçlerinizi sürekli olarak daha iyi hale getirmek için PDCA (Planla-Uygula-Kontrol Et-Önlem Al) döngüsüyle hareket ediyor ve organizasyonunuzda bir sürekli iyileştirme kültürü yerleştiriyoruz.",
+                    image: "https://placehold.co/800x500/0A2463/F8F9FA?text=Sürekli+Gelişim"
+                },
+                 {
+                    id: 6,
+                    name: "Teknoloji Entegrasyonu ve Dijital İnovasyon",
+                    icon: "💻",
+                    description: "Süreçlerinizi dijitalleştirerek ve yenilikçi teknolojileri entegre ederek rekabet avantajı ve geleceğe yönelik çözümler üretiyoruz.",
+                    details: "Günümüz iş dünyasında dijital dönüşüm ve teknolojik inovasyon kaçınılmazdır. Süreçlerinizi analiz ederek, hangi adımların dijitalleştirilebileceğini, hangi teknolojilerin (örneğin, ERP sistemleri, CRM yazılımları, yapay zeka, IoT, blockchain) en fazla değer katabileceğini belirliyoruz. Doğru teknoloji çözümlerini seçerek, mevcut sistemlerinize entegre ederek ve çalışanların bu teknolojileri etkin kullanmasını sağlayarak operasyonel verimliliğinizi artırıyor, karar alma süreçlerinizi iyileştiriyor ve işletmenizi geleceğe taşıyacak dijital inovasyonları hayata geçiriyoruz.",
+                    image: "https://placehold.co/800x500/3E92CC/212529?text=Dijital+İnovasyon"
+                }
+            ];
+
+            const journeyStagesContainer = document.getElementById('journeyStagesContainer');
+            const journeyPath = document.querySelector('.journey-path');
+            const journeyProgressBar = document.getElementById('journeyProgressBar');
+            let milestoneIndicators = []; // To store milestone DOM elements
+
+            if (journeyStagesContainer && journeyPath && journeyProgressBar) {
+                processes.forEach((process, index) => {
+                    // Create Stage Content
+                    const stageElement = document.createElement('div');
+                    stageElement.classList.add('journey-stage');
+                    stageElement.setAttribute('id', `stage-${process.id}`);
+                    stageElement.dataset.index = index;
+                    stageElement.innerHTML = `
+                        <div class="journey-stage-content grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            <div class="journey-stage-text order-2 md:order-1">
+                                <div class="journey-stage-icon">${process.icon}</div>
+                                <h3 class="text-2xl sm:text-3xl font-bold text-[#0A2463] mb-4">${process.name}</h3>
+                                <p class="text-gray-700 leading-relaxed mb-6">${process.description}</p>
+                                <button class="cta-button-secondary font-semibold py-2 px-6 rounded-md learn-more-btn" data-process-id="${process.id}">
+                                    Detayları Gör
+                                </button>
+                            </div>
+                            <div class="journey-stage-image-container order-1 md:order-2 h-64 md:h-96">
+                                </div>
+                        </div>
+                    `;
+                    journeyStagesContainer.appendChild(stageElement);
+
+                    // Create Milestone Indicator on the Path
+                    const milestoneIndicator = document.createElement('div');
+                    milestoneIndicator.classList.add('journey-milestone-indicator');
+                    const totalStages = processes.length;
+                    // Position milestones evenly, avoiding very top and very bottom for aesthetics
+                    const percentagePosition = totalStages <= 1 ? 50 : (index / (totalStages -1 )) * 90 + 5; // Distribute from 5% to 95%
+                    milestoneIndicator.style.top = `${percentagePosition}%`;
+                    milestoneIndicator.dataset.stageId = `stage-${process.id}`;
+                    journeyPath.appendChild(milestoneIndicator);
+                    milestoneIndicators.push(milestoneIndicator);
+                });
+
+                // Inject initial images and set up for sliding
+                const stageImageContainers = document.querySelectorAll('.journey-stage-image-container');
+                stageImageContainers.forEach((container, stageIndex) => {
+                    processes.forEach((proc, imgIndex) => {
+                        const img = document.createElement('img');
+                        img.src = proc.image;
+                        img.alt = proc.name;
+                        img.classList.add('journey-stage-image');
+                        if (imgIndex === 0 && stageIndex === 0) { // First image for the first stage initially active
+                            img.classList.add('active-image');
+                        }
+                        container.appendChild(img);
+                    });
+                });
+            }
+            
+            const modal = document.getElementById('processModal');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalContent = document.getElementById('modalContent');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalImage = document.getElementById('modalImage');
+            const closeModalButton = document.getElementById('closeModalButton');
+            const closeModalButtonFooter = document.getElementById('closeModalButtonFooter');
+
+            function openProcessModal(processId) {
+                const process = processes.find(p => p.id === parseInt(processId));
+                if (!process || !modal || !modalContent) return;
+                modalTitle.textContent = process.name;
+                modalDescription.innerHTML = process.details.replace(/\n/g, '<br>');
+                modalImage.src = process.image; // Use the main image for the modal for simplicity
+                modalImage.alt = process.name + " Süreç Görseli";
+                
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                    modalContent.classList.add('scale-100', 'opacity-100');
+                }, 10); 
+                document.body.style.overflow = 'hidden';
+            }
+
+            document.querySelectorAll('.learn-more-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    openProcessModal(this.dataset.processId);
+                });
+            });
+            
+            function closeModal() {
+                if (!modal || !modalContent) return;
+                modalContent.classList.remove('scale-100', 'opacity-100');
+                modalContent.classList.add('scale-95', 'opacity-0');
+                modal.classList.add('opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = ''; 
+                history.pushState(null, null, window.location.pathname + window.location.search);
+            }
+
+            if(closeModalButton) closeModalButton.addEventListener('click', closeModal);
+            if(closeModalButtonFooter) closeModalButtonFooter.addEventListener('click', closeModal);
+            if(modalOverlay) modalOverlay.addEventListener('click', closeModal);
+             window.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+
+
+            // Journey scroll logic
+            const journeyStages = document.querySelectorAll('.journey-stage');
+            let currentActiveImageIndex = 0;
+
+            const journeyObserverOptions = {
+                root: null, // viewport
+                rootMargin: '0px',
+                threshold: 0.5 // When 50% of the stage is visible
+            };
+
+            const journeyObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    const stageIndex = parseInt(entry.target.dataset.index);
+                    const milestone = milestoneIndicators[stageIndex];
+
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active-stage');
+                        if(milestone) milestone.classList.add('active');
+
+                        // Update images
+                        const imageContainer = entry.target.querySelector('.journey-stage-image-container');
+                        if (imageContainer) {
+                            const allImages = imageContainer.querySelectorAll('.journey-stage-image');
+                            allImages.forEach((img, imgIdx) => {
+                                img.classList.remove('active-image', 'previous-image');
+                                if (imgIdx === stageIndex) {
+                                    img.classList.add('active-image');
+                                } else if (imgIdx < stageIndex) {
+                                     img.classList.add('previous-image'); // Ensure previous ones are slid out
+                                }
+                            });
+                        }
+                        currentActiveImageIndex = stageIndex;
+
+                    } else {
+                        entry.target.classList.remove('active-stage');
+                        if(milestone) milestone.classList.remove('active');
+                    }
+                });
+            }, journeyObserverOptions);
+
+            journeyStages.forEach(stage => journeyObserver.observe(stage));
+            
+            // Path progress bar update on scroll
+            function updateProgressBar() {
+                if (!journeyStagesContainer || !journeyProgressBar || journeyStages.length === 0) return;
+
+                const containerRect = journeyStagesContainer.getBoundingClientRect();
+                const firstStageRect = journeyStages[0].getBoundingClientRect();
+                const lastStageRect = journeyStages[journeyStages.length - 1].getBoundingClientRect();
+                
+                // Calculate how much of the journey stages container has been scrolled through
+                // Start progress when the top of the first stage is visible, end when bottom of last stage is visible
+                const scrollableViewportHeight = window.innerHeight;
+                
+                // Start when top of first stage enters bottom of viewport
+                // End when bottom of last stage leaves top of viewport
+                const journeyStartPoint = firstStageRect.top - scrollableViewportHeight;
+                const journeyEndPoint = lastStageRect.bottom;
+                const journeyLength = journeyEndPoint - journeyStartPoint;
+                
+                // Current scroll position relative to the start of the journey
+                // We use negative of firstStageRect.top because as we scroll down, top becomes more negative
+                const currentScrollRelativeToJourneyStart = -firstStageRect.top + scrollableViewportHeight;
+
+                let progress = 0;
+                if (journeyLength > 0) {
+                     progress = (currentScrollRelativeToJourneyStart / journeyLength) * 100;
+                }
+                
+                progress = Math.max(0, Math.min(100, progress)); // Clamp between 0 and 100
+
+                if (journeyProgressBar) {
+                    journeyProgressBar.style.height = `${progress}%`;
+                }
+
+                 // Activate milestone if its corresponding stage is roughly in the middle of the viewport
+                const viewportCenter = window.innerHeight / 2;
+                journeyStages.forEach((stage, index) => {
+                    const stageRect = stage.getBoundingClientRect();
+                    const milestone = milestoneIndicators[index];
+                    if (milestone) {
+                        if (stageRect.top < viewportCenter && stageRect.bottom > viewportCenter) {
+                            milestone.classList.add('active');
+                        } else {
+                            milestone.classList.remove('active');
+                        }
+                    }
+                });
+
+            }
+            window.addEventListener('scroll', updateProgressBar);
+            updateProgressBar(); // Initial call
+
+
+            const navbar = document.getElementById('navbar');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            window.onscroll = () => { // This will override the previous onscroll for progress bar, so combine them or use addEventListener
+                if (window.scrollY > 50) {
+                    if(navbar) navbar.classList.add('shadow-lg', 'bg-opacity-95');
+                } else {
+                    if(navbar) navbar.classList.remove('shadow-lg', 'bg-opacity-95');
+                }
+
+                let currentSectionId = 'hero';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - (navbar ? navbar.offsetHeight : 70) - 50; 
+                    if (window.scrollY >= sectionTop) {
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('nav-link-active');
+                    if (link.getAttribute('href') === `#${currentSectionId}`) {
+                        link.classList.add('nav-link-active');
+                    }
+                });
+                updateProgressBar(); // Call progress bar update here
+            };
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+            }
+
+            const animatedElements = document.querySelectorAll('.fade-in-up');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            animatedElements.forEach(el => observer.observe(el));
+
+            const counters = document.querySelectorAll('.counter-number');
+            const speed = 200; 
+
+            const animateCounter = (counter) => {
+                const target = +counter.getAttribute('data-target');
+                const updateCount = () => {
+                    const count = +counter.innerText.replace('%','');
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc) + '%';
+                        setTimeout(updateCount, 10);
+                    } else {
+                        counter.innerText = target + '%';
+                    }
+                };
+                updateCount();
+            };
+            
+            const counterObserver = new IntersectionObserver((entries) => {
+                 entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                        animateCounter(entry.target);
+                        entry.target.classList.add('counted'); 
+                        counterObserver.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.5});
+
+            counters.forEach(counter => counterObserver.observe(counter));
+
+            const successRateChartCtx = document.getElementById('successRateChart');
+            if (successRateChartCtx) {
+                 const chartObserver = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting && !successRateChartCtx.classList.contains('chart-drawn')) {
+                        new Chart(successRateChartCtx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Başarılı Projeler', 'Devam Eden / Diğer'],
+                                datasets: [{
+                                    label: 'Proje Başarı Oranı',
+                                    data: [95, 5], 
+                                    backgroundColor: [
+                                        '#3E92CC', 
+                                        '#e0e0e0'  
+                                    ],
+                                    borderColor: [
+                                        '#FFFFFF',
+                                        '#FFFFFF'
+                                    ],
+                                    borderWidth: 3
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutout: '70%',
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            padding: 20,
+                                            font: {
+                                                size: 14,
+                                                family: "'Inter', sans-serif"
+                                            },
+                                            color: '#212529'
+                                        }
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                let label = context.label || '';
+                                                if (label) {
+                                                    label += ': ';
+                                                }
+                                                if (context.parsed !== null) {
+                                                    label += context.parsed + '%';
+                                                }
+                                                return label;
+                                            }
+                                        },
+                                        titleFont: { family: "'Inter', sans-serif", size: 16 },
+                                        bodyFont: { family: "'Inter', sans-serif", size: 14 },
+                                        backgroundColor: '#0A2463',
+                                        titleColor: '#FFFFFF',
+                                        bodyColor: '#F8F9FA',
+                                        padding: 10,
+                                        cornerRadius: 4
+                                    }
+                                },
+                                animation: {
+                                    animateScale: true,
+                                    animateRotate: true,
+                                    duration: 1200 
+                                }
+                            }
+                        });
+                        successRateChartCtx.classList.add('chart-drawn');
+                        chartObserver.unobserve(successRateChartCtx);
+                    }
+                }, { threshold: 0.5 });
+                chartObserver.observe(successRateChartCtx);
+            }
+            
+            const currentYearElement = document.getElementById('currentYear');
+            if(currentYearElement) currentYearElement.textContent = new Date().getFullYear();
+
+            const heroTitle = document.getElementById('hero-title');
+            if (heroTitle) {
+                const text = heroTitle.innerHTML; 
+                heroTitle.innerHTML = ''; 
+                
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = text;
+                
+                let delay = 0;
+                Array.from(wrapper.childNodes).forEach(node => {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        const words = node.textContent.split(/(\s+)/); 
+                        words.forEach(wordOrSpace => {
+                            if (wordOrSpace.trim().length > 0) {
+                                wordOrSpace.split('').forEach(char => {
+                                    const span = document.createElement('span');
+                                    span.textContent = char;
+                                    span.style.opacity = '0';
+                                    span.style.transform = 'translateY(20px)';
+                                    span.style.display = 'inline-block';
+                                    span.style.transition = `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`;
+                                    heroTitle.appendChild(span);
+                                    delay += 0.03;
+                                });
+                            } else {
+                                heroTitle.appendChild(document.createTextNode(wordOrSpace));
+                            }
+                        });
+                    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'SPAN') {
+                        const spanContainer = document.createElement('span');
+                        spanContainer.className = node.className; 
+                        spanContainer.style.cssText = node.style.cssText; 
+                        
+                        const innerText = node.textContent;
+                        innerText.split('').forEach(char => {
+                            const charSpan = document.createElement('span');
+                            charSpan.textContent = char;
+                            charSpan.style.opacity = '0';
+                            charSpan.style.transform = 'translateY(20px)';
+                            charSpan.style.display = 'inline-block';
+                            charSpan.style.transition = `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`;
+                            spanContainer.appendChild(charSpan);
+                            delay += 0.03;
+                        });
+                        heroTitle.appendChild(spanContainer);
+
+                    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'BR') {
+                        heroTitle.appendChild(document.createElement('br'));
+                    }
+                });
+
+                setTimeout(() => {
+                    Array.from(heroTitle.querySelectorAll('span[style*="opacity"]')).forEach(s => {
+                        s.style.opacity = '1';
+                        s.style.transform = 'translateY(0)';
+                    });
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>

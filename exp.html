@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mir Holding | Süreç Mükemmelliği ile Geleceğinizi Şekillendiriyoruz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA; /* Neutral Light Gray */
+            color: #212529; /* Neutral Dark Gray */
+            scroll-behavior: smooth;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #0A2463 0%, #3E92CC 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+            animation: heroShine 15s linear infinite;
+        }
+        @keyframes heroShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .nav-link {
+            @apply px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white transition-colors;
+        }
+        .nav-link-active {
+            @apply bg-gray-900 text-white;
+        }
+        .section-title {
+            @apply text-3xl sm:text-4xl font-bold text-[#0A2463] mb-4 text-center;
+        }
+        .section-subtitle {
+            @apply text-lg text-gray-600 mb-10 md:mb-12 text-center max-w-2xl mx-auto;
+        }
+        .cta-button {
+            @apply bg-[#FFD100] text-[#0A2463] hover:bg-yellow-400 transition-all duration-300 ease-in-out;
+        }
+        .cta-button-secondary {
+            @apply bg-[#0A2463] text-white hover:bg-blue-800 transition-all duration-300 ease-in-out;
+        }
+        .process-card {
+            background-color: white;
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            overflow: hidden; /* Ensures content within card respects border radius */
+            cursor: pointer; /* Indicates card is clickable */
+        }
+        .process-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+        .process-card-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            background-color: #3E92CC; /* Primary Medium Blue */
+            color: white;
+            font-size: 2.5rem; /* 40px */
+            transition: background-color 0.3s ease;
+        }
+        .process-card:hover .process-card-icon-wrapper {
+            background-color: #0A2463; /* Primary Deep Blue */
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.75); /* Slightly darker overlay for focus */
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 90vh; 
+            max-width: 700px; /* Increased max-width for richer content */
+        }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; 
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .counter-number {
+            font-size: 3rem; 
+            font-weight: 800;
+            color: #0A2463; 
+        }
+         .animated-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .animated-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: #FFD100; 
+            transition: width .3s ease;
+            -webkit-transition: width .3s ease;
+        }
+        .animated-underline:hover::after, .nav-link-active::after {
+             width: 100%;
+            left: 0;
+            background: #FFD100;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="bg-[#0A2463] fixed w-full z-50 top-0 transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <a href="#hero" class="text-2xl font-bold text-white">Mir Holding</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#hero" class="nav-link animated-underline nav-link-active">Giriş</a>
+                        <a href="#introduction" class="nav-link animated-underline">Hakkımızda</a>
+                        <a href="#approach" class="nav-link animated-underline">Yaklaşımımız</a>
+                        <a href="#impact" class="nav-link animated-underline">Etkimiz</a>
+                        <a href="#why-us" class="nav-link animated-underline">Neden Biz?</a>
+                        <a href="#cta" class="nav-link animated-underline">İletişim</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-[#0A2463] bg-opacity-95">
+            <a href="#hero" class="block nav-link text-center py-3">Giriş</a>
+            <a href="#introduction" class="block nav-link text-center py-3">Hakkımızda</a>
+            <a href="#approach" class="block nav-link text-center py-3">Yaklaşımımız</a>
+            <a href="#impact" class="block nav-link text-center py-3">Etkimiz</a>
+            <a href="#why-us" class="block nav-link text-center py-3">Neden Biz?</a>
+            <a href="#cta" class="block nav-link text-center py-3">İletişim</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="hero-bg min-h-screen flex items-center justify-center text-white pt-20">
+        <div class="text-center px-4 py-16 sm:py-24 relative z-10">
+            <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
+                <span class="block">Mir Holding:</span>
+                <span class="block text-[#FFD100] mt-2">Süreç Mükemmelliği ile</span>
+                <span class="block">Geleceğinizi Şekillendiriyoruz.</span>
+            </h1>
+            <p class="max-w-xl md:max-w-2xl mx-auto text-lg sm:text-xl text-gray-200 mb-10">
+                İşletmenizin potansiyelini en üst düzeye çıkarmak için yenilikçi süreç iyileştirme çözümleri sunuyoruz. Verimliliği artırın, maliyetleri düşürün ve sürdürülebilir başarıya ulaşın.
+            </p>
+            <a href="#approach" class="cta-button inline-block text-lg font-semibold py-4 px-10 rounded-lg shadow-lg transform hover:scale-105">
+                Yaklaşımımızı Keşfedin
+            </a>
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <svg class="w-8 h-8 text-white" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <section id="introduction" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="section-title fade-in-up">Dönüşümün Gücü: Süreç İyileştirmenin Önemi</h2>
+                <p class="section-subtitle fade-in-up">
+                    Mir Holding olarak, işletmelerin karmaşık zorlukların üstesinden gelmelerine ve kalıcı değer yaratmalarına yardımcı olmak için süreç iyileştirmenin dönüştürücü gücüne inanıyoruz. Amacımız, operasyonel mükemmelliği stratejik hedeflerinizle uyumlu hale getirerek sizi sektörünüzde liderliğe taşımaktır.
+                </p>
+            </div>
+            <div class="mt-12 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div class="fade-in-up">
+                    <h3 class="text-2xl font-semibold text-[#0A2463] mb-4">Biz Kimiz?</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Mir Holding, çeşitli sektörlerde faaliyet gösteren kuruluşlara özel süreç iyileştirme danışmanlığı ve uygulama hizmetleri sunan deneyimli bir ekipten oluşmaktadır. Müşterilerimizin benzersiz ihtiyaçlarını anlayarak, onlara özel, ölçülebilir sonuçlar üreten çözümler geliştiriyoruz.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-[#0A2463] mb-4 mt-6">Proje Amacımız</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Bu proje, Mir Holding'in süreç iyileştirme alanındaki uzmanlığını ve yenilikçi yaklaşımını sergileyerek, potansiyel müşterilere ve iş ortaklarına değer önerimizi etkili bir şekilde sunmayı amaçlamaktadır. Süreçlerimizi, metodolojilerimizi ve başarı hikayelerimizi şeffaf bir şekilde paylaşarak güven inşa etmeyi hedefliyoruz.
+                    </p>
+                </div>
+                <div class="fade-in-up rounded-lg overflow-hidden shadow-xl">
+                    <img src="https://placehold.co/600x400/0A2463/F8F9FA?text=Stratejik+%C4%B0lerleme" alt="Stratejik İlerleme" class="w-full h-auto object-cover" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=G%C3%B6rsel+Y%C3%BCklenemedi';">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="approach" class="py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title fade-in-up">Yaklaşımımız: Süreçlerimizle Tanışın</h2>
+            <p class="section-subtitle fade-in-up">
+                Mükemmelliğe giden yolculuğunuzda size rehberlik edecek, kanıtlanmış ve etkili temel süreçlerimizle tanışın. Her bir süreç, işletmenizin özel ihtiyaçlarına göre uyarlanabilir ve ölçülebilir iyileştirmeler sağlamak üzere tasarlanmıştır. Kartlara tıklayarak her bir sürecin detaylarına ulaşabilirsiniz.
+            </p>
+            <div id="process-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 mt-12">
+            </div>
+        </div>
+    </section>
+    
+    <section id="impact" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title fade-in-up">Yarattığımız Değer: Süreç İyileştirmenin Somut Etkileri</h2>
+            <p class="section-subtitle fade-in-up">
+                Süreç iyileştirme çözümlerimiz, işletmeniz için sadece teorik faydalar değil, aynı zamanda ölçülebilir ve somut sonuçlar üretir. Verimlilikten maliyet tasarrufuna, müşteri memnuniyetinden pazar payı artışına kadar geniş bir yelpazede pozitif etki yaratıyoruz.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8 mt-12 text-center">
+                <div class="p-6 fade-in-up">
+                    <div class="text-6xl text-[#3E92CC] mb-4">📈</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463] mb-2">Verimlilik Artışı</h3>
+                    <p class="counter-number" data-target="25">0%</p>
+                    <p class="text-gray-600">Operasyonel süreçlerde ortalama %25'e varan verimlilik artışı sağlıyoruz.</p>
+                </div>
+                <div class="p-6 fade-in-up" style="transition-delay: 0.2s;">
+                     <div class="text-6xl text-[#F7882F] mb-4">💰</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463] mb-2">Maliyet Tasarrufu</h3>
+                    <p class="counter-number" data-target="15">0%</p>
+                    <p class="text-gray-600">Gereksiz harcamaları ortadan kaldırarak maliyetlerde ortalama %15 azalma.</p>
+                </div>
+                <div class="p-6 fade-in-up" style="transition-delay: 0.4s;">
+                     <div class="text-6xl text-[#FFD100] mb-4">😊</div>
+                    <h3 class="text-2xl font-bold text-[#0A2463] mb-2">Müşteri Memnuniyeti</h3>
+                    <p class="counter-number" data-target="30">0%</p>
+                    <p class="text-gray-600">Hizmet kalitesini artırarak müşteri memnuniyetinde %30'a varan iyileşme.</p>
+                </div>
+            </div>
+             <div class="mt-12 fade-in-up">
+                <h3 class="text-2xl font-semibold text-[#0A2463] mb-6 text-center">Proje Başarı Oranları</h3>
+                <div class="chart-container">
+                    <canvas id="successRateChart"></canvas>
+                </div>
+                <p class="text-center text-gray-600 mt-4">
+                    Tamamladığımız projelerin %95'i, hedeflenen iyileştirme metriklerine ulaşmış veya aşmıştır.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="why-us" class="py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title fade-in-up">Uzmanlığımız ve Farkımız: Neden Mir Holding?</h2>
+            <p class="section-subtitle fade-in-up">
+                Mir Holding'i tercih etmeniz için birçok neden var. Sektördeki derin tecrübemiz, müşteri odaklı yaklaşımımız ve kanıtlanmış metodolojilerimizle işletmenize değer katıyoruz.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8 mt-12">
+                <div class="bg-white p-8 rounded-lg shadow-lg fade-in-up">
+                    <div class="flex items-center justify-center w-16 h-16 bg-[#3E92CC] text-white rounded-full text-3xl mb-6 mx-auto">🎯</div>
+                    <h3 class="text-xl font-bold text-[#0A2463] mb-3 text-center">Sonuç Odaklı Yaklaşım</h3>
+                    <p class="text-gray-600 text-center">Sadece planlar değil, ölçülebilir ve sürdürülebilir sonuçlar üretiyoruz. Başarınız, bizim başarımızdır.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="flex items-center justify-center w-16 h-16 bg-[#F7882F] text-white rounded-full text-3xl mb-6 mx-auto">💡</div>
+                    <h3 class="text-xl font-bold text-[#0A2463] mb-3 text-center">Yenilikçi Çözümler</h3>
+                    <p class="text-gray-600 text-center">Sektördeki en son trendleri ve teknolojileri takip ederek, size özel yenilikçi çözümler geliştiriyoruz.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg fade-in-up" style="transition-delay: 0.4s;">
+                    <div class="flex items-center justify-center w-16 h-16 bg-[#FFD100] text-[#0A2463] rounded-full text-3xl mb-6 mx-auto">🤝</div>
+                    <h3 class="text-xl font-bold text-[#0A2463] mb-3 text-center">Deneyimli Ekip</h3>
+                    <p class="text-gray-600 text-center">Alanında uzman, tutkulu ve deneyimli danışman kadromuzla projenizin her aşamasında yanınızdayız.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta" class="py-16 md:py-24 bg-[#0A2463] text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6 fade-in-up">Dönüşüme Hazır Mısınız?</h2>
+            <p class="text-lg text-gray-300 mb-10 fade-in-up">
+                İşletmenizin süreçlerini optimize ederek rekabette bir adım öne geçmek ve sürdürülebilir büyüme sağlamak için ilk adımı atın. Mir Holding uzmanlığıyla tanışın.
+            </p>
+            <a href="mailto:info@mirholding.com.tr?subject=Süreç İyileştirme Projesi Hakkında Bilgi Talebi" class="cta-button inline-block text-lg font-semibold py-4 px-10 rounded-lg shadow-lg transform hover:scale-105 fade-in-up">
+                Bizimle İletişime Geçin
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-[#212529] text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="mb-2">&copy; <span id="currentYear"></span> Mir Holding. Tüm Hakları Saklıdır.</p>
+            <p class="text-sm">Bu web sitesi, süreç iyileştirme projeleri hakkında genel bilgilendirme amacıyla hazırlanmıştır.</p>
+            <div class="mt-4">
+                <a href="#" class="px-2 hover:text-[#FFD100]">Gizlilik Politikası</a>
+                <span class="px-1">|</span>
+                <a href="#" class="px-2 hover:text-[#FFD100]">Kullanım Şartları</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="processModal" class="modal fixed inset-0 w-full h-full flex items-center justify-center p-4 hidden opacity-0">
+        <div id="modalOverlay" class="absolute inset-0 w-full h-full"></div>
+        <div id="modalContent" class="modal-content bg-white p-6 sm:p-8 rounded-xl shadow-2xl w-full relative z-10 transform scale-95 opacity-0 overflow-y-auto">
+            <div class="flex justify-between items-start mb-6">
+                <h3 id="modalTitle" class="text-2xl sm:text-3xl font-bold text-[#0A2463] mr-4">Süreç Detayı</h3>
+                <button id="closeModalButton" class="text-gray-500 hover:text-red-600 transition-colors text-4xl leading-none -mt-1">&times;</button>
+            </div>
+            <img id="modalImage" src="https://placehold.co/600x300/3E92CC/FFFFFF?text=S%C3%BCre%C3%A7+G%C3%B6rseli" alt="Süreç Görseli" class="w-full h-48 sm:h-64 object-cover rounded-lg mb-6" onerror="this.src='https://placehold.co/600x300/cccccc/333333?text=G%C3%B6rsel+Yok';">
+            <div class="prose max-w-none text-gray-700 leading-relaxed mb-6">
+                 <p id="modalDescription">Detaylı süreç açıklaması burada yer alacaktır.</p>
+            </div>
+            <div class="text-right mt-8">
+                 <button id="closeModalButtonFooter" class="cta-button-secondary font-semibold py-3 px-8 rounded-md">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const processes = [
+                {
+                    id: 1,
+                    name: "Stratejik Planlama ve Hedef Belirleme",
+                    icon: "�",
+                    description: "İşletmenizin uzun vadeli hedeflerini netleştiriyor, bu hedeflere ulaşmak için stratejik yol haritaları oluşturuyoruz.",
+                    details: "Stratejik planlama sürecimiz, pazar analizi, rakip değerlendirmesi, SWOT analizi ve paydaş beklentilerinin belirlenmesi gibi adımları içerir. Bu sayede, işletmenizin vizyonuyla uyumlu, gerçekçi ve ölçülebilir hedefler tanımlanır. Bu hedefler, tüm iyileştirme çabalarımızın temelini oluşturur ve başarıyı ölçmek için net kriterler sunar. Örneğin, bir üretim şirketi için %15 pazar payı artışı hedefi belirlenebilir ve bu hedefe yönelik olarak yeni ürün geliştirme, pazarlama stratejileri ve dağıtım kanalı optimizasyonu gibi alt stratejiler oluşturulur.",
+                    image: "https://placehold.co/600x300/0A2463/FFFFFF?text=Stratejik+Planlama"
+                },
+                {
+                    id: 2,
+                    name: "Mevcut Durum Analizi ve Değerlendirme",
+                    icon: "📊",
+                    description: "Mevcut süreçlerinizi derinlemesine analiz ediyor, darboğazları, verimsizlikleri ve iyileştirme fırsatlarını belirliyoruz.",
+                    details: "Kapsamlı bir mevcut durum analizi yaparak süreçlerinizin performansını objektif bir şekilde değerlendiriyoruz. Veri toplama, süreç haritalama (Value Stream Mapping gibi), performans metrikleri analizi (örneğin, çevrim süresi, hata oranları) ve çalışanlarla yapılan odak grup görüşmeleri gibi yöntemlerle güçlü ve zayıf yönlerinizi ortaya koyuyoruz. Bu analiz, iyileştirme çabalarının hangi alanlara odaklanması gerektiğini (örneğin, en çok zaman kaybının yaşandığı veya en yüksek maliyetli adıma) netleştirir.",
+                    image: "https://placehold.co/600x300/3E92CC/FFFFFF?text=Mevcut+Durum+Analizi"
+                },
+                {
+                    id: 3,
+                    name: "Süreç Yeniden Tasarımı ve Optimizasyonu",
+                    icon: "⚙️",
+                    description: "Verimliliği artırmak, maliyetleri düşürmek ve kaliteyi yükseltmek için süreçlerinizi yeniden tasarlıyor ve optimize ediyoruz.",
+                    details: "Analiz sonuçlarına dayanarak, süreçlerinizi daha yalın, daha hızlı ve daha etkili hale getirmek için yeniden tasarlıyoruz. Yalın (Lean) prensipleri, Altı Sigma (Six Sigma) metodolojileri ve en iyi endüstri uygulamalarını kullanarak gereksiz adımları (israfı) ortadan kaldırıyor, otomasyon fırsatlarını (RPA gibi) değerlendiriyor ve süreç akışlarını optimize ediyoruz. Amaç, kaynaklarınızı (zaman, insan, malzeme) en verimli şekilde kullanmanızı ve müşteri değerini maksimize etmenizi sağlamaktır.",
+                    image: "https://placehold.co/600x300/F7882F/FFFFFF?text=Süreç+Optimizasyonu"
+                },
+                {
+                    id: 4,
+                    name: "Uygulama ve Değişim Yönetimi",
+                    icon: "🚀",
+                    description: "Yeniden tasarlanan süreçlerin etkin bir şekilde uygulanmasını sağlıyor, değişim yönetimi stratejileriyle çalışan adaptasyonunu destekliyoruz.",
+                    details: "Yeni süreçlerin başarılı bir şekilde hayata geçirilmesi, detaylı bir uygulama planı ve güçlü bir değişim yönetimi stratejisi (örneğin, Kotter'ın 8 Adımlı Değişim Modeli) gerektirir. Çalışanlarınızı yeni süreçlere hazırlamak, kapsamlı eğitim programları düzenlemek, açık ve sürekli iletişim kanalları kurmak, pilot uygulamalar yapmak ve olası dirençleri proaktif bir şekilde yönetmek bu aşamanın kritik unsurlarıdır. Uygulama sürecini yakından takip ederek ve performans göstergelerini izleyerek sorunsuz bir geçiş ve sürdürülebilir başarı sağlıyoruz.",
+                    image: "https://placehold.co/600x300/FFD100/0A2463?text=Uygulama+ve+Değişim"
+                },
+                {
+                    id: 5,
+                    name: "Performans İzleme ve Sürekli İyileştirme",
+                    icon: "📈",
+                    description: "Uygulanan süreçlerin performansını düzenli olarak izliyor, sürekli iyileştirme kültürü oluşturarak kalıcı başarı sağlıyoruz.",
+                    details: "İyileştirme bir defalık bir proje değil, sürekli bir yolculuktur (Kaizen). Uygulanan yeni süreçlerin performansını belirlediğimiz anahtar performans göstergeleri (KPI'lar) ile düzenli olarak izliyor, çalışanlardan ve müşterilerden geri bildirimler topluyor ve elde edilen sonuçları periyodik olarak (örneğin, aylık veya üç aylık) değerlendiriyoruz. Bu veriler ışığında, süreçlerinizi sürekli olarak daha iyi hale getirmek için PDCA (Planla-Uygula-Kontrol Et-Önlem Al) döngüsüyle hareket ediyor ve organizasyonunuzda bir sürekli iyileştirme kültürü yerleştiriyoruz.",
+                    image: "https://placehold.co/600x300/0A2463/F8F9FA?text=Sürekli+İyileştirme"
+                },
+                 {
+                    id: 6,
+                    name: "Teknoloji Entegrasyonu ve Dijital Dönüşüm",
+                    icon: "💻",
+                    description: "Süreçlerinizi dijitalleştirerek ve uygun teknolojileri entegre ederek rekabet avantajı kazanmanızı sağlıyoruz.",
+                    details: "Günümüz iş dünyasında dijital dönüşüm kaçınılmazdır ve süreç mükemmelliğinin önemli bir parçasıdır. Süreçlerinizi analiz ederek, hangi adımların dijitalleştirilebileceğini, hangi teknolojilerin (örneğin, ERP sistemleri, CRM yazılımları, iş akışı otomasyon araçları, yapay zeka destekli analitik platformları) en fazla değer katabileceğini belirliyoruz. Doğru teknoloji çözümlerini seçerek, mevcut sistemlerinize entegre ederek ve çalışanların bu teknolojileri etkin kullanmasını sağlayarak operasyonel verimliliğinizi artırıyor, karar alma süreçlerinizi iyileştiriyor ve işletmenizi geleceğe hazırlıyoruz.",
+                    image: "https://placehold.co/600x300/3E92CC/212529?text=Dijital+Dönüşüm"
+                }
+            ];
+
+            const processGallery = document.getElementById('process-gallery');
+            const modal = document.getElementById('processModal');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalContent = document.getElementById('modalContent');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalImage = document.getElementById('modalImage');
+            const closeModalButton = document.getElementById('closeModalButton');
+            const closeModalButtonFooter = document.getElementById('closeModalButtonFooter');
+
+            processes.forEach((process, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('process-card', 'p-6', 'md:p-8', 'flex', 'flex-col', 'items-center', 'text-center', 'fade-in-up');
+                cardElement.style.transitionDelay = `${index * 0.1}s`;
+                cardElement.innerHTML = `
+                    <div class="process-card-icon-wrapper">
+                        <span>${process.icon}</span>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold text-[#0A2463] mb-3">${process.name}</h3>
+                    <p class="text-sm text-gray-600 mb-4 flex-grow">${process.description}</p>
+                    <button class="mt-auto cta-button-secondary text-sm font-semibold py-2 px-5 rounded-md">Detayları Gör</button>
+                `;
+                
+                // Kartın tamamına tıklama olayı ekle
+                cardElement.addEventListener('click', (e) => {
+                    // Eğer tıklanan öğe buton değilse veya butonun kendisi ise modalı aç
+                    // Bu, yanlışlıkla buton içindeki başka bir şeye tıklanınca modal açılmasını engeller (gerçi bu örnekte basit)
+                    openModal(process);
+                });
+
+                if (processGallery) {
+                     processGallery.appendChild(cardElement);
+                }
+            });
+
+            function openModal(process) {
+                if (!modal || !modalContent) return;
+                modalTitle.textContent = process.name;
+                modalDescription.innerHTML = process.details.replace(/\n/g, '<br>'); // Replace newlines with <br> for HTML display
+                modalImage.src = process.image;
+                modalImage.alt = process.name + " Süreç Görseli";
+                
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                    modalContent.classList.add('scale-100', 'opacity-100');
+                }, 10); 
+                document.body.style.overflow = 'hidden'; 
+                // Update URL hash for a sense of navigation
+                history.pushState(null, null, `#süreç-${process.id}`);
+            }
+
+            function closeModal() {
+                if (!modal || !modalContent) return;
+                modalContent.classList.remove('scale-100', 'opacity-100');
+                modalContent.classList.add('scale-95', 'opacity-0');
+                modal.classList.add('opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = ''; 
+                // Clear the hash or go back to the main section hash
+                history.pushState(null, null, window.location.pathname + window.location.search);
+            }
+            
+            // Function to open modal based on URL hash
+            function checkHashForModal() {
+                const hash = window.location.hash;
+                if (hash.startsWith('#süreç-')) {
+                    const processId = parseInt(hash.substring('#süreç-'.length));
+                    const processToOpen = processes.find(p => p.id === processId);
+                    if (processToOpen) {
+                        openModal(processToOpen);
+                    }
+                }
+            }
+            
+            // Check hash on initial load
+            checkHashForModal();
+            // Listen for hash changes (e.g., browser back/forward buttons)
+            window.addEventListener('hashchange', checkHashForModal);
+
+
+            if(closeModalButton) closeModalButton.addEventListener('click', closeModal);
+            if(closeModalButtonFooter) closeModalButtonFooter.addEventListener('click', closeModal);
+            if(modalOverlay) modalOverlay.addEventListener('click', closeModal);
+            
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+
+            const navbar = document.getElementById('navbar');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            window.onscroll = () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-lg', 'bg-opacity-95');
+                } else {
+                    navbar.classList.remove('shadow-lg', 'bg-opacity-95');
+                }
+
+                let currentSectionId = 'hero';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - navbar.offsetHeight - 50; 
+                    if (window.scrollY >= sectionTop) {
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('nav-link-active');
+                    if (link.getAttribute('href') === `#${currentSectionId}`) {
+                        link.classList.add('nav-link-active');
+                    }
+                });
+            };
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+            }
+
+            const animatedElements = document.querySelectorAll('.fade-in-up');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            animatedElements.forEach(el => observer.observe(el));
+
+            const counters = document.querySelectorAll('.counter-number');
+            const speed = 200; 
+
+            const animateCounter = (counter) => {
+                const target = +counter.getAttribute('data-target');
+                const updateCount = () => {
+                    const count = +counter.innerText.replace('%','');
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc) + '%';
+                        setTimeout(updateCount, 10);
+                    } else {
+                        counter.innerText = target + '%';
+                    }
+                };
+                updateCount();
+            };
+            
+            const counterObserver = new IntersectionObserver((entries) => {
+                 entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                        animateCounter(entry.target);
+                        entry.target.classList.add('counted'); 
+                        counterObserver.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.5});
+
+            counters.forEach(counter => counterObserver.observe(counter));
+
+            const successRateChartCtx = document.getElementById('successRateChart');
+            if (successRateChartCtx) {
+                 const chartObserver = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting && !successRateChartCtx.classList.contains('chart-drawn')) {
+                        new Chart(successRateChartCtx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Başarılı Projeler', 'Devam Eden / Diğer'],
+                                datasets: [{
+                                    label: 'Proje Başarı Oranı',
+                                    data: [95, 5], 
+                                    backgroundColor: [
+                                        '#3E92CC', 
+                                        '#e0e0e0'  
+                                    ],
+                                    borderColor: [
+                                        '#FFFFFF',
+                                        '#FFFFFF'
+                                    ],
+                                    borderWidth: 3 // Increased border for better visual separation
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutout: '70%',
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            padding: 20,
+                                            font: {
+                                                size: 14,
+                                                family: "'Inter', sans-serif"
+                                            },
+                                            color: '#212529' // Darker legend text
+                                        }
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                let label = context.label || '';
+                                                if (label) {
+                                                    label += ': ';
+                                                }
+                                                if (context.parsed !== null) {
+                                                    label += context.parsed + '%';
+                                                }
+                                                return label;
+                                            }
+                                        },
+                                        titleFont: { family: "'Inter', sans-serif", size: 16 },
+                                        bodyFont: { family: "'Inter', sans-serif", size: 14 },
+                                        backgroundColor: '#0A2463', // Darker tooltip
+                                        titleColor: '#FFFFFF',
+                                        bodyColor: '#F8F9FA',
+                                        padding: 10, // Added padding to tooltip
+                                        cornerRadius: 4 // Rounded corners for tooltip
+                                    }
+                                },
+                                animation: {
+                                    animateScale: true,
+                                    animateRotate: true,
+                                    duration: 1200 // Slightly longer animation for effect
+                                }
+                            }
+                        });
+                        successRateChartCtx.classList.add('chart-drawn');
+                        chartObserver.unobserve(successRateChartCtx);
+                    }
+                }, { threshold: 0.5 });
+                chartObserver.observe(successRateChartCtx);
+            }
+            
+            const currentYearElement = document.getElementById('currentYear');
+            if(currentYearElement) currentYearElement.textContent = new Date().getFullYear();
+
+            const heroTitle = document.getElementById('hero-title');
+            if (heroTitle) {
+                const text = heroTitle.innerHTML; 
+                heroTitle.innerHTML = ''; 
+                
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = text;
+                
+                let delay = 0;
+                Array.from(wrapper.childNodes).forEach(node => {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        const words = node.textContent.split(/(\s+)/); 
+                        words.forEach(wordOrSpace => {
+                            if (wordOrSpace.trim().length > 0) {
+                                wordOrSpace.split('').forEach(char => {
+                                    const span = document.createElement('span');
+                                    span.textContent = char;
+                                    span.style.opacity = '0';
+                                    span.style.transform = 'translateY(20px)';
+                                    span.style.display = 'inline-block';
+                                    span.style.transition = `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`;
+                                    heroTitle.appendChild(span);
+                                    delay += 0.03;
+                                });
+                            } else {
+                                heroTitle.appendChild(document.createTextNode(wordOrSpace));
+                            }
+                        });
+                    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'SPAN') {
+                        const spanContainer = document.createElement('span');
+                        spanContainer.className = node.className; 
+                        spanContainer.style.cssText = node.style.cssText; 
+                        
+                        const innerText = node.textContent;
+                        innerText.split('').forEach(char => {
+                            const charSpan = document.createElement('span');
+                            charSpan.textContent = char;
+                            charSpan.style.opacity = '0';
+                            charSpan.style.transform = 'translateY(20px)';
+                            charSpan.style.display = 'inline-block';
+                            charSpan.style.transition = `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`;
+                            spanContainer.appendChild(charSpan);
+                            delay += 0.03;
+                        });
+                        heroTitle.appendChild(spanContainer);
+
+                    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'BR') {
+                        heroTitle.appendChild(document.createElement('br'));
+                    }
+                });
+
+                setTimeout(() => {
+                    Array.from(heroTitle.querySelectorAll('span[style*="opacity"]')).forEach(s => {
+                        s.style.opacity = '1';
+                        s.style.transform = 'translateY(0)';
+                    });
+                }, 100);
+            }
+
+        });
+    </script>
+</body>
+</html>
