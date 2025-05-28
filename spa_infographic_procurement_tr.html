@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stoksuz Satın Alma Süreci Analizi İnfografik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- 
+        Planlama Özeti:
+        Renk Paleti: "Azure Radiance & Solar Flare" (#0A2463, #3E92CC, #FFD100, #F7882F, #F8F9FA, #212529) - Öncekiyle aynı.
+        Narrative Yapısı:
+            1. Hero Alanı: Başlık, kısa giriş.
+            2. Giriş Bölümü: Analizin amacı ve kapsamı.
+            3. Mevcut Durum Analizi (AS-IS): Stoksuz satın alma sürecinin genel akışı ve temel sorunları.
+            4. SIPOK ve RACI Analizleri: Süreç için detaylı SIPOK ve RACI tabloları (belgelerden çıkarılan bilgilerle).
+            5. Anahtar Veri Görselleştirmeleri: Süreçteki temel sorun alanları, darboğazlar ve öneri etkileri üzerine grafikler (Chart.js).
+            6. Etkileşimli Süreç Zihin Haritası: Sorunlar, nedenler ve çözümler (belgelerdeki verilere göre oluşturulacak).
+            7. Sonuç ve İyileştirme Önerileri: Genel değerlendirme ve öncelikli iyileştirme alanları.
+        
+        Görselleştirme Seçimleri (NO SVG, NO MERMAID JS):
+            - Büyük Sayı (Örn: "Ortalama Tedarikçi Geri Dönüş Süresi"): Bilgilendirme, Büyük Metin.
+            - Çubuk Grafik (Süreç Adımlarındaki Darboğazlar): Karşılaştırma, Chart.js Canvas.
+            - Halka/Donut Grafik (Manuel İşlem Oranı): Karşılaştırma, Chart.js Canvas.
+            - Süreç Akış Şeması (Genel Stoksuz Satın Alma Adımları): Organize Etme, HTML/CSS Tailwind.
+            - SIPOK/RACI Tabloları: Organize Etme, HTML/CSS Tailwind.
+            - Etkileşimli Zihin Haritası: Organize Etme/İlişkiler, HTML/CSS/JS Listesi - SVG veya Mermaid JS KULLANILMADI.
+
+        SVG/Mermaid JS Kullanım Durumu:
+        BU ÇIKTIDA NE MERMAID JS NE DE SVG GRAFİKLERİ KULLANILMIŞTIR.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA; 
+            color: #212529; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px; 
+            max-height: 400px; 
+        }
+        @media (min-width: 768px) { 
+            .chart-container {
+                height: 384px; 
+            }
+        }
+        .mind-map ul {
+            list-style: none;
+            padding-left: 20px;
+            position: relative;
+        }
+        .mind-map li {
+            margin: 8px 0;
+            position: relative;
+        }
+        .mind-map li::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 10px;
+            border-left: 2px solid #3E92CC; 
+            width: 10px;
+            height: calc(100% - 10px);
+        }
+        .mind-map li:last-child::before {
+             height: 12px; 
+        }
+        .mind-map li > div {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+         .mind-map li > div:hover {
+            background-color: #E9ECEF; 
+        }
+        .mind-map .node-text {
+            flex-grow: 1;
+            color: #0A2463; 
+        }
+        .mind-map .toggle-icon {
+            margin-right: 8px;
+            color: #3E92CC; 
+            transition: transform 0.3s;
+        }
+         .mind-map .toggle-icon.expanded {
+            transform: rotate(90deg);
+        }
+        .mind-map .children {
+            display: none; 
+            padding-left: 20px;
+            border-left: 2px dashed #3E92CC; 
+            margin-left: -17px; 
+        }
+        .mind-map .children.expanded {
+            display: block;
+        }
+        .hero-bg {
+            background-color: #0A2463; 
+            color: #F8F9FA; 
+        }
+        .section-title {
+            color: #0A2463; 
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+            padding: 1.5rem; 
+            margin-bottom: 2rem; 
+        }
+        .cta-button {
+            background-color: #FFD100; 
+            color: #0A2463; 
+            transition: background-color 0.3s;
+        }
+        .cta-button:hover {
+            background-color: #F7882F; 
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(10, 36, 99, 0.9); 
+            backdrop-filter: blur(10px);
+        }
+        .flowchart-step {
+            background-color: #E0F2FE; 
+            border: 2px solid #3E92CC; 
+            color: #0A2463; 
+        }
+        .flowchart-arrow {
+            color: #3E92CC; 
+            font-size: 1.5rem; 
+            line-height: 1;
+        }
+         .flowchart-container .flowchart-step {
+            min-height: 60px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-container {
+            overflow-x: auto; 
+        }
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .custom-table th, .custom-table td {
+            border: 1px solid #E2E8F0; 
+            padding: 0.75rem; 
+            text-align: left;
+            font-size: 0.875rem; 
+        }
+        .custom-table th {
+            background-color: #EDF2F7; 
+            color: #2D3748; 
+            font-weight: 600; 
+        }
+        .custom-table tbody tr:nth-child(even) {
+            background-color: #F7FAFC; 
+        }
+        .custom-table tbody tr:hover {
+            background-color: #E2E8F0; 
+        }
+        .scroll-mt-20 { scroll-margin-top: 5rem; } 
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #212529;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; 
+            left: 50%;
+            margin-left: -110px; 
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #212529 transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="sticky-nav shadow-md hidden md:block">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-center space-x-3">
+                <a href="#hero" class="text-gray-200 hover:text-FFD100 px-2">Başlangıç</a>
+                <a href="#giris" class="text-gray-200 hover:text-FFD100 px-2">Giriş</a>
+                <a href="#mevcut-durum" class="text-gray-200 hover:text-FFD100 px-2">Mevcut Durum</a>
+                <a href="#sipok-raci" class="text-gray-200 hover:text-FFD100 px-2">SIPOK/RACI</a>
+                <a href="#anahtar-veriler" class="text-gray-200 hover:text-FFD100 px-2">Anahtar Veriler</a>
+                <a href="#zihin-haritasi" class="text-gray-200 hover:text-FFD100 px-2">Etkileşimli Harita</a>
+                <a href="#sonuc-oneri" class="text-gray-200 hover:text-FFD100 px-2">Sonuç & Öneriler</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="hero" class="hero-bg py-16 md:py-24 text-center scroll-mt-20">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Stoksuz Satın Alma Süreci Analizi</h1>
+            <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Mir Holding stoksuz satın alma ve fatura işleme süreçlerinin mevcut durum analizi, darboğazları, riskleri ve iyileştirme önerileri.</p>
+            <a href="#zihin-haritasi" class="cta-button font-semibold py-3 px-8 rounded-lg text-lg inline-block">Etkileşimli Haritayı Keşfet</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <section id="giris" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">1. Giriş: Analizin Amacı ve Kapsamı</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    Bu infografik, Mir Holding bünyesindeki stoksuz satın alma ve fatura işleme süreçlerinin mevcut durumunu (AS-IS) detaylı bir analizle ortaya koymak amacıyla hazırlanmıştır. Sağlanan çeşitli dokümanlar ve görüşme notları incelenerek, sürecin güçlü ve zayıf yönleri, karşılaşılan sorunlar, darboğazlar, riskler, kök nedenler ve potansiyel iyileştirme alanları belirlenmiştir.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    Analizin temel amacı, bu kritik süreçlerdeki verimliliği artırmak, maliyetleri optimize etmek, tedarikçi ilişkilerini güçlendirmek ve dijital dönüşüm fırsatlarını değerlendirmektir. Sunulan bulgular ve öneriler, Mir Holding'in satın alma operasyonlarını daha stratejik, çevik ve rekabetçi bir yapıya kavuşturması için bir yol haritası sunmayı hedeflemektedir.
+                </p>
+            </div>
+        </section>
+
+        <section id="mevcut-durum" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">2. Mevcut Durum Analizi (AS-IS)</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center max-w-3xl mx-auto">
+                    Mir Holding stoksuz satın alma süreci, üretim planlama veya ilgili iş birimlerinden gelen taleplerle başlar. Süreç, teklif toplama, tedarikçi seçimi, onaylar, sipariş oluşturma, teslimat ve fatura işleme gibi temel adımları içerir. Ancak, analizler manuel işlemlerin yoğunluğunu, SAP ve Envision gibi sistemler arasındaki entegrasyon eksikliklerini, onay süreçlerindeki gecikmeleri ve özellikle ödeme süreçlerindeki (çekle ödeme zorunluluğu) darboğazları ortaya koymaktadır.
+                </p>
+                <h3 class="text-2xl font-semibold mb-6 text-center" style="color: #3E92CC;">Stoksuz Satın Alma Süreci Genel Akış Şeması (Özet)</h3>
+                <div class="flowchart-container space-y-2 md:space-y-0 md:grid md:grid-cols-3 lg:grid-cols-4 md:gap-x-4 md:gap-y-6 items-stretch">
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">1. İhtiyaç Tespiti & Talep (SAT Oluşturma)</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">2. Teklif Toplama & Değerlendirme</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">3. Pazarlık & Tedarikçi Seçimi</div>
+                    <div class="hidden lg:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="lg:hidden md:col-span-3 text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">4. Onay Süreçleri (Limitlere Göre)</div>
+                    
+                    <div class="hidden md:col-span-4 text-center flowchart-arrow my-2 md:my-0">↓</div>
+
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">5. Sipariş Oluşturma (SAS Açma)</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">6. Mal/Hizmet Teslimatı & MIGO</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">7. Fatura İşleme (Envision & SAP)</div>
+                    <div class="hidden lg:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="lg:hidden md:col-span-3 text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">8. Ödeme Süreci</div>
+                </div>
+
+                <div class="mt-8 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-md">
+                    <h4 class="font-bold">Temel Sorun Alanları:</h4>
+                    <ul class="list-disc list-inside ml-4 mt-2">
+                        <li><b>Manuel ve Verimsiz İşlemler:</b> Taleplerin ve tekliflerin manuel takibi, Envision-SAP entegrasyon eksikliği.</li>
+                        <li><b>Onay Süreçlerinde Gecikmeler:</b> Özellikle üst yönetim onaylarının uzun sürmesi.</li>
+                        <li><b>Ödeme Darboğazları:</b> Çekle ödeme zorunluluğu, tedarikçi ilişkilerini ve fiyatları olumsuz etkiliyor.</li>
+                        <li><b>Tedarikçi Yönetimi Zafiyetleri:</b> Performans ölçümü ve alternatif tedarikçi stratejileri yetersiz.</li>
+                        <li><b>Veri Analitiği Eksikliği:</b> Kararların veriye dayalı olmaması, KPI takibinin yapılmaması.</li>
+                        <li><b>Sistem Kullanım Sorunları:</b> SAP ve diğer dijital araçların etkin kullanılmaması, eğitim eksiklikleri.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="sipok-raci" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">3. SIPOK ve RACI Analizleri</h2>
+                 <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center max-w-2xl mx-auto">
+                    Stoksuz satın alma sürecinin yapısal analizi için SIPOK ve RACI matrisleri oluşturulmuştur. Bu analizler, süreçteki kilit oyuncuları, sorumlulukları ve bilgi akışını netleştirmektedir.
+                </p>
+
+                <div class="mb-10">
+                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">Stoksuz Satın Alma Süreci: SIPOK Analizi</h3>
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Tedarikçiler (Suppliers)</th>
+                                    <th>Girdiler (Inputs)</th>
+                                    <th>Süreç (Process)</th>
+                                    <th>Çıktılar (Outputs)</th>
+                                    <th>Müşteriler (Customers)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Talep Eden Departmanlar, Üretim Planlama</td>
+                                    <td>Onaylanmış SAT, Malzeme İhtiyaç Planı (MRP), Teknik Şartname</td>
+                                    <td>İhtiyacın belirlenmesi, SAT açılması, Onaylanması</td>
+                                    <td>Sözleşme, Onaylı Fatura</td>
+                                    <td>Talep Eden İç Müşteri, Üretim</td>
+                                </tr>
+                                <tr>
+                                    <td>Finans, Onaylayan Yöneticiler</td>
+                                    <td>Teslimat Süreleri, Kalite Standartları, Bütçe</td>
+                                    <td>Tekliflerin alınması, Değerlendirilmesi, Pazarlık, SAS açılması</td>
+                                    <td>Teslim Alınmış/Kontrol Edilmiş Ürün/Hizmet, İrsaliye</td>
+                                    <td>Depo, Kalite Kontrol</td>
+                                </tr>
+                                <tr>
+                                    <td>Tedarikçiler, Lojistik Firmaları</td>
+                                    <td>Para, Yasa ve Mevzuatlar, Onaylı Tedarikçi Listesi</td>
+                                    <td>Tedarikçiye sipariş onayı, Faturanın/Ürünün gelmesi, MIGO yapılması</td>
+                                    <td>Depo Giriş Belgeleri, Tedarikçiye Yapılan Ödeme (Dekont)</td>
+                                    <td>Finans Birimi, Muhasebe Birimi</td>
+                                </tr>
+                                <tr>
+                                    <td>Üst Yönetim</td>
+                                    <td>Malzeme/Hizmet Kodları, Geçmiş Performans Verileri</td>
+                                    <td>Faturanın işlenmesi, Ödeme planının yapılması, Tedarikçi değerlendirmesi</td>
+                                    <td>Tedarik Zinciri Performans Raporu, KPI Sonuçları</td>
+                                    <td>Üst Yönetim</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2"><b>SIPOK Analizi Çıkarımları:</b> Süreç, birçok farklı departman ve dış paydaşla etkileşim halindedir. Girdi ve çıktıların standartlaştırılması ve dijital takibi önemlidir.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">Stoksuz Satın Alma Süreci: RACI Matrisi (Özet)</h3>
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Süreç Adımı/Görev</th>
+                                    <th>Satın Alma Uzmanı (örn: Erdem, Kazım)</th>
+                                    <th>Satın Alma Müdürü (Nevzat B.)</th>
+                                    <th>Üst Yönetim (İbrahim B.)</th>
+                                    <th>Talep Eden Birim</th>
+                                    <th>Finans/Muhasebe</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>SAT Talebi Oluşturma</td><td class="tooltip">I<span class="tooltiptext">Bilgilendirilen</span></td><td class="tooltip">I<span class="tooltiptext">Bilgilendirilen</span></td><td></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">I<span class="tooltiptext">Bilgilendirilen</span></td></tr>
+                                <tr><td>Teklif Toplama ve Değerlendirme</td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">C<span class="tooltiptext">Danışılan (Limit Üstü)</span></td><td class="tooltip">I<span class="tooltiptext">Bilgilendirilen</span></td><td></td></tr>
+                                <tr><td>Pazarlık ve Tedarikçi Seçimi</td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td></td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td></td></tr>
+                                <tr><td>SAS Oluşturma ve Onay</td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren (Limit İçi)</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren (Limit Üstü)</span></td><td></td><td></td></tr>
+                                <tr><td>Fatura İşleme ve Ödeme Takibi</td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td class="tooltip">I<span class="tooltiptext">Bilgilendirilen</span></td><td></td><td class="tooltip">I<span class="tooltiptext">Bilgilendirilen</span></td><td class="tooltip">R/A<span class="tooltiptext">Sorumlu/Hesap Veren</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <p class="text-sm text-gray-600 mt-2"><b>RACI Analizi Çıkarımları:</b> Onay süreçlerinde ve ödeme aşamalarında sorumlulukların netleştirilmesi ve yetki devirlerinin gözden geçirilmesi gerekebilir. Finans ve Muhasebe'nin süreçteki rolü kritik.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="anahtar-veriler" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">4. Anahtar Veri Görselleştirmeleri</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-8 text-center max-w-2xl mx-auto">
+                    Stoksuz satın alma sürecindeki temel sorun alanlarını, darboğazları ve manuel işlem yoğunluğunu gösteren temsili grafikler aşağıdadır.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-center" style="color: #0A2463;">Onay Sürelerindeki Gecikme Dağılımı</h3>
+                        <div class="chart-container">
+                            <canvas id="onayGecikmeChart"></canvas>
+                        </div>
+                        <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, farklı onay seviyelerinde (Birim Amiri, Üst Yönetim) yaşanan ortalama gecikme sürelerini göstermektedir.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-center" style="color: #0A2463;">Manuel İşlem Oranları (Tahmini)</h3>
+                        <div class="chart-container">
+                            <canvas id="manuelIslemChart"></canvas>
+                        </div>
+                         <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, teklif toplama, fatura işleme gibi adımlardaki tahmini manuel işlem oranlarını göstermektedir.</p>
+                    </div>
+                </div>
+                 <div class="mt-8 text-center">
+                    <h3 class="text-2xl font-bold mb-2" style="color: #0A2463;">Vurgulanan Anahtar Sorun</h3>
+                    <div class="p-6 bg-red-100 inline-block rounded-xl shadow-md">
+                        <p class="text-4xl font-extrabold" style="color: #F7882F;">Çekle Ödeme</p>
+                        <p class="text-lg text-gray-700 mt-1">Tedarikçi Güvenini Azaltıyor, Süreci Yavaşlatıyor</p>
+                    </div>
+                     <p class="mt-3 text-sm text-gray-600">Bu durum, tedarikçi alternatiflerini kısıtlamakta ve fiyat avantajlarını olumsuz etkilemektedir.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="zihin-haritasi" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">5. Etkileşimli Satın Alma Süreci Zihin Haritası</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center max-w-2xl mx-auto">
+                    Aşağıdaki etkileşimli zihin haritası, stoksuz satın alma sürecindeki temel sorunları, bu sorunların kök nedenlerini ve bunlara yönelik çözüm önerilerini detaylı bir şekilde keşfetmenizi sağlar. Başlıkların yanındaki <span class="font-bold" style="color: #3E92CC;">▶</span> ikonuna tıklayarak ilgili alt başlıkları açabilir veya kapatabilirsiniz.
+                </p>
+                <div id="mindMapContainer" class="mind-map p-4 bg-slate-50 rounded-lg shadow-inner overflow-x-auto">
+                    <p class="text-center text-gray-500">Zihin haritası yükleniyor...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sonuc-oneri" class="scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">6. Sonuç ve İyileştirme Önerileri</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    Mir Holding stoksuz satın alma ve fatura işleme süreçleri, operasyonel verimlilik ve maliyet optimizasyonu açısından önemli iyileştirme potansiyelleri barındırmaktadır. Manuel işlemlerin fazlalığı, sistem entegrasyonlarındaki eksiklikler, onay mekanizmalarındaki yavaşlık ve özellikle ödeme süreçlerindeki kısıtlamalar (çekle ödeme) temel darboğazları oluşturmaktadır.
+                </p>
+                <h4 class="text-xl font-semibold mt-6 mb-3" style="color: #0A2463;">Öncelikli İyileştirme Alanları:</h4>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 leading-relaxed">
+                    <li><b>Dijitalleşme ve Otomasyon:</b> SAT oluşturma, teklif toplama, onay akışları ve fatura işleme süreçlerinin dijitalleştirilmesi. SAP ve Envision entegrasyonunun güçlendirilmesi.</li>
+                    <li><b>Ödeme Süreçlerinin İyileştirilmesi:</b> Çekle ödeme zorunluluğunun esnetilmesi, alternatif dijital ödeme kanallarının değerlendirilmesi.</li>
+                    <li><b>Tedarikçi Yönetimi:</b> Tedarikçi performans değerlendirme sisteminin kurulması, alternatif tedarikçi ağının genişletilmesi ve stratejik ortaklıkların geliştirilmesi.</li>
+                    <li><b>Süreç Standardizasyonu ve Eğitim:</b> Satın alma süreçlerinin standartlaştırılması, kullanıcı eğitimlerinin artırılması (özellikle SAP kullanımı).</li>
+                    <li><b>Veri Analitiği ve Raporlama:</b> Satın alma verilerinin analizi için araçlar geliştirilmesi, KPI'ların belirlenmesi ve düzenli raporlama yapılması.</li>
+                </ul>
+                 <p class="text-lg text-gray-700 leading-relaxed mt-6 font-semibold" style="color: #0A2463;">
+                    Bu önerilerin hayata geçirilmesi, satın alma süreçlerini daha hızlı, şeffaf, verimli ve stratejik bir hale getirerek kurumun genel rekabet gücüne önemli katkılar sağlayacaktır.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-8 text-center">
+        <div class="container mx-auto px-6">
+            <p>&copy; <span id="currentYear"></span> Stoksuz Satın Alma Süreci Analiz Raporu. Tüm hakları saklıdır.</p>
+            <p class="text-sm mt-2">Bu infografik, sağlanan verilere dayanarak oluşturulmuştur.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = document.getElementById('navbar') ? document.getElementById('navbar').offsetHeight : 0;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 20; 
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+        
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
+            }, false);
+        }
+
+        function wrapLabels(label, maxWidth) {
+            if (typeof label !== 'string' || label.length <= maxWidth) {
+                return label;
+            }
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.trim().length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            if (!item) return '';
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const onayGecikmeData = {
+            labels: [
+                'Birim Amiri Onayı', 
+                'Üst Yönetim Onayı (>10K TL)', 
+                'Fatura Onayı (Muhasebe)', 
+                'Ödeme Onayı (Finans)'
+            ].map(label => wrapLabels(label, 16)),
+            datasets: [{
+                label: 'Ortalama Gecikme (Gün)',
+                data: [1.5, 3, 2, 4.5], // Placeholder data
+                backgroundColor: ['#3E92CC', '#F7882F', '#FFD100', '#20C997'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2
+            }]
+        };
+
+        const onayGecikmeOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y', 
+            plugins: {
+                legend: { display: false },
+                title: { display: false },
+                tooltip: { callbacks: { title: tooltipTitleCallback } }
+            },
+            scales: {
+                x: { 
+                    beginAtZero: true,
+                    title: { display: true, text: 'Gün Sayısı' },
+                    grid: { color: 'rgba(0,0,0,0.05)'} 
+                },
+                y: { grid: { display: false } }
+            }
+        };
+
+        const manuelIslemData = {
+            labels: ['Teklif Toplama', 'Fatura İşleme (Envision)', 'SAP Kayıtları', 'Raporlama'].map(label => wrapLabels(label, 16)),
+            datasets: [{
+                label: 'Manuel İşlem Oranı (%)',
+                data: [70, 85, 60, 90], // Placeholder data
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2,
+                hoverOffset: 4
+            }]
+        };
+
+        const manuelIslemOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { display: false },
+                tooltip: { 
+                    callbacks: { 
+                        title: tooltipTitleCallback,
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y + '%';
+                            }
+                            return label;
+                        }
+                    } 
+                }
+            }
+        };
+
+        window.addEventListener('load', () => {
+            const onayCtx = document.getElementById('onayGecikmeChart');
+            if (onayCtx) new Chart(onayCtx, { type: 'bar', data: onayGecikmeData, options: onayGecikmeOptions });
+
+            const manuelCtx = document.getElementById('manuelIslemChart');
+            if (manuelCtx) new Chart(manuelCtx, { type: 'doughnut', data: manuelIslemData, options: manuelIslemOptions });
+            
+            fetchMindMapDataSatinAlma();
+        });
+
+        async function fetchMindMapDataSatinAlma() {
+            // Placeholder for mind map data based on purchasing documents
+            const mindMapData = {
+              "text": "Stoksuz Satın Alma Süreci Analizi",
+              "details": "Mir Holding stoksuz satın alma süreçlerindeki mevcut durum, temel sorunlar, kök nedenler ve iyileştirme önerileri.",
+              "children": [
+                {
+                  "text": "Mevcut Durum (AS-IS) Darboğazları",
+                  "details": "Süreçteki ana yavaşlama noktaları ve verimsizlik kaynakları.",
+                  "children": [
+                    {"text": "Manuel Talep ve Teklif Yönetimi", "details": "Taleplerin e-posta ile gelmesi, tekliflerin Excel'de manuel karşılaştırılması zaman kaybına yol açıyor."},
+                    {"text": "Uzun Onay Süreçleri", "details": "Özellikle İbrahim Bey'in detaylı incelemeleri ve 10K TL üzeri alımlarda onayların uzaması."},
+                    {"text": "Ödeme Süreçlerindeki Kısıtlamalar", "details": "Çekle ödeme zorunluluğu tedarikçi alternatiflerini azaltıyor ve fiyatları olumsuz etkiliyor. Finans ve muhasebedeki gecikmeler teslimatları aksatıyor."},
+                    {"text": "Sistem Entegrasyon Eksikliği", "details": "SAP ve Envision arasındaki entegrasyon sorunları (örn: fatura işlemleri) manuel iş yükünü artırıyor."},
+                    {"text": "Tedarikçi Yönetimi Zafiyetleri", "details": "Sistematik tedarikçi performans değerlendirmesi yok, alternatif tedarikçi bulma ve yönetme stratejileri yetersiz."}
+                  ]
+                },
+                {
+                  "text": "Kök Neden Analizi",
+                  "details": "Tespit edilen darboğazların altında yatan temel nedenler.",
+                  "children": [
+                    {
+                      "text": "Dijitalleşme ve Otomasyon Eksikliği", 
+                      "details": "Süreçlerin büyük ölçüde manuel yürütülmesi, otomatik iş akışlarının ve dijital takip sistemlerinin olmaması.",
+                      "children": [
+                        {"text": "SAP ve Envision'ın etkin kullanılmaması/entegrasyon sorunları."},
+                        {"text": "Otomatik onay mekanizmalarının yokluğu."}
+                      ]
+                    },
+                    {
+                      "text": "Finansal Kısıtlamalar ve Politikalar", 
+                      "details": "Çekle ödeme gibi politikaların tedarikçi ilişkilerini ve maliyetleri olumsuz etkilemesi.",
+                       "children": [
+                        {"text": "Nakit akışı yönetimi sorunları."}
+                      ]
+                    },
+                    {
+                      "text": "Süreç Standardizasyonu ve Eğitim Yetersizliği", 
+                      "details": "SAT açma, SAP kullanımı gibi konularda standartların olmaması veya yetersiz eğitim.",
+                       "children": [
+                        {"text": "Malzeme kodlama sistemi eksikliği."}
+                      ]
+                    },
+                     {
+                      "text": "Organizasyonel ve İletişim Sorunları", 
+                      "details": "Departmanlar arası koordinasyon eksikliği, özellikle finans/muhasebe ile yaşanan iletişim sorunları.",
+                       "children": [
+                        {"text": "Talep önceliklendirme ve planlamada yetersizlikler."}
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "text": "İyileştirme Önerileri (TO-BE)",
+                  "details": "Süreci daha verimli ve etkin hale getirmek için önerilen çözümler.",
+                  "children": [
+                    {"text": "Dijitalleşme ve Otomasyonun Artırılması", "details": "SAT ve SAS süreçlerinin tam dijitalleşmesi, SAP-Envision entegrasyonu, otomatik onay akışları."},
+                    {"text": "Ödeme Süreçlerinin Esnetilmesi", "details": "Çek yerine alternatif ödeme yöntemleri, tedarikçi finansmanı modelleri."},
+                    {"text": "Stratejik Tedarikçi Yönetimi", "details": "Performans değerlendirme sistemi, onaylı tedarikçi havuzunun genişletilmesi, çerçeve anlaşmalar."},
+                    {"text": "Süreç Standardizasyonu ve Yetkinlik Geliştirme", "details": "SAP ve süreç eğitimleri, malzeme kodlama sisteminin iyileştirilmesi."},
+                    {"text": "Veri Analitiği ve Raporlama Altyapısı Kurulumu", "details": "KPI belirleme, düzenli performans raporları, veriye dayalı karar alma."}
+                  ]
+                }
+              ]
+            };
+            
+            const container = document.getElementById('mindMapContainer');
+            if (container) {
+                container.innerHTML = ''; 
+                const rootUl = createMindMapNodeSatinAlma(mindMapData, true); 
+                container.appendChild(rootUl);
+            }
+        }
+
+        function createMindMapNodeSatinAlma(nodeData, isRoot = false) { 
+            const ul = document.createElement('ul');
+            if (isRoot) {
+                ul.classList.add('root-node'); 
+            }
+
+            const item = document.createElement('li');
+            
+            const nodeDiv = document.createElement('div');
+            nodeDiv.classList.add('node-item');
+            
+            const toggleIcon = document.createElement('span');
+            toggleIcon.classList.add('toggle-icon');
+            toggleIcon.innerHTML = '▶'; 
+
+            const nodeTextSpan = document.createElement('span'); 
+            nodeTextSpan.classList.add('node-text');
+            nodeTextSpan.textContent = nodeData.text; 
+            
+            nodeDiv.appendChild(toggleIcon);
+            nodeDiv.appendChild(nodeTextSpan);
+
+            if (nodeData.details) {
+                nodeDiv.classList.add('tooltip');
+                const tooltipText = document.createElement('span');
+                tooltipText.classList.add('tooltiptext');
+                tooltipText.textContent = nodeData.details;
+                nodeDiv.appendChild(tooltipText);
+            }
+
+            item.appendChild(nodeDiv);
+
+            if (nodeData.children && nodeData.children.length > 0) {
+                const childrenDiv = document.createElement('div');
+                childrenDiv.classList.add('children');
+                nodeData.children.forEach(childNode => {
+                    childrenDiv.appendChild(createMindMapNodeSatinAlma(childNode)); 
+                });
+                item.appendChild(childrenDiv);
+
+                nodeDiv.addEventListener('click', (e) => {
+                    if (e.target === toggleIcon || e.target === nodeTextSpan || e.target === nodeDiv) {
+                       childrenDiv.classList.toggle('expanded');
+                       toggleIcon.classList.toggle('expanded');
+                    }
+                });
+            } else {
+                toggleIcon.style.visibility = 'hidden'; 
+                nodeDiv.style.cursor = 'default';
+            }
+            
+            ul.appendChild(item);
+            if(isRoot && nodeData.children && nodeData.text === "Stoksuz Satın Alma Süreci Analizi") { 
+                ul.innerHTML = ''; 
+                 nodeData.children.forEach(childNode => {
+                    ul.appendChild(createMindMapNodeSatinAlma(childNode)); 
+                });
+            }
+            return ul;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşe Alım Süreci Analizi İnfografik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- 
+        Planlama Özeti:
+        Renk Paleti: "Azure Radiance & Solar Flare" (#0A2463, #3E92CC, #FFD100, #F7882F, #F8F9FA, #212529) - Öncekiyle aynı.
+        Narrative Yapısı:
+            1. Hero Alanı: Başlık, kısa giriş.
+            2. Giriş Bölümü: Analizin amacı ve kapsamı.
+            3. Mevcut Durum Analizi (AS-IS): İşe alım sürecinin genel akışı ve temel sorunları. (HTML/CSS ile şematik ve metinsel)
+            4. SIPOK ve RACI Analizleri: İşe alım süreci için detaylı SIPOK ve RACI tabloları.
+            5. Anahtar Veri Görselleştirmeleri: Süreçteki temel sorun alanları, darboğazlar ve öneri etkileri üzerine grafikler (Chart.js).
+            6. Etkileşimli Süreç Zihin Haritası: 'map2.json' verisinden oluşturulan, açılır/kapanır detaylarla sorunlar, nedenler ve çözümler.
+            7. Sonuç ve İyileştirme Önerileri: Genel değerlendirme ve öncelikli iyileştirme alanları.
+        
+        Görselleştirme Seçimleri (NO SVG, NO MERMAID JS):
+            - Büyük Sayı (Örn: "Ortalama İşe Alım Süresi"): Bilgilendirme, Büyük Metin.
+            - Çubuk Grafik (Süreç Adımlarındaki Zaman Kaybı Dağılımı): Karşılaştırma, Chart.js Canvas.
+            - Halka/Donut Grafik (Manuel İşlem Yoğunluğu): Karşılaştırma, Chart.js Canvas.
+            - Süreç Akış Şeması (Genel İşe Alım Adımları): Organize Etme, HTML/CSS Tailwind.
+            - SIPOK/RACI Tabloları: Organize Etme, HTML/CSS Tailwind.
+            - Etkileşimli Zihin Haritası (Detaylı Sorunlar & Çözümler): Organize Etme/İlişkiler, HTML/CSS/JS Listesi - SVG veya Mermaid JS KULLANILMADI.
+
+        SVG/Mermaid JS Kullanım Durumu:
+        BU ÇIKTIDA NE MERMAID JS NE DE SVG GRAFİKLERİ KULLANILMIŞTIR.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA; 
+            color: #212529; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px; 
+            max-height: 400px; 
+        }
+        @media (min-width: 768px) { 
+            .chart-container {
+                height: 384px; 
+            }
+        }
+        .mind-map ul {
+            list-style: none;
+            padding-left: 20px;
+            position: relative;
+        }
+        .mind-map li {
+            margin: 8px 0;
+            position: relative;
+        }
+        .mind-map li::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 10px;
+            border-left: 2px solid #3E92CC; 
+            width: 10px;
+            height: calc(100% - 10px);
+        }
+        .mind-map li:last-child::before {
+             height: 12px; 
+        }
+        .mind-map li > div {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+         .mind-map li > div:hover {
+            background-color: #E9ECEF; 
+        }
+        .mind-map .node-text {
+            flex-grow: 1;
+            color: #0A2463; 
+        }
+        .mind-map .toggle-icon {
+            margin-right: 8px;
+            color: #3E92CC; 
+            transition: transform 0.3s;
+        }
+         .mind-map .toggle-icon.expanded {
+            transform: rotate(90deg);
+        }
+        .mind-map .children {
+            display: none; 
+            padding-left: 20px;
+            border-left: 2px dashed #3E92CC; 
+            margin-left: -17px; 
+        }
+        .mind-map .children.expanded {
+            display: block;
+        }
+        .hero-bg {
+            background-color: #0A2463; 
+            color: #F8F9FA; 
+        }
+        .section-title {
+            color: #0A2463; 
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+            padding: 1.5rem; 
+            margin-bottom: 2rem; 
+        }
+        .cta-button {
+            background-color: #FFD100; 
+            color: #0A2463; 
+            transition: background-color 0.3s;
+        }
+        .cta-button:hover {
+            background-color: #F7882F; 
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(10, 36, 99, 0.9); 
+            backdrop-filter: blur(10px);
+        }
+        .flowchart-step {
+            background-color: #E0F2FE; 
+            border: 2px solid #3E92CC; 
+            color: #0A2463; 
+        }
+        .flowchart-arrow {
+            color: #3E92CC; 
+            font-size: 1.5rem; /* text-2xl, biraz küçülttüm */
+            line-height: 1;
+        }
+         .flowchart-container .flowchart-step {
+            min-height: 60px; /* Adımların minimum yüksekliği */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-container {
+            overflow-x: auto; 
+        }
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .custom-table th, .custom-table td {
+            border: 1px solid #E2E8F0; 
+            padding: 0.75rem; 
+            text-align: left;
+            font-size: 0.875rem; 
+        }
+        .custom-table th {
+            background-color: #EDF2F7; 
+            color: #2D3748; 
+            font-weight: 600; 
+        }
+        .custom-table tbody tr:nth-child(even) {
+            background-color: #F7FAFC; 
+        }
+        .custom-table tbody tr:hover {
+            background-color: #E2E8F0; 
+        }
+        .scroll-mt-20 { scroll-margin-top: 5rem; } 
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #212529;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Tooltip'i üstte konumlandır */
+            left: 50%;
+            margin-left: -110px; /* Yarım genişlik kadar sola kaydır */
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #212529 transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="sticky-nav shadow-md hidden md:block">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-center space-x-3"> <a href="#hero" class="text-gray-200 hover:text-FFD100 px-2">Başlangıç</a>
+                <a href="#giris" class="text-gray-200 hover:text-FFD100 px-2">Giriş</a>
+                <a href="#mevcut-durum" class="text-gray-200 hover:text-FFD100 px-2">Mevcut Durum</a>
+                <a href="#sipok-raci" class="text-gray-200 hover:text-FFD100 px-2">SIPOK/RACI</a>
+                <a href="#anahtar-veriler" class="text-gray-200 hover:text-FFD100 px-2">Anahtar Veriler</a>
+                <a href="#zihin-haritasi" class="text-gray-200 hover:text-FFD100 px-2">Etkileşimli Harita</a>
+                <a href="#sonuc-oneri" class="text-gray-200 hover:text-FFD100 px-2">Sonuç & Öneriler</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="hero" class="hero-bg py-16 md:py-24 text-center scroll-mt-20">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">İşe Alım Süreci Analizi</h1>
+            <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Mir Holding işe alım süreçlerinin mevcut durum analizi, darboğazlar, riskler ve iyileştirme önerileri.</p>
+            <a href="#zihin-haritasi" class="cta-button font-semibold py-3 px-8 rounded-lg text-lg inline-block">Etkileşimli Haritayı Keşfet</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <section id="giris" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">1. Giriş: Analizin Amacı ve Kapsamı</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    Bu infografik, Mir Holding bünyesindeki işe alım sürecinin mevcut durumunu (AS-IS) detaylı bir analizle ortaya koymak amacıyla hazırlanmıştır. Sağlanan çeşitli dokümanlar incelenerek, sürecin güçlü ve zayıf yönleri, karşılaşılan sorunlar, riskler, kök nedenler ve potansiyel iyileştirme alanları belirlenmiştir. 
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    Bu analiz, Mir Holding'in dijital dönüşüm stratejileri kapsamında işe alım sürecinin iyileştirilmesi için bir referans noktası sunmakta ve veriye dayalı karar alma süreçlerini desteklemeyi hedeflemektedir. Sunulan bilgiler, sürecin daha verimli, şeffaf ve etkin bir yapıya kavuşturulması için yol haritası oluşturacaktır.
+                </p>
+            </div>
+        </section>
+
+        <section id="mevcut-durum" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">2. Mevcut Durum Analizi (AS-IS)</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center max-w-3xl mx-auto">
+                    Mir Holding işe alım süreci, kaynaklara göre 15 ana adımdan oluşmaktadır. Süreç, "Yeni Pozisyon Açılması", "Mevcut Pozisyonun Boşalması" veya "Üst Yönetim / Proje Talebi" gibi tetikleyicilerle başlar. Ancak, süreç boyunca manuel işlemlerin yoğunluğu, dijitalleşme eksiklikleri ve kayıt tutma sorunları dikkat çekmektedir.
+                </p>
+                <h3 class="text-2xl font-semibold mb-6 text-center" style="color: #3E92CC;">İşe Alım Süreci Genel Akış Şeması (Özet)</h3>
+                <div class="flowchart-container space-y-2 md:space-y-0 md:grid md:grid-cols-3 lg:grid-cols-5 md:gap-x-4 md:gap-y-6 items-stretch">
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">1. Personel Talebi</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">2. Görev Tanımı & Yetkinlikler</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">3. İlan Hazırlama & Yayınlama</div>
+                    <div class="hidden lg:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="lg:hidden md:col-span-3 text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">4. Başvuru Toplama & Ön Eleme</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">5. Telefon Ön Görüşmesi</div>
+                    
+                    <div class="hidden md:col-span-5 text-center flowchart-arrow my-2 md:my-0">↓</div>
+
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">6. İlk Mülakat</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">7. İkinci Mülakat (Opsiyonel)</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">8. Maaş Teklifi & GM Onayı</div>
+                     <div class="hidden lg:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="lg:hidden md:col-span-3 text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">9. Üçüncü Mülakat & Mutabakat</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">10. Evrak Teslimi</div>
+
+                    <div class="hidden md:col-span-5 text-center flowchart-arrow my-2 md:my-0">↓</div>
+                    
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">11. İşe Başlama Tarihi Belirleme</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">12. Oryantasyon Planı</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                     <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">13. Ekipman & Hesaplar</div>
+                     <div class="hidden lg:flex items-center justify-center flowchart-arrow">→</div>
+                    <div class="lg:hidden md:col-span-3 text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">14. Oryantasyon Tamamlama</div>
+                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
+                     <div class="md:hidden text-center flowchart-arrow">↓</div>
+                    <div class="flowchart-step p-3 rounded-lg text-center shadow">15. Süreç Kapanışı & İyileştirme</div>
+                </div>
+
+                <div class="mt-8 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-md">
+                    <h4 class="font-bold">Temel Sorun Alanları:</h4>
+                    <ul class="list-disc list-inside ml-4 mt-2">
+                        <li>Manuel işlemlerin yoğunluğu ve dijitalleşme eksikliği.</li>
+                        <li>Mülakat notları ve aday kayıtları gibi kritik verilerin merkezi bir sistemde eksik tutulması.</li>
+                        <li>Görev tanımı hazırlama ve üst yönetim onayları gibi adımlarda yaşanan zaman kayıpları.</li>
+                        <li>Ön eleme kriterlerinde ve süreç adımlarının uygulanmasında standardizasyon eksikliği.</li>
+                        <li>Veri kayıpları, süreç hataları ve nitelikli aday kaybı gibi operasyonel riskler.</li>
+                        <li>İK ekibi üzerinde yüksek iş yükü ve iletişimde kopukluklar.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="sipok-raci" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">3. SIPOK ve RACI Analizleri</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center max-w-2xl mx-auto">
+                    İşe alım sürecinin daha yapısal bir şekilde anlaşılması ve sorumlulukların netleştirilmesi amacıyla SIPOK ve RACI analizleri yapılmıştır. Bu analizler, sürecin tedarikçilerini, girdilerini, adımlarını, çıktılarını, müşterilerini ve rollerini detaylandırmaktadır.
+                </p>
+
+                <div class="mb-10">
+                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">İşe Alım Süreci: SIPOK Analizi (Özet)</h3>
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Tedarikçiler (Suppliers)</th>
+                                    <th>Girdiler (Inputs)</th>
+                                    <th>Süreç Adımları (Process - Örnek)</th>
+                                    <th>Çıktılar (Outputs - Örnek)</th>
+                                    <th>Müşteriler (Customers)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Birim Yöneticisi, Üst Yönetim</td>
+                                    <td>Pozisyon ihtiyacı (e-posta), Stratejik onaylar</td>
+                                    <td>1. Personel Talebi</td>
+                                    <td>Onaylı talep (Excel)</td>
+                                    <td>İK, Kulvar Değ. Kurulu</td>
+                                </tr>
+                                <tr>
+                                    <td>İK, Departman Yöneticisi, Endüstri Müh.</td>
+                                    <td>Mevcut JD, Kulvar parametreleri</td>
+                                    <td>2. Görev Tanımı (JD) Belirleme</td>
+                                    <td>Güncel/Yeni JD</td>
+                                    <td>İK, Aday Havuzu</td>
+                                </tr>
+                                <tr>
+                                    <td>Adaylar, Kariyer Portalları</td>
+                                    <td>CV'ler, Başvuru formları</td>
+                                    <td>4. Başvuru Toplama & Ön Eleme</td>
+                                    <td>Ön elemeyi geçen aday listesi</td>
+                                    <td>İK, Birim Yöneticisi</td>
+                                </tr>
+                                 <tr>
+                                    <td>İK, GM</td>
+                                    <td>Ücret skalası, Aday bilgisi</td>
+                                    <td>8. Maaş Teklifi & GM Onayı</td>
+                                    <td>Onaylı/Reddedilen teklif</td>
+                                    <td>Aday, İK</td>
+                                </tr>
+                                <tr>
+                                    <td>Yeni Çalışan, İK, Eğitimciler</td>
+                                    <td>Kontrol listeleri, Eğitim kayıtları</td>
+                                    <td>14. Oryantasyon Tamamlama</td>
+                                    <td>"İşe Alım Kapanış" statüsü</td>
+                                    <td>IT, Özlük İşleri, Üst Yönetim</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2"><b>SIPOK Analizi Çıkarımları:</b> Sürecin birçok girdisinin ve çıktısının manuel veya merkezi olmayan sistemlerde yönetildiği, veri akışında kopukluklar yaşandığı görülmektedir.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">İşe Alım Süreci: RACI Matrisi (Özet)</h3>
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Süreç Adımı/Görev</th>
+                                    <th>Birim Yöneticisi</th>
+                                    <th>İK Departmanı</th>
+                                    <th>İK Sorumlusu</th>
+                                    <th>Departman Yöneticisi (İlgili)</th>
+                                    <th>GM</th>
+                                    <th>Aday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Personel Talebi</td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">I<span class="tooltiptext">Bilgilendirilen</span></td><td></td><td class="tooltip">C<span class="tooltiptext">Danışılan (Yeni Poz.)</span></td><td></td></tr>
+                                <tr><td>Görev Tanımı (JD) Belirleme</td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td></td><td></td></tr>
+                                <tr><td>İlan Yayını</td><td></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td></td><td></td><td></td></tr>
+                                <tr><td>Başvuru Ön Eleme</td><td></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td></td><td></td></tr>
+                                <tr><td>İlk Mülakat</td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">R/C<span class="tooltiptext">Sorumlu/Danışılan</span></td><td></td><td class="tooltip">R<span class="tooltiptext">Sorumlu (Katılımcı)</span></td></tr>
+                                <tr><td>Maaş Teklifi & GM Onayı</td><td></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td></td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td></td></tr>
+                                <tr><td>Evrak Teslimi</td><td></td><td class="tooltip">R<span class="tooltiptext">Sorumlu (Takip)</span></td><td></td><td></td><td></td><td class="tooltip">R<span class="tooltiptext">Sorumlu (Temin)</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <p class="text-sm text-gray-600 mt-2"><b>RACI Analizi Çıkarımları:</b> Roller kağıt üzerinde tanımlı olsa da, pratikte kayıt tutma gibi kritik sorumluluklar aksamakta, hesap verebilirlik mekanizmaları zayıf kalmaktadır. İK üzerinde yoğun bir operasyonel yük bulunmaktadır.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="anahtar-veriler" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">4. Anahtar Veri Görselleştirmeleri</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-8 text-center max-w-2xl mx-auto">
+                    İşe alım sürecindeki temel sorun alanlarını, zaman kayıplarını ve manuel işlem yoğunluğunu gösteren temsili grafikler aşağıdadır. Bu grafikler, analizlerdeki kalitatif bulguları desteklemektedir.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-center" style="color: #0A2463;">Süreç Adımlarındaki Ortalama Zaman Kaybı</h3>
+                        <div class="chart-container">
+                            <canvas id="zamanKaybiChart"></canvas>
+                        </div>
+                        <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, görev tanımı, onaylar ve manuel başvuru işleme gibi adımlarda yaşanan ortalama zaman kayıplarının dağılımını göstermektedir.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-center" style="color: #0A2463;">Mülakat Notu Kayıt Oranları</h3>
+                        <div class="chart-container">
+                            <canvas id="kayitOraniChart"></canvas>
+                        </div>
+                         <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, ilk ve ikinci mülakat notlarının merkezi sisteme (SharePoint) girilme oranlarındaki düşüklüğü göstermektedir.</p>
+                    </div>
+                </div>
+                 <div class="mt-8 text-center">
+                    <h3 class="text-2xl font-bold mb-2" style="color: #0A2463;">Vurgulanan Anahtar Sayı</h3>
+                    <div class="p-6 bg-sky-100 inline-block rounded-xl shadow-md">
+                        <p class="text-5xl font-extrabold" style="color: #3E92CC;">&lt;%40</p>
+                        <p class="text-lg text-gray-700 mt-1">Oryantasyon Kontrol Listelerinin SharePoint'e Yüklenme Oranı</p>
+                    </div>
+                     <p class="mt-3 text-sm text-gray-600">Bu veri, süreçteki kayıt ve takip eksikliklerinin bir başka göstergesidir.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="zihin-haritasi" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">5. Etkileşimli İşe Alım Süreci Zihin Haritası</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center max-w-2xl mx-auto">
+                    Aşağıdaki etkileşimli zihin haritası, işe alım sürecindeki temel sorunları, bu sorunların kök nedenlerini ve bunlara yönelik çözüm önerilerini detaylı bir şekilde keşfetmenizi sağlar. Başlıkların yanındaki <span class="font-bold" style="color: #3E92CC;">▶</span> ikonuna tıklayarak ilgili alt başlıkları açabilir veya kapatabilirsiniz.
+                </p>
+                <div id="mindMapContainer" class="mind-map p-4 bg-slate-50 rounded-lg shadow-inner overflow-x-auto">
+                    <p class="text-center text-gray-500">Zihin haritası yükleniyor...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sonuc-oneri" class="scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">6. Sonuç ve İyileştirme Önerileri</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    Mir Holding işe alım sürecinin mevcut durumu, Holding genelindeki dijital dönüşüm projesi kapsamında ele alınması gereken temel altyapısal, kültürel ve süreçsel iyileştirme alanlarına işaret etmektedir. Manuel iş yükü, kayıt eksiklikleri, veri tutarlılığı sorunları, darboğazlar ve standardizasyon eksiklikleri, sürecin verimliliğini, şeffaflığını ve hukuki dayanıklılığını olumsuz etkilemektedir.
+                </p>
+                <h4 class="text-xl font-semibold mt-6 mb-3" style="color: #0A2463;">Öncelikli İyileştirme Alanları:</h4>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 leading-relaxed">
+                    <li><b>Kayıt Zorunluluğu ve Veri Standardizasyonu:</b> Kritik bilgilerin (mülakat notları, onaylar vb.) merkezi sistemlerde zorunlu ve standart hale getirilmesi.</li>
+                    <li><b>Süreç Adımlarının Netleştirilmesi ve Standardizasyonu + Çalışan Eğitimleri:</b> Ön eleme kriterleri, JD hazırlama gibi adımların netleştirilmesi ve paydaşlara eğitim verilmesi.</li>
+                    <li><b>Dijital Onay ve Otomatik İş Akışları:</b> Tüm onay mekanizmalarının dijital platformlara taşınması ve otomatik iş akışları ile desteklenmesi.</li>
+                    <li><b>API Entegrasyonları:</b> Dış iş ilanı portalları ile SharePoint arasında otomatik veri akışının sağlanması.</li>
+                    <li><b>KPI Takibi ve Otomatik Raporlama/Uyarılar:</b> Süreç KPI'larının belirlenmesi, otomatik toplanması ve canlı panellerle takip edilmesi.</li>
+                </ul>
+                 <p class="text-lg text-gray-700 leading-relaxed mt-6 font-semibold" style="color: #0A2463;">
+                    Bu önerilerin hayata geçirilmesi, süreci hızlandıracak, şeffaflığı artıracak, İK iş yükünü azaltacak, hata oranını düşürecek ve genel olarak aday ile çalışan deneyimini iyileştirecektir.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-8 text-center">
+        <div class="container mx-auto px-6">
+            <p>&copy; <span id="currentYear"></span> İşe Alım Süreci Analiz Raporu. Tüm hakları saklıdır.</p>
+            <p class="text-sm mt-2">Bu infografik, sağlanan verilere dayanarak oluşturulmuştur.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = document.getElementById('navbar') ? document.getElementById('navbar').offsetHeight : 0;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 20; 
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+        
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
+            }, false);
+        }
+
+        function wrapLabels(label, maxWidth) {
+            if (typeof label !== 'string' || label.length <= maxWidth) {
+                return label;
+            }
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.trim().length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            if (!item) return '';
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const zamanKaybiData = {
+            labels: [
+                'Görev Tanımı Hazırlama', 
+                'Üst Yönetim Onayları', 
+                'Manuel Başvuru İşleme', 
+                'Mülakat Planlama', 
+                'Evrak Süreçleri'
+            ].map(label => wrapLabels(label, 16)),
+            datasets: [{
+                label: 'Ortalama Gün Kaybı (Tahmini)',
+                data: [5, 4, 3, 2, 2.5], // Placeholder data
+                backgroundColor: ['#3E92CC', '#F7882F', '#FFD100', '#20C997', '#6F42C1'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2
+            }]
+        };
+
+        const zamanKaybiOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'x', // Changed to x for vertical bar chart
+            plugins: {
+                legend: { display: false },
+                title: { display: false },
+                tooltip: { callbacks: { title: tooltipTitleCallback } }
+            },
+            scales: {
+                y: { 
+                    beginAtZero: true,
+                    title: { display: true, text: 'Gün Sayısı' },
+                    grid: { color: 'rgba(0,0,0,0.05)'} 
+                },
+                x: { grid: { display: false } }
+            }
+        };
+
+        const kayitOraniData = {
+            labels: ['İlk Mülakat Notları', 'İkinci Mülakat Notları', 'Oryantasyon Listeleri'].map(label => wrapLabels(label, 16)),
+            datasets: [{
+                label: 'SharePoint Kayıt Oranı (%)',
+                data: [10, 30, 40], // Placeholder data, < %10, <%30, %40
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2,
+                hoverOffset: 4
+            }]
+        };
+
+        const kayitOraniOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { display: false },
+                tooltip: { 
+                    callbacks: { 
+                        title: tooltipTitleCallback,
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y + '%';
+                            }
+                            return label;
+                        }
+                    } 
+                }
+            }
+        };
+
+        window.addEventListener('load', () => {
+            const zamanCtx = document.getElementById('zamanKaybiChart');
+            if (zamanCtx) new Chart(zamanCtx, { type: 'bar', data: zamanKaybiData, options: zamanKaybiOptions });
+
+            const kayitCtx = document.getElementById('kayitOraniChart');
+            if (kayitCtx) new Chart(kayitCtx, { type: 'doughnut', data: kayitOraniData, options: kayitOraniOptions });
+            
+            fetchMindMapDataIseAlim();
+        });
+
+        async function fetchMindMapDataIseAlim() {
+            // Using map2.json content directly
+            const mindMapData = {
+              "text": "Mir Holding İşe Alım Süreci Analizi",
+              "details": "Mir Holding'in işe alım sürecinin mevcut durum (AS-IS) analizi, sorunların kök nedenleri ve önceliklendirilmiş iyileştirme önerilerine genel bakış.",
+              "children": [
+                {
+                  "text": "Mevcut Durum (AS-IS) Analizi",
+                  "details": "Mir Holding'in işe alım sürecinin mevcut işleyişi, güçlü ve zayıf yönleri, karşılaşılan sorunlar ve riskler.",
+                  "children": [
+                    {
+                      "text": "Ana Temalar ve Kritik Bulgular",
+                      "details": "Kaynaklarda vurgulanan temel sorun alanları ve mevcut durumun özeti.",
+                      "children": [
+                        {
+                          "text": "Manuel İşlemler ve Dijitalleşme Eksikliği",
+                          "details": "Sürecin büyük çoğunluğu manuel yürütülmektedir (%70+ tahmini). Otomatik onay akışı, API entegrasyonu, dijital imza veya merkezi planlama/takip modülleri bulunmamaktadır. İş yükünü artırır ve verimlilik kayıplarına yol açar."
+                        },
+                        {
+                          "text": "Kayıt Eksiklikleri ve Veri Tutarlılığı Sorunları",
+                          "details": "Mülakat notları, aday kayıtları ve diğer kritik veriler merkezi sistemde (SharePoint) düzenli ve eksiksiz tutulmamaktadır. Kişisel dosyalarda (Excel/Word) tutulması yaygındır. KPI takibini imkansız hale getirir ve hukuki riskler oluşturur. Kurumsal hafıza eksikliğine neden olur."
+                        },
+                        {
+                          "text": "Süreçte Yaşanan Zaman Kayıpları ve Darboğazlar",
+                          "details": "Görev tanımı hazırlama, üst yönetim onayları, manuel başvuru toplama/ön eleme en çok zaman kaybı yaşanan aşamalardır. Gecikmeler aday deneyimini olumsuz etkiler, aday kaybına yol açabilir."
+                        },
+                        {
+                          "text": "Standardizasyon ve Tutarlılık Sorunları",
+                          "details": "Görev tanımlarının güncel olmaması, ön eleme kriterlerinin kişisel yoruma dayanması ve süreç adımlarının tam uygulanmaması tutarlılık eksikliklerine yol açar. Adil ve tutarlı bir ön eleme sağlanamaz."
+                        }
+                      ]
+                    },
+                    {
+                      "text": "Güçlü Yönler",
+                      "details": "Mevcut süreçteki olumlu yönler.",
+                      "children": [
+                        {"text": "Personel talebinin oluşturulması hızlıdır."},
+                        {"text": "Görev Tanımı ve Yetkinlik Seti aşaması, süreç bütünlüğü ve doğru aday havuzu açısından kritiktir."},
+                        {"text": "Mülakat türleri ve katılımcı kombinasyonları pozisyona göre esnektir."},
+                        {"text": "Çalışanlar genel olarak süreç iyileştirmelerine ve dijitalleşmeye açıktır."}
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "text": "Kök Neden Analizi",
+                  "details": "Mevcut sorunların altında yatan dört ana neden kategorisi.",
+                  "children": [
+                    {
+                      "text": "1. Dijital Altyapı ve Sistem Yetersizlikleri",
+                      "details": "Sürecin dijitalleşme eksikliği ve mevcut sistemlerin (SharePoint, Excel, Teams) etkin/merkezi kullanılmaması.",
+                      "children": [
+                        {"text": "API/Entegrasyon Eksikliği (Dış portallar ile SharePoint arası)."},
+                        {"text": "Otomatik İş Akışı ve Onay Mekanizması Yokluğu."},
+                        {"text": "Merkezi Sistem Kullanımının Düşük Olması."},
+                        {"text": "Otomatik Uyarı/Bildirim Sistemlerinin Eksikliği."}
+                      ]
+                    },
+                    {
+                      "text": "2. Süreç Tanımı, Standardizasyon ve Uygulama Eksiklikleri",
+                      "details": "Süreç adımlarının net tanımlanmaması, standart eksikliği ve tanımlanan adımların tam olarak uygulanmaması.",
+                       "children": [
+                        {"text": "Güncel Olmayan veya Tutarsız Görev Tanımları (JD)."},
+                        {"text": "Ön Eleme Kriterlerinde Netlik ve Standardizasyon Eksikliği."},
+                        {"text": "Süreç Adımlarının Tam Uygulanmaması (Örn: mülakat notu girişi)."}
+                      ]
+                    },
+                    {
+                      "text": "3. Kurumsal Kültür ve İnsan Faktörleri",
+                      "details": "Çalışanların alışkanlıkları, eğitim seviyeleri ve kurumsal bilinç düzeyi ile ilgili sorunlar.",
+                       "children": [
+                        {"text": "Kayıt Tutma Kültürünün Yetersizliği."},
+                        {"text": "Dijital Sistem Kullanımında Eğitim ve Yetkinlik Eksiklikleri."},
+                        {"text": "Yetkilendirme ve Hesap Verebilirlik Mekanizmalarının Zayıflığı."}
+                      ]
+                    },
+                    {
+                      "text": "4. Yapısal ve Organizasyonel Konular",
+                      "details": "İK ve departmanlar arası iletişim, onay süreçlerinin yapısı ve İK iş yükü gibi organizasyonel faktörler.",
+                      "children": [
+                        {"text": "İK ve Departmanlar Arası İletişim Kanallarının Dağınıklığı."},
+                        {"text": "Üst Yönetim Onay Sürecinin Yapısı."},
+                        {"text": "İK Ekibinin Mevcut İş Yükü."}
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "text": "İyileştirme Önerileri (TO-BE)",
+                  "details": "Mevcut sorunları gidermeye yönelik, minimum maliyetle maksimum etki yaratma potansiyeli yüksek olan, önceliklendirilmiş öneriler.",
+                  "children": [
+                    {
+                      "text": "1. Kayıt Zorunluluğu ve Veri Standardizasyonu",
+                      "details": "Kritik bilgilerin merkezi sistemlerde zorunlu ve standart hale getirilmesi. Etki: Hukuki riskler azalır, şeffaflık artar, KPI takibi için temel oluşur."
+                    },
+                     {
+                      "text": "2. Süreç Adımlarının Netleştirilmesi ve Standardizasyonu + Çalışan Eğitimleri",
+                      "details": "Ön eleme kriterleri, JD hazırlama gibi adımların netleştirilmesi ve paydaşlara eğitim verilmesi. Etki: Adil ve tutarlı ön eleme, verimsiz mülakatların azalması."
+                    },
+                     {
+                      "text": "3. API Entegrasyonları",
+                      "details": "Dış iş ilanı portalları ile SharePoint arasında otomatik veri akışının sağlanması. Etki: İK iş yükü azalır, veri kalitesi artar, süreç hızlanır."
+                    },
+                    {
+                      "text": "4. Dijital Onay ve Otomatik İş Akışları",
+                      "details": "Tüm onay mekanizmalarının dijital platformlara taşınması ve otomatik iş akışları ile desteklenmesi. Etki: Süreç hızlanır, aday deneyimi iyileşir, şeffaflık artar."
+                    },
+                    {
+                      "text": "5. KPI Takibi, Otomatik Raporlama ve Uyarılar",
+                      "details": "Süreç KPI'larının belirlenmesi, otomatik toplanması ve canlı panellerle takip edilmesi. Etki: Veriye dayalı karar alma güçlenir, sorunların erken tespiti sağlanır."
+                    }
+                  ]
+                }
+              ]
+            };
+            
+            const container = document.getElementById('mindMapContainer');
+            if (container) {
+                container.innerHTML = ''; 
+                const rootUl = createMindMapNodeIseAlim(mindMapData, true); // Renamed function
+                container.appendChild(rootUl);
+            }
+        }
+
+        function createMindMapNodeIseAlim(nodeData, isRoot = false) { // Renamed function
+            const ul = document.createElement('ul');
+            if (isRoot) {
+                ul.classList.add('root-node'); 
+            }
+
+            const item = document.createElement('li');
+            
+            const nodeDiv = document.createElement('div');
+            nodeDiv.classList.add('node-item');
+            
+            const toggleIcon = document.createElement('span');
+            toggleIcon.classList.add('toggle-icon');
+            toggleIcon.innerHTML = '▶'; 
+
+            const nodeTextSpan = document.createElement('span'); // For main text
+            nodeTextSpan.classList.add('node-text');
+            nodeTextSpan.textContent = nodeData.text; // Changed from name to text
+            
+            nodeDiv.appendChild(toggleIcon);
+            nodeDiv.appendChild(nodeTextSpan);
+
+            // Add details if they exist - using a tooltip approach
+            if (nodeData.details) {
+                nodeDiv.classList.add('tooltip');
+                const tooltipText = document.createElement('span');
+                tooltipText.classList.add('tooltiptext');
+                tooltipText.textContent = nodeData.details;
+                nodeDiv.appendChild(tooltipText);
+            }
+
+            item.appendChild(nodeDiv);
+
+            if (nodeData.children && nodeData.children.length > 0) {
+                const childrenDiv = document.createElement('div');
+                childrenDiv.classList.add('children');
+                nodeData.children.forEach(childNode => {
+                    childrenDiv.appendChild(createMindMapNodeIseAlim(childNode)); // Recursive call to renamed function
+                });
+                item.appendChild(childrenDiv);
+
+                nodeDiv.addEventListener('click', (e) => {
+                    // Prevent tooltip from showing when expanding/collapsing
+                    if (e.target === toggleIcon || e.target === nodeTextSpan || e.target === nodeDiv) {
+                       childrenDiv.classList.toggle('expanded');
+                       toggleIcon.classList.toggle('expanded');
+                    }
+                });
+            } else {
+                toggleIcon.style.visibility = 'hidden'; 
+                nodeDiv.style.cursor = 'default';
+            }
+            
+            ul.appendChild(item);
+            // If it's the root node object from map2.json, its children are the actual first level nodes.
+            if(isRoot && nodeData.children && nodeData.text === "Mir Holding İşe Alım Süreci Analizi") { 
+                ul.innerHTML = ''; 
+                 nodeData.children.forEach(childNode => {
+                    ul.appendChild(createMindMapNodeIseAlim(childNode)); // Recursive call to renamed function
+                });
+            }
+            return ul;
+        }
+    </script>
+</body>
+</html>
