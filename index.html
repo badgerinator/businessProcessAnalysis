@@ -3,311 +3,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kurumsal Risk ve DÖF Süreç Analizi</title>
+    <title>Kurumsal Risk ve DÖF Süreç Analizi İnfografik</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
-    <!-- Visualization & Content Choices: 
-        - Rapor Bilgisi: dump.txt Bölüm 1-6.
-        - Hedef: Rapor içeriğini anlaşılır, etkileşimli ve görsel olarak çekici bir şekilde sunmak.
-        - Sunum Metodu: Her rapor bölümü için ayrı bir HTML section. Bölüm 4 ve 5'teki hiyerarşik veriler (map.json'dan alınarak) interaktif bir zihin haritası olarak sunulur.
-        - Etkileşim: Navigasyon linkleriyle bölümlere yumuşak kaydırma. Zihin haritası düğümlerine tıklayarak alt düğümleri açma/kapama. Detaylar için modal/yan panel.
-        - Gerekçe: Kullanıcıların karmaşık bilgiyi adım adım keşfetmesini ve büyük resmi görmesini sağlamak. Zihin haritası, ilişkisel verilerin anlaşılması için idealdir.
-        - Kütüphane/Metot: Tailwind CSS, Vanilla JavaScript. Zihin haritası için HTML listeleri ve JS ile DOM manipülasyonu.
-        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- 
+        Planlama Özeti:
+        Renk Paleti: "Azure Radiance & Solar Flare" (#0A2463, #3E92CC, #FFD100, #F7882F, #F8F9FA, #212529)
+        Narrative Yapısı:
+            1. Hero Alanı: Başlık, kısa giriş, ana çağrı (CTA).
+            2. Giriş Bölümü: Raporun amacı ve kapsamı.
+            3. Mevcut Durum Analizi: Risk Yönetimi ve DÖF süreçlerine genel bakış. (HTML/CSS ile şematik gösterim)
+            4. Anahtar Veri Görselleştirmeleri: Temel sorun alanları ve öneri etkileri üzerine grafikler (Chart.js).
+            5. Etkileşimli Süreç Zihin Haritası: 'map.json' verisinden oluşturulan, açılır/kapanır detaylarla sorunlar, nedenler ve çözümler.
+            6. Sonuç Bölümü: Genel değerlendirme ve gelecek perspektifi.
+        
+        Görselleştirme Seçimleri (NO SVG, NO MERMAID JS):
+            - Büyük Sayı (Örn: "Ana Risk Alanı Sayısı"): Bilgilendirme, Büyük Metin.
+            - Çubuk Grafik (Sorun Alanlarının Etkisi): Karşılaştırma, Chart.js Canvas (dump.txt Bölüm 4'ten türetilmiş).
+            - Halka/Donut Grafik (Öneri Türleri Dağılımı): Karşılaştırma, Chart.js Canvas (dump.txt Bölüm 5'ten türetilmiş).
+            - Süreç Akış Şeması (Genel Süreç Adımları): Organize Etme, HTML/CSS Tailwind (dump.txt Bölüm 3'ten türetilmiş).
+            - Etkileşimli Zihin Haritası (Detaylı Sorunlar & Çözümler): Organize Etme/İlişkiler, HTML/CSS/JS Listesi (map.json'dan) - SVG veya Mermaid JS KULLANILMADI.
+
+        SVG/Mermaid JS Kullanım Durumu:
+        BU ÇIKTIDA NE MERMAID JS NE DE SVG GRAFİKLERİ KULLANILMIŞTIR.
     -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f5f5f4; /* stone-100 */
-            color: #1e293b; /* slate-800 */
+            background-color: #F8F9FA; /* Neutral Light Gray */
+            color: #212529; /* Neutral Dark Gray */
         }
-        .hero-bg {
-            background: linear-gradient(135deg, #0c4a6e 0%, #38bdf8 100%); /* sky-800 to sky-400 */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* max-w-2xl */
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px; /* h-80 */
+            max-height: 400px; /* max-h-96 */
         }
-        h1, h2, h3 {
-            font-family: 'Roboto Slab', serif;
-        }
-        .content-section {
-            padding-top: 4rem;
-            padding-bottom: 4rem;
-        }
-        .mind-map-container {
-            overflow-x: auto; /* Yatay kaydırma gerekirse */
+        @media (min-width: 768px) { /* md breakpoint */
+            .chart-container {
+                height: 384px; /* h-96 */
+            }
         }
         .mind-map ul {
-            position: relative;
-            padding-left: 20px;
             list-style: none;
+            padding-left: 20px;
+            position: relative;
         }
         .mind-map li {
+            margin: 8px 0;
             position: relative;
-            padding: 8px 0 8px 25px;
-            border-left: 2px solid #cbd5e1; /* slate-300 */
         }
         .mind-map li::before {
-            content: "";
+            content: '';
             position: absolute;
-            top: 18px; /* Düğümün dikey hizası */
-            left: -11px; /* Bağlantı çizgisinin üzerine */
-            width: 20px;
-            height: 2px;
-            background-color: #cbd5e1; /* slate-300 */
+            left: -15px;
+            top: 10px;
+            border-left: 2px solid #3E92CC; /* Primary Medium Blue */
+            width: 10px;
+            height: calc(100% - 10px);
         }
-        .mind-map li:last-child {
-            border-left: none;
+        .mind-map li:last-child::before {
+             height: 12px; /* Adjust to connect to the node */
         }
-         .mind-map li:last-child::before {
-            border-left: 2px solid #cbd5e1; /* slate-300 */
-            height: 20px; /* Dikey çizgiyi yukarı doğru uzatmak için */
-            top: -1px; /* Yukarı hizalamak */
-            width:2px;
-            left:-1px;
-        }
-         .mind-map > ul > li:last-child::before{
-            border-left:none;
-         }
-
-        .mind-map-node {
-            background-color: #ffffff; /* white */
-            padding: 10px 15px;
+        .mind-map li > div {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background-color: #FFFFFF;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid #e5e7eb; /* gray-200 */
+            transition: background-color 0.3s;
         }
-        .mind-map-node:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+         .mind-map li > div:hover {
+            background-color: #E9ECEF; /* Lighter gray for hover */
         }
-        .mind-map-node.level-0 { background-color: #e0f2fe; /* sky-100 */ color: #0369a1; /* sky-700 */ font-weight: 600;}
-        .mind-map-node.level-1 { background-color: #f0f9ff; /* sky-50 */ color: #075985; /* sky-800 */ }
-        .mind-map-node.level-2 { background-color: #f1f5f9; /* slate-100 */ color: #334155; /* slate-700 */ }
-        .mind-map-node.level-3 { background-color: #f8fafc; /* slate-50 */ color: #475569; /* slate-600 */ font-size: 0.9rem; }
-        .mind-map-node.has-children::after {
-            content: ' [+]';
-            color: #0284c7; /* sky-600 */
-            font-weight: bold;
+        .mind-map .node-text {
+            flex-grow: 1;
+            color: #0A2463; /* Primary Deep Blue */
         }
-        .mind-map-node.expanded.has-children::after {
-            content: ' [-]';
-            color: #0284c7; /* sky-600 */
+        .mind-map .toggle-icon {
+            margin-right: 8px;
+            color: #3E92CC; /* Primary Medium Blue */
+            transition: transform 0.3s;
         }
-        .mind-map .hidden-children > ul {
-            display: none;
+         .mind-map .toggle-icon.expanded {
+            transform: rotate(90deg);
         }
-        .smooth-scroll { scroll-behavior: smooth; }
-        nav a { transition: color 0.3s ease; }
-        nav a:hover { color: #38bdf8; /* sky-400 */ }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
+        .mind-map .children {
+            display: none; /* Collapsed by default */
+            padding-left: 20px;
+            border-left: 2px dashed #3E92CC; /* Primary Medium Blue */
+            margin-left: -17px; /* Align with parent's ::before */
+        }
+        .mind-map .children.expanded {
+            display: block;
+        }
+        .hero-bg {
+            background-color: #0A2463; /* Primary Deep Blue */
+            color: #F8F9FA; /* Neutral Light Gray */
+        }
+        .section-title {
+            color: #0A2463; /* Primary Deep Blue */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 2rem; /* mb-8 */
+        }
+        .cta-button {
+            background-color: #FFD100; /* Accent Bright Yellow */
+            color: #0A2463; /* Primary Deep Blue */
+            transition: background-color 0.3s;
+        }
+        .cta-button:hover {
+            background-color: #F7882F; /* Accent Orange */
+        }
+        .sticky-nav {
+            position: sticky;
             top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
+            z-index: 50;
+            background-color: rgba(10, 36, 99, 0.9); /* Primary Deep Blue with opacity */
+            backdrop-filter: blur(10px);
         }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 25px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 700px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            position: relative;
+        .flowchart-step {
+            background-color: #E0F2FE; /* Light blue bg */
+            border: 2px solid #3E92CC; /* Primary Medium Blue */
+            color: #0A2463; /* Primary Deep Blue */
         }
-        .close-button {
-            color: #aaa;
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 32px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: black;
-            text-decoration: none;
-        }
-        .modal-title {
-            font-family: 'Roboto Slab', serif;
-            color: #0c4a6e; /* sky-800 */
-            margin-bottom: 1rem;
-        }
-        .modal-body p {
-            margin-bottom: 0.75rem;
-            line-height: 1.6;
-        }
-        .modal-body strong {
-            color: #1e293b; /* slate-800 */
-        }
-        .tooltip {
-            position: absolute;
-            background-color: #1e293b; /* slate-800 */
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none; /* Prevent tooltip from blocking mouse events */
-            white-space: pre-wrap; /* Allow line breaks */
-            max-width: 300px;
+        .flowchart-arrow {
+            color: #3E92CC; /* Primary Medium Blue */
+            font-size: 2rem; /* text-3xl */
         }
     </style>
 </head>
-<body class="smooth-scroll">
+<body class="antialiased">
 
-    <header class="bg-white/80 backdrop-blur-md shadow-md fixed top-0 left-0 right-0 z-50">
+    <nav id="navbar" class="sticky-nav shadow-md hidden md:block">
         <div class="container mx-auto px-6 py-3">
-            <nav class="flex items-center justify-between">
-                <a href="#hero" class="text-2xl font-bold text-sky-700">Süreç Analizi</a>
-                <div class="space-x-4 text-sm md:text-base">
-                    <a href="#giris" class="text-slate-700 hover:text-sky-600">Giriş</a>
-                    <a href="#mevcut-durum" class="text-slate-700 hover:text-sky-600">Mevcut Durum</a>
-                    <a href="#zihin-haritasi-bolumu" class="text-slate-700 hover:text-sky-600">Sorunlar & Çözümler</a>
-                    <a href="#sonuc" class="text-slate-700 hover:text-sky-600">Sonuç</a>
-                    <a href="#kaynaklar" class="text-slate-700 hover:text-sky-600">Kaynaklar</a>
-                </div>
-            </nav>
+            <div class="flex items-center justify-center space-x-6">
+                <a href="#hero" class="text-gray-200 hover:text-FFD100">Başlangıç</a>
+                <a href="#giris" class="text-gray-200 hover:text-FFD100">Giriş</a>
+                <a href="#mevcut-durum" class="text-gray-200 hover:text-FFD100">Mevcut Durum</a>
+                <a href="#anahtar-veriler" class="text-gray-200 hover:text-FFD100">Anahtar Veriler</a>
+                <a href="#zihin-haritasi" class="text-gray-200 hover:text-FFD100">Etkileşimli Harita</a>
+                <a href="#sonuc" class="text-gray-200 hover:text-FFD100">Sonuç</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="hero" class="hero-bg py-16 md:py-24 text-center">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Kurumsal Risk & DÖF Süreç Analizi</h1>
+            <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Mevcut durumun derinlemesine incelenmesi, sorunların tespiti ve stratejik iyileştirme önerileri.</p>
+            <a href="#zihin-haritasi" class="cta-button font-semibold py-3 px-8 rounded-lg text-lg inline-block">Etkileşimli Haritayı Keşfet</a>
         </div>
     </header>
 
-    <main>
-        <section id="hero" class="hero-bg text-white min-h-screen flex items-center justify-center text-center px-6 pt-16">
-            <div class="max-w-3xl">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in-down">Kurumsal Risk ve DÖF Süreçleri Analizi</h1>
-                <p class="text-xl md:text-2xl mb-8 animate-fade-in-up">Mevcut durumun derinlemesine incelenmesi, sorunların tespiti ve stratejik iyileştirme önerileri.</p>
-                <a href="#zihin-haritasi-bolumu" class="bg-white text-sky-700 font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-sky-100 transition duration-300 transform hover:scale-105 animate-bounce-slow">Analizi Keşfet</a>
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <section id="giris" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">1. Giriş: Raporun Amacı ve Kapsamı</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    Bu infografik web sitesi, Mir Arge ve ilgili şirketlerin mevcut Kurumsal Risk Yönetimi ve Düzeltici ve Önleyici Faaliyetler (DÖF) süreçlerinin detaylı bir analizini sunmaktadır. Amacımız, <code class="bg-gray-200 px-1 rounded">dump.txt</code> dosyasında belirtilen analiz sonuçlarını, karmaşık verileri ve ilişkileri anlaşılır, etkileşimli ve görsel olarak çekici bir formatta sunarak, mevcut sorunların net bir şekilde anlaşılmasına, stratejik önerilerin değerlendirilmesine ve süreç iyileştirme adımlarının belirlenmesine katkıda bulunmaktır.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    Analizimiz, süreçlerdeki eksiklikleri, hataları ve bu durumların altında yatan temel nedenleri vurgulayarak, kurumun verimliliğini ve dayanıklılığını artıracak somut çözüm yolları önermektedir. Bu dijital sunum, geleneksel rapor formatlarının ötesine geçerek, bilgiyi daha dinamik ve akılda kalıcı bir şekilde paydaşlara ulaştırmayı hedefler.
+                </p>
             </div>
         </section>
 
-        <section id="giris" class="content-section bg-white">
-            <div class="container mx-auto px-6 max-w-4xl">
-                <h2 class="text-4xl font-bold text-sky-700 mb-8 text-center">1. Giriş</h2>
-                <div class="space-y-6 text-lg leading-relaxed text-slate-700">
-                    <p>Bu etkileşimli rapor, Mir Arge ve ilgili şirketlerin mevcut Kurumsal Risk Yönetimi ve Düzeltici ve Önleyici Faaliyetler (DÖF) süreçlerinin derinlemesine bir analizini sunmaktadır. Sağlanan belgeler, ses kaydı dökümü ve yapılan görüşmelerden elde edilen bilgiler kullanılarak, mevcut ("As-Is") durumun eksiklikleri, hataları ve bunların temelinde yatan somut nedenler detaylandırılmıştır.</p>
-                    <p>Raporun temel amacı, mevcut sorunları net bir şekilde ortaya koymak, yönetim kademesine yönelik stratejik öneriler sunmak ve süreçlerin iyileştirilmesi için somut adımların belirlenmesine zemin hazırlamaktır. Bu dijital platform, geleneksel rapor formatının ötesine geçerek, bilgiyi daha erişilebilir, anlaşılır ve etkileşimli bir şekilde sunmayı hedefler.</p>
-                </div>
-            </div>
-        </section>
+        <section id="mevcut-durum" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">2. Mevcut Durum Analizi ("As-Is")</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-8 text-center max-w-2xl mx-auto">
+                    Kurumsal Risk Yönetimi ve DÖF süreçlerinin mevcut işleyişi, <code class="bg-gray-200 px-1 rounded">dump.txt</code> analizine göre çeşitli zorluklar ve iyileştirme alanları barındırmaktadır. Aşağıda bu süreçlere dair genel bir bakış sunulmaktadır.
+                </p>
 
-        <section id="mevcut-durum" class="content-section bg-stone-50">
-            <div class="container mx-auto px-6 max-w-4xl">
-                <h2 class="text-4xl font-bold text-sky-700 mb-12 text-center">2. Mevcut Durum Analizi ("As-Is")</h2>
-                <p class="text-center text-xl text-slate-600 mb-10">Bu bölümde, Kurumsal Risk Yönetimi ve DÖF süreçlerinin mevcut işleyişi, temel zorluklar ve gözlemlenen pratikler detaylandırılmaktadır. Amaç, mevcut sistemin bir fotoğrafını çekerek iyileştirme alanları için bir zemin oluşturmaktır.</p>
-                
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                        <h3 class="text-2xl font-semibold text-sky-700 mb-4">2.1. Risk Yönetimi Süreci</h3>
-                        <div class="space-y-3 text-slate-700">
-                            <p><strong class="text-slate-800">Genel Yaklaşım:</strong> Yıl sonu planlama ve SWOT analizleri temel alınıyor. MS List kullanımı mevcut ancak sınırlı ve sezgisel analizler ön planda.</p>
-                            <p><strong class="text-slate-800">Temel Adımlar:</strong> Risk tespiti, analizi, değerlendirmesi, müdahalesi, izlenmesi ve raporlanması adımları mevcut. Ancak uygulamada standardizasyon ve derinlik eksiklikleri gözleniyor.</p>
-                            <p><strong class="text-slate-800">Gözlemlenen Zorluklar:</strong> "DELİKANLIYIZ BİZ" yaklaşımı gibi içselleştirilmiş risk kabulü, veri takibinde zorluklar, MS List'in etkin kullanılmaması ve risk etki boyutlarının net ölçülmemesi.</p>
-                            <p class="mt-4 text-sm text-sky-600 italic">"Süreç kağıt üzerinde var ama gerçek hayattaki uygulaması ve etkinliği sorgulanmalı."</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">Risk Yönetimi Süreci (Genel Akış)</h3>
+                        <div class="space-y-4">
+                            <div class="flowchart-step p-4 rounded-lg text-center shadow">Yıl Sonu Planlama & SWOT Analizi</div>
+                            <div class="text-center flowchart-arrow">↓</div>
+                            <div class="flowchart-step p-4 rounded-lg text-center shadow">Risk Tespiti (MS List ve Sezgisel Analiz)</div>
+                            <div class="text-center flowchart-arrow">↓</div>
+                            <div class="flowchart-step p-4 rounded-lg text-center shadow">Risk Değerlendirme (Etki/Olasılık - Genellikle Kalitatif)</div>
+                             <div class="text-center flowchart-arrow">↓</div>
+                            <div class="flowchart-step p-4 rounded-lg text-center shadow">Müdahale Planlama ve Uygulama</div>
                         </div>
+                         <p class="mt-4 text-sm text-gray-600 text-center">Not: <code class="bg-gray-200 px-1 rounded">dump.txt</code>'ye göre MS List kullanımı sınırlı ve standardizasyon eksik.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                        <h3 class="text-2xl font-semibold text-sky-700 mb-4">2.2. Düzeltici/Önleyici Faaliyetler (DÖF) Süreci</h3>
-                        <div class="space-y-3 text-slate-700">
-                            <p><strong class="text-slate-800">Genel Durum:</strong> DÖF bilinci ve süreç işletimi zayıf. Genellikle Kalite Yönetim Birimi (KYB) tarafından tetikleniyor, diğer birimlerden talep az.</p>
-                            <p><strong class="text-slate-800">Temel Adımlar:</strong> Başlatma, değerlendirme, kök neden analizi (5 Neden metoduyla), planlama, uygulama, kapatma ve izleme. Kök neden analizinde derinleşme eksikliği sıkça görülüyor.</p>
-                            <p><strong class="text-slate-800">Gözlemlenen Zorluklar:</strong> Süreçlerin "kıymetli görülmemesi", aksiyonların yapılmaması veya gecikmesi, mail ile takip zorluğu, tekrarlayan DÖF'ler arasında bağlantı kurulmaması ve "yapmıyorlar" gibi genel ifadelerle sorunların geçiştirilmesi.</p>
-                             <p class="mt-4 text-sm text-sky-600 italic">"DÖF, bir sorun çözme mekanizmasından çok, bir formalite gibi algılanabiliyor."</p>
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">DÖF Süreci (Genel Akış)</h3>
+                        <div class="space-y-4">
+                            <div class="flowchart-step p-4 rounded-lg text-center shadow">Uygunsuzluk Tespiti / DÖF Talebi (Genellikle KYB'den)</div>
+                            <div class="text-center flowchart-arrow">↓</div>
+                            <div class="flowchart-step p-4 rounded-lg text-center shadow">Kök Neden Analizi (5 Neden Yetersiz Kullanılıyor)</div>
+                            <div class="text-center flowchart-arrow">↓</div>
+                            <div class="flowchart-step p-4 rounded-lg text-center shadow">Aksiyon Planlama ve Uygulama (Takip Genellikle Mail İle)</div>
+                             <div class="text-center flowchart-arrow">↓</div>
+                            <div class="flowchart-step p-4 rounded-lg text-center shadow">Kapatma ve Etkinlik İzleme (Tekrarlayan DÖF'ler Sorunu)</div>
                         </div>
+                        <p class="mt-4 text-sm text-gray-600 text-center">Not: <code class="bg-gray-200 px-1 rounded">dump.txt</code>'ye göre DÖF bilinci düşük ve katılım yetersiz.</p>
                     </div>
                 </div>
-                 <div class="mt-12 bg-sky-50 p-6 rounded-lg border border-sky-200">
-                    <h4 class="text-xl font-semibold text-sky-700 mb-3">Genel Süreç Gözlemleri ve ISO Bağlamı</h4>
-                    <p class="text-slate-700 leading-relaxed">Her iki süreç de ISO 9001 gibi kalite yönetim standartlarının temel gerekliliklerindendir. Ancak analizler, süreçlerin standardın ruhuna uygun ve katma değer yaratacak şekilde işletilmesinde önemli iyileştirme alanları olduğunu göstermektedir. Kalite Yönetim Birimi'nin (KYB) süreçlerde merkezi bir rolü olsa da, süreç sahipliğinin ve etkin katılımın tüm organizasyona yayılması kritik bir ihtiyaçtır. Veri yönetimi, araç kullanımı ve kurumsal bilinç, her iki sürecin de temelini oluşturan ve iyileştirilmesi gereken en önemli ortak paydalardır.</p>
+                <div class="mt-8 p-4 bg-amber-100 border-l-4 border-amber-500 text-amber-700 rounded-md">
+                    <h4 class="font-bold">Önemli Tespit:</h4>
+                    <p><code class="bg-gray-200 px-1 rounded">dump.txt</code> analizine göre, her iki süreç de büyük ölçüde manuel ilerlemekte, veri yönetimi ve standardizasyon eksiklikleri bulunmaktadır. Dijital araçların potansiyeli tam olarak kullanılmamaktadır.</p>
                 </div>
             </div>
         </section>
 
-        <section id="zihin-haritasi-bolumu" class="content-section bg-white">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-sky-700 mb-6 text-center">3. Tespit Edilen Sorunlar, Kök Nedenler ve Çözüm Önerileri</h2>
-                <p class="text-center text-xl text-slate-600 mb-10">Aşağıdaki interaktif zihin haritası, analiz edilen süreçlerdeki temel sorunları, bu sorunların altında yatan kök nedenleri ve bunlara yönelik önerilen çözüm yollarını bir arada göstermektedir. Düğümlere tıklayarak detayları genişletebilir veya daraltabilirsiniz. Bazı düğümler, daha fazla bilgi içeren açıklama kutucuklarına sahiptir.</p>
-                <div id="mindMapVisualization" class="mind-map-container bg-stone-50 p-4 md:p-8 rounded-xl shadow-inner overflow-auto">
-                    <div id="mindMapRoot" class="mind-map">
-                        <ul></ul>
+        <section id="anahtar-veriler" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">3. Anahtar Veri Görselleştirmeleri</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-8 text-center max-w-2xl mx-auto">
+                    <code class="bg-gray-200 px-1 rounded">dump.txt</code> dosyasındaki analizlerden yola çıkarak, süreçlerdeki temel sorun alanlarının ve önerilen çözümlerin potansiyel etkilerini gösteren bazı temsili grafikler aşağıdadır. Bu grafikler, rapordaki kalitatif bulguları nicel bir perspektifle desteklemek amacıyla oluşturulmuştur.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-center" style="color: #0A2463;">Temel Sorun Alanlarının Tahmini Etki Düzeyi</h3>
+                        <div class="chart-container">
+                            <canvas id="sorunAlanlariChart"></canvas>
+                        </div>
+                        <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, <code class="bg-gray-200 px-1 rounded">dump.txt</code> Bölüm 4'te belirtilen ana sorun kategorilerinin süreçler üzerindeki tahmini etki büyüklüklerini göstermektedir.</p>
                     </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-center" style="color: #0A2463;">Öneri Türlerinin Dağılımı (Maliyet/Etki Perspektifi)</h3>
+                        <div class="chart-container">
+                            <canvas id="oneriTurleriChart"></canvas>
+                        </div>
+                         <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, <code class="bg-gray-200 px-1 rounded">dump.txt</code> Bölüm 5'teki önerilerin "Düşük Maliyet/Yüksek Etki" gibi kategorilere göre tahmini dağılımını göstermektedir.</p>
+                    </div>
+                </div>
+                 <div class="mt-8 text-center">
+                    <h3 class="text-2xl font-bold mb-2" style="color: #0A2463;">Vurgulanan Anahtar Sayı</h3>
+                    <div class="p-6 bg-sky-100 inline-block rounded-xl shadow-md">
+                        <p class="text-5xl font-extrabold" style="color: #3E92CC;">%70+</p>
+                        <p class="text-lg text-gray-700 mt-1">Süreçlerin Manuel Yürütülme Oranı (Tahmini)</p>
+                    </div>
+                     <p class="mt-3 text-sm text-gray-600">Bu değer, <code class="bg-gray-200 px-1 rounded">dump.txt</code>'deki "süreçler büyük ölçüde manuel ilerliyor" bulgusuna dayanan bir tahmindir.</p>
                 </div>
             </div>
         </section>
 
-        <section id="sonuc" class="content-section bg-stone-50">
-            <div class="container mx-auto px-6 max-w-4xl">
-                <h2 class="text-4xl font-bold text-sky-700 mb-8 text-center">4. Sonuç ve Gelecek Perspektifi</h2>
-                <div class="space-y-6 text-lg leading-relaxed text-slate-700">
-                    <p>Bu analiz, Mir Arge ve ilgili şirketlerin Kurumsal Risk Yönetimi ve DÖF süreçlerinde önemli iyileştirme potansiyelleri olduğunu net bir şekilde ortaya koymaktadır. Mevcut durumda manuel işleyen, veri takibi zor, standardizasyon eksikliği olan ve kurumsal bilincin düşük olduğu süreçler, verimsizliklere ve potansiyel risklerin gözden kaçmasına neden olabilmektedir.</p>
-                    <p>Temel sorun alanları; veri yönetimi ve sistem kullanımı eksiklikleri, düşük kurumsal bilinç, yetersiz süreç tanımları, dışa bağımlılık ve süreç sahipliği sorunları olarak öne çıkmaktadır. Bu sorunların kök nedenleri incelendiğinde, dijital araçların etkin kullanılmaması, eğitim eksikliği, metodolojik zafiyetler ve organizasyonel iletişim boşlukları gibi faktörler tespit edilmiştir.</p>
-                    <p>Önerilen temel iyileştirme alanları ise dijital araçların ve veri yönetiminin iyileştirilmesi, kurumsal bilinç ve katılımın artırılması, süreç tanımlarının netleştirilmesi ve takibinin güçlendirilmesi ile organizasyonel bağlantıların ve sahipliğin pekiştirilmesidir. Bu öneriler, özellikle düşük maliyetle yüksek etki yaratabilecek, somut ve uygulanabilir adımlara odaklanmaktadır.</p>
-                    <p class="font-semibold text-sky-700">Bu iyileştirmeler hayata geçirildiğinde, süreçlerin sadece bir "ISO gerekliliği" olmaktan çıkıp, gerçekten kurumsal verimliliği, dayanıklılığı ve proaktif karar alma yeteneğini artıran stratejik araçlara dönüşmesi hedeflenmektedir. Dijitalleşmeye ve yeni teknolojilere olan olumlu yaklaşım, bu dönüşüm için önemli bir fırsat sunmaktadır.</p>
+        <section id="zihin-haritasi" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">4. Etkileşimli Süreç Zihin Haritası</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center max-w-2xl mx-auto">
+                    Aşağıdaki etkileşimli zihin haritası, <code class="bg-gray-200 px-1 rounded">map.json</code> ve <code class="bg-gray-200 px-1 rounded">dump.txt</code> (Bölüm 4 ve 5) verilerinden faydalanarak kurumsal risk ve DÖF süreçlerindeki temel sorunları, kök nedenlerini ve bunlara yönelik çözüm önerilerini detaylı bir şekilde keşfetmenizi sağlar. Başlıkların yanındaki <span class="font-bold" style="color: #3E92CC;">▶</span> ikonuna tıklayarak ilgili alt başlıkları açabilir veya kapatabilirsiniz.
+                </p>
+                <div id="mindMapContainer" class="mind-map p-4 bg-slate-50 rounded-lg shadow-inner overflow-x-auto">
+                    <p class="text-center text-gray-500">Zihin haritası yükleniyor...</p>
+                </div>
+                 <div class="mt-6 p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700 rounded-md">
+                    <h4 class="font-bold">Nasıl Kullanılır?</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>Her bir ana başlık (örneğin, "Mevcut Durum", "Tespit Edilen Sorunlar") bir kategoriye işaret eder.</li>
+                        <li>Başlıkların yanındaki <span class="font-bold text-blue-600">▶</span> ikonuna tıklayarak o kategorinin alt detaylarını (sorunlar, nedenler, çözüm önerileri) görebilirsiniz.</li>
+                        <li>Tekrar tıklayarak alt detayları gizleyebilirsiniz.</li>
+                        <li>Bu yapı, rapordaki karmaşık ilişkileri daha kolay anlamanıza yardımcı olmak için tasarlanmıştır.</li>
+                    </ul>
                 </div>
             </div>
         </section>
-        
-        <section id="kaynaklar" class="content-section bg-white">
-            <div class="container mx-auto px-6 max-w-4xl">
-                <h2 class="text-4xl font-bold text-sky-700 mb-8 text-center">5. Kaynaklar ve Ek Bilgiler</h2>
-                <div class="space-y-6 text-slate-700">
-                    <h3 class="text-2xl font-semibold text-sky-600 mb-3">5.1. Temel Alınan Kaynaklar</h3>
-                    <ul class="list-disc list-inside space-y-2">
-                        <li>"Kurumsal Risk Yönetimi ve Düzeltici/Önleyici Faaliyetler (DÖF) Süreçleri Mevcut Durum Analizi ve İyileştirme Önerileri Raporu" (Sağlanan `dump.txt` içeriği)</li>
-                        <li>"Süreç Analizi ve İyileştirme Noktaları Zihin Haritası" (Sağlanan `map.json` içeriği)</li>
-                        <li>Genel proje yönetimi, süreç iyileştirme ve kalite yönetimi prensipleri.</li>
-                    </ul>
-                    <h3 class="text-2xl font-semibold text-sky-600 mb-3 mt-6">5.2. Analiz Metodolojisi Özeti</h3>
-                    <p>Bu interaktif raporun temelini oluşturan analiz, sağlanan metin tabanlı rapor (`dump.txt`) ve zihin haritası verileri (`map.json`) üzerinden gerçekleştirilmiştir. Mevcut durum, sorunlar, kök nedenler ve çözüm önerileri bu kaynaklardan sentezlenerek yapılandırılmıştır. Amaç, karmaşık bilgiyi daha anlaşılır ve keşfedilebilir bir formatta sunmaktır.</p>
-                    <h3 class="text-2xl font-semibold text-sky-600 mb-3 mt-6">5.3. Anahtar Terimler (Örnek)</h3>
-                     <ul class="list-disc list-inside space-y-2">
-                        <li><strong>DÖF (Düzeltici/Önleyici Faaliyet):</strong> Tespit edilen uygunsuzlukların veya potansiyel uygunsuzlukların nedenlerini ortadan kaldırmak için yapılan faaliyetler.</li>
-                        <li><strong>Kurumsal Risk Yönetimi:</strong> Bir kurumun hedeflerine ulaşmasını etkileyebilecek risklerin belirlenmesi, analiz edilmesi, değerlendirilmesi ve yönetilmesi süreci.</li>
-                        <li><strong>KYB (Kalite Yönetim Birimi):</strong> Kurum içinde kalite yönetim sistemlerinin kurulması, sürdürülmesi ve iyileştirilmesinden sorumlu birim.</li>
-                        <li><strong>MS List:</strong> Microsoft Lists, veri takibi ve iş akışı yönetimi için kullanılabilecek bir Microsoft 365 uygulaması.</li>
-                        <li><strong>SWOT Analizi:</strong> Bir kurumun Güçlü Yönlerini, Zayıf Yönlerini, Fırsatlarını ve Tehditlerini değerlendiren stratejik bir planlama tekniği.</li>
-                    </ul>
-                </div>
+
+        <section id="sonuc" class="scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">5. Sonuç ve Gelecek Perspektifi</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    <code class="bg-gray-200 px-1 rounded">dump.txt</code> dosyasında detaylandırılan analiz, Kurumsal Risk Yönetimi ve DÖF süreçlerinde önemli iyileştirme potansiyelleri olduğunu ortaya koymaktadır. Tespit edilen eksiklikler (veri yönetimi, standardizasyon, kurumsal bilinç, süreç sahipliği vb.) ve bunların kök nedenleri, kurumun verimliliğini, karar alma mekanizmalarını ve genel dayanıklılığını olumsuz etkileyebilmektedir.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    Önerilen çözümler, özellikle dijital araçların etkin kullanımı, süreç tanımlarının netleştirilmesi, çalışan katılımının ve bilincinin artırılması ile organizasyonel bağlantıların güçlendirilmesi üzerine odaklanmaktadır. Bu iyileştirmeler hayata geçirildiğinde, süreçlerin sadece bir "ISO gerekliliği" olmaktan çıkıp, gerçekten kurumsal performansı ve stratejik hedeflere ulaşmayı destekleyen değerli araçlara dönüşmesi hedeflenmektedir.
+                </p>
+                 <p class="text-lg text-gray-700 leading-relaxed font-semibold" style="color: #0A2463;">
+                    Bu interaktif sunumun, rapordaki bulguların daha geniş bir kitle tarafından anlaşılmasına ve önerilen aksiyonların hayata geçirilmesi için gerekli motivasyonun sağlanmasına katkıda bulunması umulmaktadır.
+                </p>
             </div>
         </section>
     </main>
 
-    <footer class="bg-slate-800 text-stone-300 py-12 text-center">
+    <footer class="bg-gray-800 text-gray-300 py-8 text-center">
         <div class="container mx-auto px-6">
-            <p>&copy; <span id="currentYear"></span> Kurumsal Süreç Analizi Raporu. Tüm hakları saklıdır.</p>
-            <p class="text-sm mt-2">Bu interaktif rapor, sağlanan verilere dayanarak oluşturulmuştur.</p>
+            <p>&copy; <span id="currentYear"></span> Kurumsal Analiz Raporu. Tüm hakları saklıdır.</p>
+            <p class="text-sm mt-2">Bu infografik, sağlanan verilere dayanarak oluşturulmuştur.</p>
         </div>
     </footer>
 
-    <div id="detailModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h3 id="modalTitle" class="text-2xl modal-title">Detaylar</h3>
-            <div id="modalBody" class="modal-body">
-                <p>İçerik buraya yüklenecek...</p>
-            </div>
-        </div>
-    </div>
-    
-    <div id="tooltip" class="tooltip"></div>
-
-
     <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
@@ -319,329 +315,302 @@
                 }
             });
         });
+        
+        // Responsive Navbar Scroll Behavior
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop && scrollTop > 80) { // Scroll Down and past 80px
+                    navbar.style.top = '-80px'; // Hide navbar
+                } else { // Scroll Up or at top
+                    navbar.style.top = '0'; // Show navbar
+                }
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+            }, false);
+        }
 
-        // Set current year in footer
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Mind Map Data (from map.json, adapted)
-        const mindMapData = {
-          "name": "Kurumsal Risk ve DÖF Süreçleri Analizi ve İyileştirme Alanları",
-          "children": [
-            {
-              "name": "Mevcut Durum (As-Is)",
-              "details": "Kurumun mevcut süreçlerinin genel bir fotoğrafı, temel işleyiş biçimleri ve karşılaşılan genel zorluklar.",
-              "children": [
-                {
-                  "name": "Genel Sorunlar (As-Is)",
-                  "details": "`dump.txt`'de belirtilen genel süreç sorunları ve mevcut durumdaki temel aksaklıklar.",
-                  "children": [
-                    {"name": "Süreçler büyük ölçüde manuel ilerliyor", "details": "Birçok süreç hala insan müdahalesine dayalı ve otomatikleştirilmemiş. Bu durum hata riskini artırıyor ve verimliliği düşürüyor. (dump.txt Bölüm 4.1)"},
-                    {"name": "Veri takibi zorlaşıyor / imkansızlaşıyor", "details": "Manuel süreçler ve dağınık veri kaynakları nedeniyle süreç performansını ve sonuçlarını takip etmek güçleşiyor. (dump.txt Bölüm 4.1)"},
-                    {"name": "MS List aktif ve tam kapsamlı kullanılmıyor", "details": "MS List gibi mevcut dijital araçlar potansiyelinin altında kullanılıyor veya hiç kullanılmıyor. (dump.txt Bölüm 4.1)"},
-                    {"name": "Excel gibi eski yöntemlerden tam kopulamadı", "details": "Örn: Patent Excel. Daha modern ve entegre çözümler yerine Excel gibi araçlarda ısrar edilmesi veri silolarına yol açıyor. (dump.txt Bölüm 4.1)"},
-                    {"name": "Merkeziyetçi ve düzgün veri yönetimi yapısı yok", "details": "Verilerin tek bir merkezden, standartlara uygun şekilde yönetilmemesi tutarsızlıklara ve bilgi kaybına neden oluyor. (dump.txt Bölüm 4.1)"},
-                    {"name": "Düşük kurumsal bilinç ve çalışan katılımı", "details": "Süreçlerin önemi konusunda yeterli farkındalık olmaması ve çalışanların süreçlere aktif katılım göstermemesi. (dump.txt Bölüm 4.2)"},
-                    {"name": "Süreçler 'çok kıymetli bir süreçmiş gibi' görülmüyor", "details": "Risk yönetimi ve DÖF gibi süreçlerin, kurumsal başarı için kritik olduğu algısının zayıf olması. (dump.txt Bölüm 4.2)"}
-                  ]
-                },
-                {
-                  "name": "Risk Yönetimi Süreci (Spesifik Sorunlar)",
-                  "details": "`dump.txt` Bölüm 3.1 ve Bölüm 4'teki risk yönetimiyle ilgili spesifik sorunlar.",
-                  "children": [
-                    {"name": "Riskler genelde sezgisel analizle belirleniyor", "details": "Sistematik ve veri odaklı risk analizi yerine, kişisel deneyim ve sezgilere dayalı değerlendirmeler yapılıyor. (dump.txt Bölüm 3.1, 4.3)"},
-                    {"name": "Etki ve olasılık boyutları net ölçülmüyor/kaydedilmiyor", "details": "Risklerin potansiyel etkileri ve gerçekleşme olasılıkları somut verilerle ölçülüp belgelenmiyor. (dump.txt Bölüm 3.1, 4.3)"},
-                    {"name": "SWOT analizi risk yönetiminin temeli gibi görülüyor ama yetersiz", "details": "SWOT analizi faydalı bir başlangıç noktası olsa da, kapsamlı bir risk yönetimi için tek başına yeterli değil. (dump.txt Bölüm 3.1)"},
-                    {"name": "'DELİKANLIYIZ BİZ' yaklaşımı (Risk kabulü yüksek)", "details": "Risklerin hafife alınması veya gereğinden fazla risk alınması eğilimi. (dump.txt Bölüm 3.1)"}
-                  ]
-                },
-                {
-                  "name": "DÖF Süreci (Spesifik Sorunlar)",
-                  "details": "`dump.txt` Bölüm 3.2 ve Bölüm 4'teki DÖF süreciyle ilgili spesifik sorunlar.",
-                  "children": [
-                    {"name": "KYB dışından DÖF talebi neredeyse hiç gelmiyor", "details": "DÖF ihtiyacının sadece Kalite Yönetim Birimi tarafından tespit edilmesi, diğer birimlerin sürece dahil olmadığını gösteriyor. (dump.txt Bölüm 3.2, 4.2)"},
-                    {"name": "Kök neden analizi (5 Neden vb.) yüzeysel kalıyor", "details": "Sorunların temel nedenlerine inmek yerine semptomlara odaklanılıyor, bu da sorunların tekrarlamasına yol açıyor. (dump.txt Bölüm 3.2, 4.3)"},
-                    {"name": "Aksiyonlar için sorumlu atanıyor ama takip edilmiyor/yapılmıyor", "details": "Belirlenen düzeltici faaliyetlerin sorumlular tarafından yerine getirilip getirilmediği etkin bir şekilde takip edilmiyor. (dump.txt Bölüm 3.2, 4.2)"},
-                    {"name": "Tekrarlayan DÖF'ler arasında bağlantı kurulmuyor", "details": "Benzer sorunlar için açılan DÖF'ler arasında ilişki kurulmaması, öğrenme ve kalıcı çözüm üretme fırsatını engelliyor. (dump.txt Bölüm 3.2, 4.3)"},
-                    {"name": "Mail ile takip verimsiz ve zor", "details": "DÖF süreçlerinin e-posta üzerinden takibi, bilgi kaybına, gecikmelere ve koordinasyon eksikliğine neden oluyor. (dump.txt Bölüm 3.2, 4.1)"}
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "Tespit Edilen Ana Sorun Kategorileri (dump.txt Bölüm 4)",
-              "details": "Raporda detaylandırılan ve süreçlerin etkinliğini düşüren temel sorun alanları.",
-              "children": [
-                {
-                  "name": "4.1. Veri Yönetimi, Sistem Kullanımı ve Standardizasyon Eksiklikleri",
-                  "details": "Somut Neden Canlanması: 'Patent başvurularını bir Excel'de takip ediyoruz, başka bir birim başka bir Excel'de... Kimin Excel'i güncel, kim neyi takip ediyor belli değil. Toplantılarda bu Excel'leri birleştirmek saatler sürüyor.' (dump.txt Bölüm 4.1)",
-                  "children": [
-                      {"name": "Manuel süreçler, veri takibi zor", "details": "Otomasyon eksikliği, süreçlerin insan eliyle yürütülmesine ve verilerin manuel olarak işlenmesine neden oluyor. Bu durum, veri giriş hatalarına, zaman kaybına ve tutarsızlıklara yol açıyor."},
-                      {"name": "MS List gibi araçlar aktif kullanılmıyor", "details": "Mevcut dijital araçların potansiyelleri tam olarak değerlendirilmiyor, bu da manuel çalışmayı ve verimsizliği artırıyor."},
-                      {"name": "Standardizasyon eksikliği (farklı formatlar, dağınık veri)", "details": "Verilerin farklı formatlarda ve farklı yerlerde tutulması, veri bütünlüğünü ve erişilebilirliğini olumsuz etkiliyor."},
-                      {"name": "Sistemler arası entegrasyon zayıf", "details": "Kullanılan farklı yazılımlar ve sistemler arasında veri akışının olmaması veya yetersiz olması, silolar yaratıyor."}
-                  ]
-                },
-                {
-                  "name": "4.2. Düşük Kurumsal Bilinç ve Çalışan Katılımı",
-                  "details": "Somut Neden Canlanması: 'Risk değerlendirmesi yapıyoruz ama kimse ciddiye almıyor. 'Bu da neymiş, başımıza iş çıkardınız' diyorlar. Sonra bir sorun olunca 'Neden önlem alınmadı?' diye soruluyor.' (dump.txt Bölüm 4.2)",
-                   "children": [
-                      {"name": "Süreçler 'kıymetli' görülmüyor", "details": "Risk yönetimi ve DÖF süreçlerinin kurumsal hedeflere ulaşmadaki kritik rolü yeterince anlaşılmamış."},
-                      {"name": "KYB dışı DÖF talebi azlığı", "details": "Süreç iyileştirme sorumluluğunun sadece Kalite Yönetim Birimi'ne ait olduğu gibi yanlış bir algı var."},
-                      {"name": "Aksiyonların yapılmaması/geçiştirilmesi", "details": "Belirlenen aksiyonlara yeterli öncelik verilmemesi veya kaynak ayrılmaması."},
-                      {"name": "Eğitim ve bilgilendirme yetersizliği", "details": "Çalışanların süreçler, araçlar ve metodolojiler konusunda yeterli bilgi ve beceriye sahip olmaması."}
-                  ]
-                },
-                {
-                  "name": "4.3. Yetersiz Tanımlanmış Süreç Adımları ve Metodoloji Uygulaması",
-                  "details": "Somut Neden Canlanması: 'Bir DÖF açıyoruz, kök neden olarak 'çalışan hatası' yazıp kapatıyoruz. Aynı hata üç ay sonra tekrar oluyor. Çünkü asıl neden belki de eğitimsizlik veya sürecin kendisindeki bir tasarım hatası.' (dump.txt Bölüm 4.3)",
-                  "children": [
-                      {"name": "Sezgisel risk analizi, etki/olasılık ölçülmüyor", "details": "Risklerin analizi ve değerlendirilmesi, objektif verilere ve standart metodolojilere dayanmıyor."},
-                      {"name": "Kök neden analizinde yetersizlik", "details": "Sorunların görünen yüzeyinin ötesine geçilerek gerçek temel nedenlerin tespit edilememesi."},
-                      {"name": "Tekrarlayan DÖF'lerde bağlantı/ders çıkarma eksikliği", "details": "Geçmişte yaşanan benzer sorunlardan ve alınan derslerden yeterince faydalanılmaması."},
-                      {"name": "Metodolojilerin (örn: 5 Neden) tam uygulanmaması", "details": "Standart problem çözme ve analiz metodolojilerinin bilinmemesi veya eksik uygulanması."}
-                  ]
-                },
-                {
-                  "name": "4.4. Dışa Bağımlılık ve Organizasyonel Önceliklendirme Farklılıkları",
-                  "details": "Somut Neden Canlanması: 'Bizim için çok kritik bir riskin önlenmesi gerekiyor ama Holding IT birimi 'Bizim önceliğimiz bu değil, 3 ay sonra bakabiliriz' diyor. O zamana kadar o risk gerçekleşirse ne olacak?' (dump.txt Bölüm 4.4)",
-                   "children": [
-                      {"name": "Holding birimlerine (IT, Finans vb.) bağımlılık", "details": "Bazı süreçlerin veya aksiyonların tamamlanması için diğer birimlerin desteğine ihtiyaç duyulması ve bu desteklerin zamanında gelmemesi."},
-                      {"name": "Önceliklendirme çatışmaları", "details": "Farklı birimlerin veya projelerin önceliklerinin çakışması, risk ve DÖF aksiyonlarının gecikmesine neden oluyor."}
-                  ]
-                },
-                {
-                  "name": "4.5. Yönetici Eksikliği ve Süreç Sahipliği Sorunları",
-                  "details": "Somut Neden Canlanması: 'Toplantıda bir sürü aksiyon kararı alınıyor. Kimin neyi ne zaman yapacağı belli değil. Bir sonraki toplantıda 'Kim yapacaktı bunu?' diye soruluyor. Konunun sahibi yoksa konu nasıl yapılsın?' (dump.txt Bölüm 4.5)",
-                  "children": [
-                      {"name": "Yöneticilerin süreçlere yeterince odaklanmaması", "details": "Üst yönetimin ve birim yöneticilerinin risk yönetimi ve DÖF süreçlerine yeterli zaman ve kaynağı ayırmaması."},
-                      {"name": "Süreç sahipliğinin net olmaması", "details": "Belirli süreçlerin veya aksiyonların sorumluluğunun kimde olduğunun açıkça tanımlanmamış olması."},
-                      {"name": "'Konunun sahibi yoksa konu nasıl yapılsın?' durumu", "details": "Sahiplenilmeyen işlerin ve sorumlulukların ortada kalması."}
-                  ]
-                }
-              ]
-            },
-            {
-              "name": "Temel Öneri Alanları ve Alınabilecek Aksiyonlar (dump.txt Bölüm 5)",
-              "details": "Tespit edilen sorunlara yönelik olarak geliştirilen, özellikle düşük maliyetle yüksek etki yaratabilecek çözüm önerileri ve aksiyon planları.",
-              "children": [
-                {
-                  "name": "5.1. Dijital Araçların ve Veri Yönetiminin İyileştirilmesi",
-                  "details": "Neden (Düşük Maliyetli/Yüksek Etkili): Mevcut MS List gibi araçların etkin kullanımı, manuel iş yükünü azaltır, veri doğruluğunu artırır ve raporlamayı kolaylaştırır. Otomasyon, uzun vadede büyük verimlilik sağlar.",
-                  "children": [
-                      {"name": "MS List'in aktif ve tam kapsamlı kullanımı", "details": "Risk ve DÖF takibi için MS List'in tüm özellikleriyle (formlar, görünümler, akışlar) kullanılması."},
-                      {"name": "Manuel süreçlerin mümkün olduğunca otomasyonu (Power Automate vb.)", "details": "Tekrarlayan görevlerin, onay süreçlerinin ve bildirimlerin Power Automate gibi araçlarla otomatikleştirilmesi."},
-                      {"name": "Veri girişi için kılavuzlu matrisler/formlar oluşturma", "details": "Veri girişini standartlaştırmak ve kolaylaştırmak için kullanıcı dostu formlar ve yönlendirici matrisler tasarlanması."},
-                      {"name": "Merkezi ve standart bir veri tabanı/platformu oluşturma hedefi", "details": "Tüm risk ve DÖF verilerinin tek bir, güvenilir ve erişilebilir platformda toplanması."}
-                  ]
-                },
-                {
-                  "name": "5.2. Kurumsal Bilinç ve Katılımın Artırılması",
-                  "details": "Neden (Düşük Maliyetli/Yüksek Etkili): Çalışanların süreçlerin önemini anlaması ve aktif katılımı, süreçlerin etkinliğini doğrudan artırır. Eğitimler, davranış değişikliği ve sahiplenme kültürü oluşturur.",
-                  "children": [
-                      {"name": "Çalışan odaklı, pratik ve sürekli eğitimler düzenleme", "details": "Risk yönetimi, DÖF metodolojileri ve kullanılan araçlar hakkında düzenli, interaktif ve vaka çalışmalarıyla desteklenmiş eğitimler verilmesi."},
-                      {"name": "Süreçlerin faydalarını ve başarı hikayelerini paylaşma", "details": "İyileştirilen süreçlerin kuruma ve çalışanlara sağladığı somut faydaların ve başarı öykülerinin düzenli olarak paylaşılması."},
-                      {"name": "Risk ve DÖF süreçlerini performans değerlendirme sistemine entegre etme", "details": "Çalışanların ve yöneticilerin süreçlere katılımının ve başarılarının performans değerlendirmelerinde bir kriter olması."},
-                      {"name": "'Citizen Developer' konseptini yaygınlaştırma (basit otomasyonlar için)", "details": "Teknik olmayan çalışanların da basit iş akışlarını Power Apps/Automate gibi araçlarla kendilerinin otomatize edebilmeleri için teşvik edilmesi ve eğitilmesi."}
-                  ]
-                },
-                {
-                  "name": "5.3. Süreç Tanımlarının Netleştirilmesi ve Uygulamanın Takibi",
-                  "details": "Neden (Düşük Maliyetli/Yüksek Etkili): Net süreç adımları ve sorumluluklar, belirsizliği azaltır ve tutarlı uygulamayı sağlar. Etkin takip, aksiyonların zamanında tamamlanmasını garanti eder.",
-                  "children": [
-                      {"name": "Risk analizi metodolojisini standartlaştırma (etki/olasılık matrisi vb.)", "details": "Tüm birimlerde ortak bir risk değerlendirme metodolojisi ve matrisinin kullanılması."},
-                      {"name": "Yüksek riskler için özel takip ve raporlama protokolü", "details": "Belirli bir eşiğin üzerindeki riskler için daha sıkı takip, düzenli raporlama ve üst yönetim bilgilendirmesi mekanizmaları kurulması."},
-                      {"name": "DÖF sürecinde 'askıya alma' veya 'reddetme' durumlarını tanımlama", "details": "Açılamayacak veya devam ettirilemeyecek DÖF talepleri için net kriterler ve süreçler belirlenmesi."},
-                      {"name": "Kök neden analizinde kullanılan tekniklerin (örn: Balık Kılçığı) yaygınlaştırılması", "details": "5 Neden analizine ek olarak, daha kapsamlı kök neden analizi tekniklerinin öğretilmesi ve kullanılması."}
-                  ]
-                },
-                {
-                  "name": "5.4. Organizasyonel Bağlantıların ve Sahipliğin Güçlendirilmesi",
-                  "details": "Neden (Maliyet/Etki Değişken): Net süreç sahipliği ve birimler arası güçlü iletişim, süreçlerin sorunsuz işlemesi için kritiktir. Üst yönetim desteği, bu yapısal değişikliklerin başarısını garantiler.",
-                   "children": [
-                      {"name": "Holding veya diğer bağımlı birimlerle SLA benzeri mutabakatlar", "details": "Destek veya hizmet alınan diğer birimlerle (örn: IT) hizmet seviyesi anlaşmaları yaparak beklentilerin ve sorumlulukların netleştirilmesi."},
-                      {"name": "Her süreç adımı için net sorumlu ve katılımcıların belirlenmesi (RACI matrisi vb.)", "details": "Süreçlerde kimin sorumlu, kimin hesap verebilir, kimin danışılacak ve kimin bilgilendirileceğinin açıkça tanımlanması."},
-                      {"name": "Yöneticilerin süreç performansını KPI'larına dahil etme", "details": "Birim yöneticilerinin performans hedefleri arasına, yönettikleri süreçlerin etkinliği ve iyileştirilmesiyle ilgili metrikler eklenmesi."},
-                      {"name": "Risk ve DÖF komitelerinin etkinliğinin artırılması", "details": "Mevcut komitelerin daha aktif çalışması, düzenli toplanması ve kararlarının takip edilmesi."}
-                  ]
-                }
-              ]
+        // Chart.js Label Wrapping Function
+        function wrapLabels(label, maxWidth) {
+            if (typeof label !== 'string' || label.length <= maxWidth) {
+                return label;
             }
-          ]
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.trim().length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        // Chart.js Tooltip Configuration
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            if (!item) return '';
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
         };
         
-        const mindMapRootElement = document.getElementById('mindMapRoot').querySelector('ul');
-        const tooltipElement = document.getElementById('tooltip');
+        // Chart Data and Options
+        const sorunAlanlariData = {
+            labels: [
+                'Veri Yönetimi ve Standardizasyon Eksiklikleri', 
+                'Düşük Kurumsal Bilinç ve Çalışan Katılımı', 
+                'Yetersiz Tanımlanmış Süreç Adımları', 
+                'Dışa Bağımlılık ve Önceliklendirme Farklılıkları', 
+                'Yönetici Eksikliği ve Süreç Sahipliği Sorunları'
+            ].map(label => wrapLabels(label, 16)),
+            datasets: [{
+                label: 'Tahmini Etki Düzeyi (1-10)',
+                data: [8, 9, 7, 6, 7.5], // Mock data based on dump.txt qualitative assessment
+                backgroundColor: ['#3E92CC', '#20C997', '#FFD100', '#F7882F', '#6F42C1'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2
+            }]
+        };
 
-        function createNodeElement(nodeData, level) {
-            const li = document.createElement('li');
-            if (nodeData.children && nodeData.children.length > 0) {
-                li.classList.add('has-children');
+        const sorunAlanlariOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                legend: { display: false },
+                title: { display: false },
+                tooltip: { callbacks: { title: tooltipTitleCallback } }
+            },
+            scales: {
+                x: { 
+                    beginAtZero: true,
+                    max: 10,
+                    grid: { color: 'rgba(0,0,0,0.05)'} 
+                },
+                y: { grid: { display: false } }
+            }
+        };
+
+        const oneriTurleriData = {
+            labels: ['Düşük Maliyet / Yüksek Etki', 'Orta Maliyet / Yüksek Etki', 'Diğer Stratejik Öneriler'].map(label => wrapLabels(label, 16)),
+            datasets: [{
+                label: 'Öneri Sayısı',
+                data: [65, 25, 10], // Mock data representing distribution
+                backgroundColor: ['#20C997', '#3E92CC', '#FFD100'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2,
+                hoverOffset: 4
+            }]
+        };
+
+        const oneriTurleriOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { display: false },
+                tooltip: { callbacks: { title: tooltipTitleCallback } }
+            }
+        };
+
+        // Render Charts
+        window.addEventListener('load', () => {
+            const sorunCtx = document.getElementById('sorunAlanlariChart');
+            if (sorunCtx) new Chart(sorunCtx, { type: 'bar', data: sorunAlanlariData, options: sorunAlanlariOptions });
+
+            const oneriCtx = document.getElementById('oneriTurleriChart');
+            if (oneriCtx) new Chart(oneriCtx, { type: 'doughnut', data: oneriTurleriData, options: oneriTurleriOptions });
+            
+            fetchMindMapData();
+        });
+
+        // Mind Map Functionality
+        async function fetchMindMapData() {
+            // In a real scenario, you'd fetch map.json. Here, embedding it for single-file simplicity.
+            const mindMapData = {
+              "mindMap": {
+                "name": "Kurumsal Risk ve DÖF Süreçleri Analizi ve İyileştirme Alanları",
+                "children": [
+                  {
+                    "name": "Mevcut Durum (As-Is)",
+                    "children": [
+                      {
+                        "name": "Genel Sorunlar (dump.txt'den özet)",
+                        "children": [
+                          {"name": "Süreçler büyük ölçüde manuel ilerliyor"},
+                          {"name": "Veri takibi zorlaşıyor / imkansızlaşıyor"},
+                          {"name": "MS List aktif ve tam kapsamlı kullanılmıyor"},
+                          {"name": "Excel gibi eski yöntemlerden tam kopulamadı"},
+                          {"name": "Merkeziyetçi ve düzgün veri yönetimi yapısı yok"},
+                          {"name": "Düşük kurumsal bilinç ve çalışan katılımı"},
+                          {"name": "Süreçler 'çok kıymetli bir süreçmiş gibi' görülmüyor"}
+                        ]
+                      },
+                      {
+                        "name": "Risk Yönetimi Sürecindeki Sorunlar",
+                        "children": [
+                          {"name": "Risk tespiti daha çok yıl sonu planlamasına ve sezgisel analize dayalı"},
+                          {"name": "Etki ve olasılık boyutları genellikle ölçülmüyor/kaydedilmiyor"},
+                          {"name": "'DELİKANLIYIZ BİZ' yaklaşımı: Riskler öngörülse de aksiyon alınmayabiliyor"}
+                        ]
+                      },
+                      {
+                        "name": "DÖF Sürecindeki Sorunlar",
+                        "children": [
+                          {"name": "DÖF bilinci zayıf, süreç genellikle KYB dışından talep almıyor"},
+                          {"name": "Kök neden analizi (örn: 5 Neden) etkin kullanılmıyor"},
+                          {"name": "Aksiyon takibi çoğunlukla mail üzerinden, verimsiz"},
+                          {"name": "Tekrarlayan DÖF'ler için bağlantı kurma ve önleyici analiz eksik"}
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Tespit Edilen Ana Eksiklik Kategorileri (dump.txt Bölüm 4)",
+                    "children": [
+                      {
+                        "name": "4.1. Veri Yönetimi, Sistem Kullanımı ve Standardizasyon Eksiklikleri",
+                        "children": [
+                          {"name": "Eksiklik: Süreçler manuel, veri takibi zor, MS List aktif değil."},
+                          {"name": "Somut Neden Örneği: MS List'te DÖF takibi için alanlar tanımlı değil."}
+                        ]
+                      },
+                      {
+                        "name": "4.2. Düşük Kurumsal Bilinç ve Çalışan Katılımı",
+                        "children": [
+                            {"name": "Eksiklik: Süreçler kıymetli görülmüyor, KYB dışı talep az."},
+                            {"name": "Somut Neden Örneği: Çalışanlar süreçlerin faydasını ve nasıl işlediğini bilmiyor."}
+                        ]
+                      },
+                      {
+                        "name": "4.3. Yetersiz Tanımlanmış Süreç Adımları ve Metodoloji Uygulaması",
+                         "children": [
+                            {"name": "Eksiklik: Risk analizinde metodoloji eksik, etki boyutu ölçülmüyor."},
+                            {"name": "Somut Neden Örneği: Risk değerlendirme matrisi veya kılavuzu yok."}
+                        ]
+                      },
+                      {
+                        "name": "4.4. Dışa Bağımlılık ve Organizasyonel Önceliklendirme Farklılıkları",
+                        "children": [
+                            {"name": "Eksiklik: Holding birimlerine bağımlılık aksiyonları geciktiriyor."},
+                            {"name": "Somut Neden Örneği: Holding IT'nin öncelikleri farklı olabiliyor."}
+                        ]
+                      },
+                      {
+                        "name": "4.5. Yönetici Eksikliği ve Süreç Sahipliği Sorunları",
+                        "children": [
+                            {"name": "Eksiklik: Yöneticiler süreçlere yeterince odaklanmıyor, sahiplik belirsiz."},
+                            {"name": "Somut Neden Örneği: 'Konunun sahibi yoksa konu nasıl yapılsın?'"}
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Temel Öneri Alanları (dump.txt Bölüm 5)",
+                    "children": [
+                      {
+                        "name": "5.1. Dijital Araçların ve Veri Yönetiminin İyileştirilmesi",
+                        "children": [
+                          {"name": "Öneri: MS List'in aktif kullanımı, otomasyon, kılavuzlu matrisler."},
+                          {"name": "Gerekçe: Düşük maliyet, yüksek etki, şeffaflık ve verimlilik artışı."}
+                        ]
+                      },
+                      {
+                        "name": "5.2. Kurumsal Bilinç ve Katılımın Artırılması",
+                        "children": [
+                          {"name": "Öneri: Çalışan odaklı eğitimler, 'Citizen Developer' konsepti."},
+                           {"name": "Gerekçe: Süreç sahiplenme, proaktif katılım, yenilikçilik kültürü."}
+                        ]
+                      },
+                      {
+                        "name": "5.3. Süreç Tanımlarının Netleştirilmesi ve Uygulamanın Takibi",
+                        "children": [
+                          {"name": "Öneri: Risk analiz metodolojisi, yüksek risk protokolü, DÖF 'askıya alma' durumu."},
+                          {"name": "Gerekçe: Standardizasyon, tutarlılık, etkin sorun çözme."}
+                        ]
+                      },
+                      {
+                        "name": "5.4. Organizasyonel Bağlantıların ve Sahipliğin Güçlendirilmesi",
+                        "children": [
+                          {"name": "Öneri: Holding birimleriyle SLA benzeri mutabakatlar, yönetici rolleri ve KPI entegrasyonu."},
+                          {"name": "Gerekçe: Sorumlulukların netleşmesi, kaynakların etkin kullanımı."}
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            };
+            
+            const container = document.getElementById('mindMapContainer');
+            if (container) {
+                container.innerHTML = ''; // Clear loading text
+                const rootUl = createMindMapNode(mindMapData.mindMap, true);
+                container.appendChild(rootUl);
+            }
+        }
+
+        function createMindMapNode(nodeData, isRoot = false) {
+            const ul = document.createElement('ul');
+            if (isRoot) {
+                ul.classList.add('root-node'); // For potential root-specific styling
             }
 
+            const item = document.createElement('li');
+            
             const nodeDiv = document.createElement('div');
-            nodeDiv.classList.add('mind-map-node', `level-${level}`);
-            nodeDiv.textContent = nodeData.name;
+            nodeDiv.classList.add('node-item');
             
-            if (nodeData.children && nodeData.children.length > 0) {
-                nodeDiv.classList.add('has-children');
-                nodeDiv.addEventListener('click', () => {
-                    li.classList.toggle('hidden-children');
-                    nodeDiv.classList.toggle('expanded');
-                });
-            }
+            const toggleIcon = document.createElement('span');
+            toggleIcon.classList.add('toggle-icon');
+            toggleIcon.innerHTML = '▶'; // Default to collapsed
 
-            if (nodeData.details) {
-                nodeDiv.setAttribute('data-details', nodeData.details);
-                nodeDiv.addEventListener('mouseenter', (event) => showTooltip(event, nodeData.details));
-                nodeDiv.addEventListener('mouseleave', hideTooltip);
-                nodeDiv.addEventListener('click', (event) => { // Also show in modal on click
-                    if (event.target === nodeDiv) { // Ensure click is on the node itself, not children
-                       showModal(nodeData.name, nodeData.details);
-                    }
-                });
-            }
+            const nodeText = document.createElement('span');
+            nodeText.classList.add('node-text');
+            nodeText.textContent = nodeData.name;
             
-            li.appendChild(nodeDiv);
+            nodeDiv.appendChild(toggleIcon);
+            nodeDiv.appendChild(nodeText);
+            item.appendChild(nodeDiv);
 
             if (nodeData.children && nodeData.children.length > 0) {
-                const childrenUl = document.createElement('ul');
+                const childrenDiv = document.createElement('div');
+                childrenDiv.classList.add('children');
                 nodeData.children.forEach(childNode => {
-                    childrenUl.appendChild(createNodeElement(childNode, level + 1));
+                    childrenDiv.appendChild(createMindMapNode(childNode));
                 });
-                li.appendChild(childrenUl);
-                li.classList.add('hidden-children'); // Start collapsed
-            }
-            return li;
-        }
+                item.appendChild(childrenDiv);
 
-        function renderMindMap(data, parentElement) {
-            parentElement.innerHTML = ''; // Clear previous map
-             // Create a root li for the main title
-            const rootLi = document.createElement('li');
-            const rootNodeDiv = document.createElement('div');
-            rootNodeDiv.classList.add('mind-map-node', 'level-0', 'expanded'); // Start main title expanded
-            rootNodeDiv.textContent = data.name;
-            if (data.details) {
-                 rootNodeDiv.setAttribute('data-details', data.details);
-                 rootNodeDiv.addEventListener('mouseenter', (event) => showTooltip(event, data.details));
-                 rootNodeDiv.addEventListener('mouseleave', hideTooltip);
-                 rootNodeDiv.addEventListener('click', (event) => {
-                     if (event.target === rootNodeDiv) showModal(data.name, data.details);
-                 });
+                nodeDiv.addEventListener('click', () => {
+                    childrenDiv.classList.toggle('expanded');
+                    toggleIcon.classList.toggle('expanded');
+                });
+            } else {
+                toggleIcon.style.visibility = 'hidden'; // No children, no toggle
+                nodeDiv.style.cursor = 'default';
             }
-            rootLi.appendChild(rootNodeDiv);
             
-            if (data.children && data.children.length > 0) {
-                rootNodeDiv.classList.add('has-children');
-                 rootNodeDiv.addEventListener('click', () => { // Toggle for root node's children
-                    rootLi.classList.toggle('hidden-children');
-                    rootNodeDiv.classList.toggle('expanded');
+            ul.appendChild(item);
+            if(isRoot && nodeData.children) { // If it's the root node object, iterate its children directly
+                ul.innerHTML = ''; // Clear the root item itself, we only want its children
+                 nodeData.children.forEach(childNode => {
+                    ul.appendChild(createMindMapNode(childNode));
                 });
-
-                const childrenUl = document.createElement('ul');
-                data.children.forEach(childNode => {
-                    childrenUl.appendChild(createNodeElement(childNode, 1)); // Children start at level 1
-                });
-                rootLi.appendChild(childrenUl);
-                // rootLi.classList.add('hidden-children'); // Optionally start main children collapsed
             }
-            parentElement.appendChild(rootLi);
+
+            return ul;
         }
-        
-        // Tooltip functions
-        function showTooltip(event, details) {
-            tooltipElement.innerHTML = details.replace(/\(dump\.txt.*?\)/g, '').trim(); // Clean up details a bit for tooltip
-            tooltipElement.style.opacity = '1';
-            tooltipElement.style.left = `${event.pageX + 15}px`;
-            tooltipElement.style.top = `${event.pageY + 15}px`;
-        }
-
-        function hideTooltip() {
-            tooltipElement.style.opacity = '0';
-        }
-        
-        document.addEventListener('mousemove', (event) => {
-            if (tooltipElement.style.opacity === '1') {
-                tooltipElement.style.left = `${event.pageX + 15}px`;
-                tooltipElement.style.top = `${event.pageY + 15}px`;
-            }
-        });
-
-        // Modal functions
-        const modal = document.getElementById('detailModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-
-        function showModal(title, detailsHTML) {
-            modalTitle.textContent = title;
-            // Convert dump.txt references to bold text for better readability in modal
-            const formattedDetails = detailsHTML.replace(/\((dump\.txt.*?)\)/g, "<strong>($1)</strong>");
-            modalBody.innerHTML = `<p>${formattedDetails.split('\n').join('</p><p>')}</p>`; // Basic formatting for newlines
-            modal.style.display = "block";
-        }
-
-        function closeModal() {
-            modal.style.display = "none";
-        }
-
-        // Close modal if clicked outside of the modal content
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-        
-        // Initial render
-        renderMindMap(mindMapData, mindMapRootElement);
-
-        // Animation for hero section (example)
-        const heroElements = document.querySelectorAll('#hero h1, #hero p, #hero a');
-        heroElements.forEach((el, index) => {
-            el.style.animationDelay = `${index * 0.2}s`;
-        });
-
-        // Basic scroll animations for content sections
-        const sections = document.querySelectorAll('.content-section');
-        const animateOnScroll = () => {
-            sections.forEach(section => {
-                const sectionTop = section.getBoundingClientRect().top;
-                const screenHeight = window.innerHeight;
-                if (sectionTop < screenHeight * 0.85) {
-                    section.classList.add('animate-fade-in-up-content');
-                }
-            });
-        };
-
-        window.addEventListener('scroll', animateOnScroll);
-        animateOnScroll(); // Initial check
 
     </script>
-    <style>
-        /* Basic Animations */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-         @keyframes fadeInUpContent { /* Slower version for content */
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-down { animation: fadeInDown 0.8s ease-out forwards; }
-        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
-        .animate-fade-in-up-content { animation: fadeInUpContent 1s ease-out forwards; opacity:0; /* Start hidden */}
-
-        @keyframes bounceSlow {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-15px);}
-            60% {transform: translateY(-7px);}
-        }
-        .animate-bounce-slow {
-            animation: bounceSlow 2.5s infinite 1s; /* Starts after 1s delay */
-        }
-    </style>
 </body>
 </html>
