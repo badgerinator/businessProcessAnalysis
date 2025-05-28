@@ -14,16 +14,18 @@
             1. Hero Alanı: Başlık, kısa giriş, ana çağrı (CTA).
             2. Giriş Bölümü: Raporun amacı ve kapsamı.
             3. Mevcut Durum Analizi: Risk Yönetimi ve DÖF süreçlerine genel bakış. (HTML/CSS ile şematik gösterim)
-            4. Anahtar Veri Görselleştirmeleri: Temel sorun alanları ve öneri etkileri üzerine grafikler (Chart.js).
-            5. Etkileşimli Süreç Zihin Haritası: 'map.json' verisinden oluşturulan, açılır/kapanır detaylarla sorunlar, nedenler ve çözümler.
-            6. Sonuç Bölümü: Genel değerlendirme ve gelecek perspektifi.
+            4. SIPOK ve RACI Analizleri: Risk ve DÖF süreçleri için detaylı SIPOK ve RACI tabloları. (YENİ EKLENDİ)
+            5. Anahtar Veri Görselleştirmeleri: Temel sorun alanları ve öneri etkileri üzerine grafikler (Chart.js).
+            6. Etkileşimli Süreç Zihin Haritası: 'map.json' verisinden oluşturulan, açılır/kapanır detaylarla sorunlar, nedenler ve çözümler.
+            7. Sonuç Bölümü: Genel değerlendirme ve gelecek perspektifi.
         
         Görselleştirme Seçimleri (NO SVG, NO MERMAID JS):
             - Büyük Sayı (Örn: "Ana Risk Alanı Sayısı"): Bilgilendirme, Büyük Metin.
-            - Çubuk Grafik (Sorun Alanlarının Etkisi): Karşılaştırma, Chart.js Canvas (dump.txt Bölüm 4'ten türetilmiş).
-            - Halka/Donut Grafik (Öneri Türleri Dağılımı): Karşılaştırma, Chart.js Canvas (dump.txt Bölüm 5'ten türetilmiş).
-            - Süreç Akış Şeması (Genel Süreç Adımları): Organize Etme, HTML/CSS Tailwind (dump.txt Bölüm 3'ten türetilmiş).
-            - Etkileşimli Zihin Haritası (Detaylı Sorunlar & Çözümler): Organize Etme/İlişkiler, HTML/CSS/JS Listesi (map.json'dan) - SVG veya Mermaid JS KULLANILMADI.
+            - Çubuk Grafik (Sorun Alanlarının Etkisi): Karşılaştırma, Chart.js Canvas.
+            - Halka/Donut Grafik (Öneri Türleri Dağılımı): Karşılaştırma, Chart.js Canvas.
+            - Süreç Akış Şeması (Genel Süreç Adımları): Organize Etme, HTML/CSS Tailwind.
+            - SIPOK/RACI Tabloları: Organize Etme, HTML/CSS Tailwind. (YENİ EKLENDİ)
+            - Etkileşimli Zihin Haritası (Detaylı Sorunlar & Çözümler): Organize Etme/İlişkiler, HTML/CSS/JS Listesi - SVG veya Mermaid JS KULLANILMADI.
 
         SVG/Mermaid JS Kullanım Durumu:
         BU ÇIKTIDA NE MERMAID JS NE DE SVG GRAFİKLERİ KULLANILMIŞTIR.
@@ -141,24 +143,52 @@
             color: #3E92CC; /* Primary Medium Blue */
             font-size: 2rem; /* text-3xl */
         }
+        .table-container {
+            overflow-x: auto; /* For responsive tables */
+        }
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .custom-table th, .custom-table td {
+            border: 1px solid #E2E8F0; /* Tailwind gray-300 */
+            padding: 0.75rem; /* p-3 */
+            text-align: left;
+            font-size: 0.875rem; /* text-sm */
+        }
+        .custom-table th {
+            background-color: #EDF2F7; /* Tailwind gray-200 */
+            color: #2D3748; /* Tailwind gray-800 */
+            font-weight: 600; /* semibold */
+        }
+        .custom-table tbody tr:nth-child(even) {
+            background-color: #F7FAFC; /* Tailwind gray-100 */
+        }
+        .custom-table tbody tr:hover {
+            background-color: #E2E8F0; /* Tailwind gray-300 */
+        }
+        .scroll-mt-20 { scroll-margin-top: 5rem; } /* For sticky nav offset */
     </style>
 </head>
 <body class="antialiased">
 
     <nav id="navbar" class="sticky-nav shadow-md hidden md:block">
         <div class="container mx-auto px-6 py-3">
-            <div class="flex items-center justify-center space-x-6">
-                <a href="#hero" class="text-gray-200 hover:text-FFD100">Başlangıç</a>
-                <a href="#giris" class="text-gray-200 hover:text-FFD100">Giriş</a>
-                <a href="#mevcut-durum" class="text-gray-200 hover:text-FFD100">Mevcut Durum</a>
-                <a href="#anahtar-veriler" class="text-gray-200 hover:text-FFD100">Anahtar Veriler</a>
-                <a href="#zihin-haritasi" class="text-gray-200 hover:text-FFD100">Etkileşimli Harita</a>
-                <a href="#sonuc" class="text-gray-200 hover:text-FFD100">Sonuç</a>
+            <div class="flex items-center justify-center space-x-4">
+                <a href="#hero" class="text-gray-200 hover:text-FFD100 px-2">Başlangıç</a>
+                <a href="#giris" class="text-gray-200 hover:text-FFD100 px-2">Giriş</a>
+                <a href="#mevcut-durum" class="text-gray-200 hover:text-FFD100 px-2">Mevcut Durum</a>
+                <a href="#sipok-raci" class="text-gray-200 hover:text-FFD100 px-2">SIPOK/RACI</a>
+                <a href="#anahtar-veriler" class="text-gray-200 hover:text-FFD100 px-2">Anahtar Veriler</a>
+                <a href="#zihin-haritasi" class="text-gray-200 hover:text-FFD100 px-2">Etkileşimli Harita</a>
+                <a href="#sonuc" class="text-gray-200 hover:text-FFD100 px-2">Sonuç</a>
             </div>
         </div>
     </nav>
 
-    <header id="hero" class="hero-bg py-16 md:py-24 text-center">
+    <header id="hero" class="hero-bg py-16 md:py-24 text-center scroll-mt-20">
         <div class="container mx-auto px-6">
             <h1 class="text-4xl md:text-6xl font-bold mb-4">Kurumsal Risk & DÖF Süreç Analizi</h1>
             <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Mevcut durumun derinlemesine incelenmesi, sorunların tespiti ve stratejik iyileştirme önerileri.</p>
@@ -172,7 +202,7 @@
             <div class="card">
                 <h2 class="text-3xl font-bold section-title mb-6 text-center">1. Giriş: Raporun Amacı ve Kapsamı</h2>
                 <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                    Bu infografik web sitesi, Mir Arge ve ilgili şirketlerin mevcut Kurumsal Risk Yönetimi ve Düzeltici ve Önleyici Faaliyetler (DÖF) süreçlerinin detaylı bir analizini sunmaktadır. Amacımız, <code class="bg-gray-200 px-1 rounded">dump.txt</code> dosyasında belirtilen analiz sonuçlarını, karmaşık verileri ve ilişkileri anlaşılır, etkileşimli ve görsel olarak çekici bir formatta sunarak, mevcut sorunların net bir şekilde anlaşılmasına, stratejik önerilerin değerlendirilmesine ve süreç iyileştirme adımlarının belirlenmesine katkıda bulunmaktır.
+                    Bu infografik web sitesi, Mir Arge ve ilgili şirketlerin mevcut Kurumsal Risk Yönetimi ve Düzeltici ve Önleyici Faaliyetler (DÖF) süreçlerinin detaylı bir analizini sunmaktadır. Amacımız, sağlanan analiz sonuçlarını, karmaşık verileri ve ilişkileri anlaşılır, etkileşimli ve görsel olarak çekici bir formatta sunarak, mevcut sorunların net bir şekilde anlaşılmasına, stratejik önerilerin değerlendirilmesine ve süreç iyileştirme adımlarının belirlenmesine katkıda bulunmaktır.
                 </p>
                 <p class="text-lg text-gray-700 leading-relaxed">
                     Analizimiz, süreçlerdeki eksiklikleri, hataları ve bu durumların altında yatan temel nedenleri vurgulayarak, kurumun verimliliğini ve dayanıklılığını artıracak somut çözüm yolları önermektedir. Bu dijital sunum, geleneksel rapor formatlarının ötesine geçerek, bilgiyi daha dinamik ve akılda kalıcı bir şekilde paydaşlara ulaştırmayı hedefler.
@@ -184,7 +214,7 @@
             <div class="card">
                 <h2 class="text-3xl font-bold section-title mb-8 text-center">2. Mevcut Durum Analizi ("As-Is")</h2>
                 <p class="text-lg text-gray-700 leading-relaxed mb-8 text-center max-w-2xl mx-auto">
-                    Kurumsal Risk Yönetimi ve DÖF süreçlerinin mevcut işleyişi, <code class="bg-gray-200 px-1 rounded">dump.txt</code> analizine göre çeşitli zorluklar ve iyileştirme alanları barındırmaktadır. Aşağıda bu süreçlere dair genel bir bakış sunulmaktadır.
+                    Kurumsal Risk Yönetimi ve DÖF süreçlerinin mevcut işleyişi, analizlere göre çeşitli zorluklar ve iyileştirme alanları barındırmaktadır. Aşağıda bu süreçlere dair genel bir bakış sunulmaktadır.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -199,7 +229,7 @@
                              <div class="text-center flowchart-arrow">↓</div>
                             <div class="flowchart-step p-4 rounded-lg text-center shadow">Müdahale Planlama ve Uygulama</div>
                         </div>
-                         <p class="mt-4 text-sm text-gray-600 text-center">Not: <code class="bg-gray-200 px-1 rounded">dump.txt</code>'ye göre MS List kullanımı sınırlı ve standardizasyon eksik.</p>
+                         <p class="mt-4 text-sm text-gray-600 text-center">Not: MS List kullanımı sınırlı ve standardizasyon eksik.</p>
                     </div>
                     <div>
                         <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">DÖF Süreci (Genel Akış)</h3>
@@ -212,21 +242,207 @@
                              <div class="text-center flowchart-arrow">↓</div>
                             <div class="flowchart-step p-4 rounded-lg text-center shadow">Kapatma ve Etkinlik İzleme (Tekrarlayan DÖF'ler Sorunu)</div>
                         </div>
-                        <p class="mt-4 text-sm text-gray-600 text-center">Not: <code class="bg-gray-200 px-1 rounded">dump.txt</code>'ye göre DÖF bilinci düşük ve katılım yetersiz.</p>
+                        <p class="mt-4 text-sm text-gray-600 text-center">Not: DÖF bilinci düşük ve katılım yetersiz.</p>
                     </div>
                 </div>
                 <div class="mt-8 p-4 bg-amber-100 border-l-4 border-amber-500 text-amber-700 rounded-md">
                     <h4 class="font-bold">Önemli Tespit:</h4>
-                    <p><code class="bg-gray-200 px-1 rounded">dump.txt</code> analizine göre, her iki süreç de büyük ölçüde manuel ilerlemekte, veri yönetimi ve standardizasyon eksiklikleri bulunmaktadır. Dijital araçların potansiyeli tam olarak kullanılmamaktadır.</p>
+                    <p>Analizlere göre, her iki süreç de büyük ölçüde manuel ilerlemekte, veri yönetimi ve standardizasyon eksiklikleri bulunmaktadır. Dijital araçların potansiyeli tam olarak kullanılmamaktadır.</p>
                 </div>
             </div>
         </section>
+        
+        <section id="sipok-raci" class="mb-12 md:mb-16 scroll-mt-20">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">3. SIPOK ve RACI Analizleri</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center max-w-2xl mx-auto">
+                    Süreçlerin daha yapısal bir şekilde anlaşılması ve sorumlulukların netleştirilmesi amacıyla Risk Yönetimi ve DÖF süreçleri için SIPOK (Tedarikçiler, Girdiler, Süreç, Çıktılar, Müşteriler) ve RACI (Sorumlu, Hesap Verebilir, Danışılan, Bilgilendirilen) analizleri yapılmıştır.
+                </p>
 
+                <div class="mb-10">
+                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">Risk Yönetimi Süreci: SIPOK Analizi</h3>
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Tedarikçiler (Suppliers)</th>
+                                    <th>Girdiler (Inputs)</th>
+                                    <th>Süreç (Process)</th>
+                                    <th>Çıktılar (Outputs)</th>
+                                    <th>Müşteriler (Customers)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Firma Genel SWOT Analizi</td>
+                                    <td>SWOT Analizi Sonuçları</td>
+                                    <td>1. Risk Başlangıç ve Planlama (Yıl Sonları)</td>
+                                    <td>Belirlenmiş Riskler</td>
+                                    <td>Risk Muhatapları / Sorumlular</td>
+                                </tr>
+                                <tr>
+                                    <td>Stratejik Hedefler</td>
+                                    <td>Stratejik Planlar/Hedefler</td>
+                                    <td>2. Risk Tespit ve İletişim (List'e Aktarma, Sorumlu Atama)</td>
+                                    <td>Risk Aksiyon Planları</td>
+                                    <td>Paydaşlar</td>
+                                </tr>
+                                <tr>
+                                    <td>Personel / Çalışanlar</td>
+                                    <td>Tespit Edilen Riskler</td>
+                                    <td>3. Risk Analiz ve Değerlendirme (Muhatap Tarafından, Sezgisel Olasılık/Etki)</td>
+                                    <td>Atanmış Sorumlular ve Deadlinelar</td>
+                                    <td>Yönetim (YGG Toplantıları)</td>
+                                </tr>
+                                <tr>
+                                    <td>Yöneticiler</td>
+                                    <td>Uzman Görüşleri (Olasılık/Etki İçin)</td>
+                                    <td>4. Müdahale Planlama (Strateji Belirleme, Aksiyon Tanımlama)</td>
+                                    <td>Hesaplanmış Risk Şiddetleri</td>
+                                    <td>Kalite Yönetim Birimi (KYB)</td>
+                                </tr>
+                                <tr>
+                                    <td>Kalite Yönetim Birimi (KYB)</td>
+                                    <td>Risk Muhataplarının Değerlendirmeleri</td>
+                                    <td>5. Müdahale Uygulama (Sorumlular Tarafından - Zorluklar Var)</td>
+                                    <td>Önceliklendirilmiş Risk Listesi</td>
+                                    <td>ISO Denetçileri</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Geçmiş Risk Kayıtları (İdealde/Gerektiğinde)</td>
+                                    <td>6. İzleme ve Kontrol (List Üzerinden Aylık, Yetersiz)</td>
+                                    <td>Müdahale Stratejileri (Kabullenme, Kaçınma, Azaltma)</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>7. Yeni Riskleri ve İkincil Riskleri Yönetme (Ekleme, Bilinç Eksikliği Engeli)</td>
+                                    <td>İzleme Kayıtları (List Üzerinde)</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>8. Raporlama (YGG İçin Yıllık, Genellikle Yetersiz)</td>
+                                    <td>Raporlar (YGG Sunumu)</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>9. Yüksek Risk Durumunda Karar Alma (Faaliyet Durdurma Pratikliği Yok)</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2"><b>SIPOC Analizi Çıkarımları:</b> SIPOC, sürecin temel adımlarını ve bunlarla ilişkili girdi/çıktıları ve paydaşları görselleştirmemize yardımcı olur. Bu analiz, süreçteki ana zorlukları (örn. "Uygulama Zorlukları" ve "Raporlama" adımlarındaki sorunlar, girdilerin "sezgisel" olması gibi) net bir şekilde ortaya koymaktadır.</p>
+                </div>
+
+                <div class="mb-10">
+                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">Risk Yönetimi Süreci: RACI Analizi</h3>
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Süreç Adımı/Görev</th>
+                                    <th>Kalite Yönetim Birimi (KYB) / Betül Hanım</th>
+                                    <th>Risk Muhatabı / Sorumlu Kişi</th>
+                                    <th>Paydaşlar / Ek Sorumlular</th>
+                                    <th>Yöneticiler (Birim)</th>
+                                    <th>Üst Yönetim</th>
+                                    <th>Holding Birimleri</th>
+                                    <th>Personel / Çalışanlar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Risk Sürecini Planlama/Koordinasyon</td><td>A (Yürütücü)</td><td></td><td>C</td><td>I</td><td>I</td><td></td><td>I (Süreç hakkında)</td></tr>
+                                <tr><td>Risk Tespiti (Genel/Yıllık Planlama)</td><td>A (Sürecin sahibi)</td><td>R (Kendi alanında tespit)</td><td>C</td><td>R/C (Olması gerektiği belirtiliyor)</td><td>I</td><td></td><td>I (Bilinç düşük, katılım az)</td></tr>
+                                <tr><td>Risk Tespit (Yeni Risk Meydana Geldiğinde)</td><td>A</td><td>R</td><td>C</td><td>R/C (Olması gerektiği belirtiliyor)</td><td>I</td><td></td><td>R/C (Fark etme sorumluluğu)</td></tr>
+                                <tr><td>Risk Analizi (Olasılık/Etki Belirleme)</td><td>I</td><td>R (Sezgisel olarak)</td><td>C</td><td>I</td><td></td><td></td><td></td></tr>
+                                <tr><td>Risk Şiddeti Hesaplama</td><td>I</td><td>R</td><td></td><td>I</td><td></td><td></td><td></td></tr>
+                                <tr><td>Risk Önceliklendirme</td><td>I</td><td>R</td><td></td><td>I</td><td></td><td></td><td></td></tr>
+                                <tr><td>Müdahale Stratejisi Belirleme</td><td>I</td><td>R</td><td>C</td><td>I</td><td></td><td></td><td></td></tr>
+                                <tr><td>Aksiyon Planı Oluşturma</td><td>I</td><td>R</td><td>C</td><td>I</td><td></td><td></td><td></td></tr>
+                                <tr><td>Aksiyon Planı Uygulama</td><td>I (Takip ediyor)</td><td></td><td></td><td>A (Olması gerektiği belirtiliyor, eksiklik var)</td><td></td><td>R (Dışa bağımlı ise)</td><td>R (Kendisine atanan aksiyonlar için)</td></tr>
+                                <tr><td>Risk/Aksiyon Takibi (List Üzerinde)</td><td>R (Sıklık yetersiz)</td><td>I</td><td></td><td>I/C (Görüşmelerde adı geçiyor)</td><td>I (YGG'de bilgi alıyor)</td><td></td><td>I</td></tr>
+                                <tr><td>İkincil Riskleri Yönetme</td><td>R/A (Olması gerektiği belirtiliyor)</td><td>I/C (Bilinç düşük)</td><td></td><td>I/C (Bilinç düşük)</td><td></td><td></td><td>I/C (Bilinç düşük)</td></tr>
+                                <tr><td>Raporlama (YGG İçin)</td><td>R/A (Yapıyor, ama yetersiz)</td><td>I</td><td></td><td>C/I</td><td>I</td><td></td><td>I (Önemsenmiyor)</td></tr>
+                                <tr><td>Yüksek Risk Kararı Alma (Faaliyet Durdurma vb.)</td><td>I</td><td>C/I</td><td>C</td><td>A (Olması gerektiği belirtiliyor, eksiklik var)</td><td>A (Nihai karar merci olabilir)</td><td></td><td>I</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <p class="text-sm text-gray-600 mt-2"><b>RACI Analizi Çıkarımları:</b> Belirsiz Hesap Verebilirlik (Accountability - A), KYB'nin Yükü, Düşük Katılım ve Bilinç, Dışa Bağımlılık, Sezgisel Analiz, Yetersiz Takip ve Raporlama temel sorunlardır.</p>
+                </div>
+
+                <div class="mb-10">
+                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">DÖF Süreci: SIPOK Analizi</h3>
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Tedarikçiler (Suppliers)</th>
+                                    <th>Girdiler (Inputs)</th>
+                                    <th>Süreç (Process)</th>
+                                    <th>Çıktılar (Outputs)</th>
+                                    <th>Müşteriler (Customers)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>İç Tetkik Süreci</td><td>Tespit Edilen Uygunsuzluklar / İyileştirme İhtiyaçları</td><td>1. Uygunsuzluk/İhtiyaç Tespiti</td><td>Oluşturulmuş DÖF Kayıtları (MS List'te)</td><td>Kalite Yönetim Birimi (KYB)</td></tr>
+                                <tr><td>Kalite Yönetim Birimi (KYB) / Betül Öztürk</td><td>İç Tetkik Bulguları</td><td>2. DÖF Kaydının Oluşturulması</td><td>Belirlenen Kök Nedenler</td><td>Yönetim (YGG, GM/GMY)</td></tr>
+                                <tr><td>Diğer Çalışanlar / Birimler</td><td>Problem Noktaları, Darboğazlar, Risk Yaratan Durumlar</td><td>3. Değerlendirme ve Kök Neden Analizi</td><td>Hazırlanmış Aksiyon Planları</td><td>İlgili Departmanlar / Süreç Sahipleri</td></tr>
+                                <tr><td>Risk Yönetimi Süreci</td><td>Geçmiş Risk Kayıtları (potansiyel olarak)</td><td>4. Aksiyon Planının Belirlenmesi</td><td>Tamamlanmış Aksiyonlar</td><td>Çalışanlar</td></tr>
+                                <tr><td>Paydaşlar / Süreç Sahipleri</td><td>Çalışanlardan veya Birimlerden Gelen Bildirimler (nadiren)</td><td>5. Nihai İnceleme ve Onay</td><td>Kapatılmış DÖF'ler</td><td>Şirket Geneli</td></tr>
+                                <tr><td></td><td>Uygulama Kanıtları</td><td>6. Aksiyon Planının Uygulanması</td><td>Süreç İyileştirmeleri (potansiyel olarak)</td><td></td></tr>
+                                <tr><td></td><td>İlgili Yönetim Sistemi Standartları Gereklilikleri</td><td>7. Tamamlanma Bildirimi ve Takip</td><td>İzleme Kayıtları</td><td></td></tr>
+                                <tr><td></td><td></td><td>8. DÖF'ün Kapatılması</td><td>Raporlar / YGG Sunumları</td><td></td></tr>
+                                <tr><td></td><td></td><td>9. Kapandıktan Sonra İzleme ve Tekrarlayan Uygunsuzluklar</td><td>Tekrarlayan Uygunsuzluk Analizi İhtiyacı</td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2"><b>SIPOC Analizi Çıkarımları:</b> DÖF sürecinin mevcut durumdaki temel akışını ve kimlerin ne rolü olduğunu yüksek seviyede özetlemektedir. Sürecin manuel olması, çalışan katılımının düşük olması ve veri akışındaki kopukluklar bu modelde Girdi, Süreç ve Çıktı arasındaki zayıf bağlantılarla kendini göstermektedir.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">DÖF Süreci: RACI Analizi</h3>
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>DÖF Süreci Aktivitesi</th>
+                                    <th>Kalite Yönetim Birimi (KYB) / Betül Öztürk</th>
+                                    <th>Sorumlu Kişi (Muhatap)</th>
+                                    <th>Diğer Çalışanlar / Birimler</th>
+                                    <th>İç Tetkik Süreci</th>
+                                    <th>Yönetim (YGG, GM/GMY)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1. Uygunsuzluk / İyileştirme İhtiyacı Tespiti</td><td>R</td><td>R (Teorik, pratikte zayıf)</td><td>R (Teorik, pratikte zayıf)</td><td>R</td><td>I (Genel sorunlardan)</td></tr>
+                                <tr><td>2. DÖF Kaydının Oluşturulması</td><td>R/A</td><td>I</td><td>I</td><td>R (Otomatik dönüştürülür)</td><td>I</td></tr>
+                                <tr><td>3. Değerlendirme & Kök Neden Analizi (5 Neden)</td><td>I</td><td>R/A</td><td>C (Gerektiğinde)</td><td>I</td><td>I</td></tr>
+                                <tr><td>4. Aksiyon Planının Belirlenmesi</td><td>I</td><td>R/A</td><td>C (Gerektiğinde)</td><td>I</td><td>I</td></tr>
+                                <tr><td>5. Nihai İnceleme & Onay</td><td>A/C</td><td>I</td><td>I</td><td>I</td><td>A (Yüksek yatırımda)</td></tr>
+                                <tr><td>6. Aksiyon Planının Uygulanması</td><td>I/C (Takip/Hatırlatma)</td><td>R</td><td>R</td><td>I</td><td>I (Raporlarla)</td></tr>
+                                <tr><td>7. Tamamlanma Bildirimi</td><td>C</td><td>R</td><td>R</td><td>I</td><td>I</td></tr>
+                                <tr><td>8. Tamamlanma Doğrulaması & DÖF Kapatma</td><td>R/A</td><td>I</td><td>I</td><td>I</td><td>I</td></tr>
+                                <tr><td>9. Kapandıktan Sonra İzleme / Tekrar Eden Sorun Analizi</td><td>R/A</td><td>I</td><td>I</td><td>I</td><td>I (YGG'de yıllık)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2"><b>RACI Analizi Çıkarımları:</b> Sahiplenme Eksikliği ve Yetersiz Yürütme, KYB Üzerindeki Yük, Tekrarlayan Sorunların Yönetimi ve Dijital Sistem Desteği Eksikliği başlıca sorunlardır. Roller tanımlı olsa da, pratikteki işleyiş düşük bilinç, sahiplenme eksikliği ve yetersiz sistem desteği nedeniyle olması gerekenden uzaktır.</p>
+                </div>
+            </div>
+        </section>
         <section id="anahtar-veriler" class="mb-12 md:mb-16 scroll-mt-20">
             <div class="card">
-                <h2 class="text-3xl font-bold section-title mb-8 text-center">3. Anahtar Veri Görselleştirmeleri</h2>
+                <h2 class="text-3xl font-bold section-title mb-8 text-center">4. Anahtar Veri Görselleştirmeleri</h2>
                 <p class="text-lg text-gray-700 leading-relaxed mb-8 text-center max-w-2xl mx-auto">
-                    <code class="bg-gray-200 px-1 rounded">dump.txt</code> dosyasındaki analizlerden yola çıkarak, süreçlerdeki temel sorun alanlarının ve önerilen çözümlerin potansiyel etkilerini gösteren bazı temsili grafikler aşağıdadır. Bu grafikler, rapordaki kalitatif bulguları nicel bir perspektifle desteklemek amacıyla oluşturulmuştur.
+                    Sağlanan analizlerden yola çıkarak, süreçlerdeki temel sorun alanlarının ve önerilen çözümlerin potansiyel etkilerini gösteren bazı temsili grafikler aşağıdadır. Bu grafikler, rapordaki kalitatif bulguları nicel bir perspektifle desteklemek amacıyla oluşturulmuştur.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
@@ -234,14 +450,14 @@
                         <div class="chart-container">
                             <canvas id="sorunAlanlariChart"></canvas>
                         </div>
-                        <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, <code class="bg-gray-200 px-1 rounded">dump.txt</code> Bölüm 4'te belirtilen ana sorun kategorilerinin süreçler üzerindeki tahmini etki büyüklüklerini göstermektedir.</p>
+                        <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, ana sorun kategorilerinin süreçler üzerindeki tahmini etki büyüklüklerini göstermektedir.</p>
                     </div>
                     <div>
                         <h3 class="text-xl font-semibold mb-3 text-center" style="color: #0A2463;">Öneri Türlerinin Dağılımı (Maliyet/Etki Perspektifi)</h3>
                         <div class="chart-container">
                             <canvas id="oneriTurleriChart"></canvas>
                         </div>
-                         <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, <code class="bg-gray-200 px-1 rounded">dump.txt</code> Bölüm 5'teki önerilerin "Düşük Maliyet/Yüksek Etki" gibi kategorilere göre tahmini dağılımını göstermektedir.</p>
+                         <p class="mt-3 text-sm text-gray-600 text-center">Bu grafik, önerilerin "Düşük Maliyet/Yüksek Etki" gibi kategorilere göre tahmini dağılımını göstermektedir.</p>
                     </div>
                 </div>
                  <div class="mt-8 text-center">
@@ -250,16 +466,16 @@
                         <p class="text-5xl font-extrabold" style="color: #3E92CC;">%70+</p>
                         <p class="text-lg text-gray-700 mt-1">Süreçlerin Manuel Yürütülme Oranı (Tahmini)</p>
                     </div>
-                     <p class="mt-3 text-sm text-gray-600">Bu değer, <code class="bg-gray-200 px-1 rounded">dump.txt</code>'deki "süreçler büyük ölçüde manuel ilerliyor" bulgusuna dayanan bir tahmindir.</p>
+                     <p class="mt-3 text-sm text-gray-600">Bu değer, "süreçler büyük ölçüde manuel ilerliyor" bulgusuna dayanan bir tahmindir.</p>
                 </div>
             </div>
         </section>
 
         <section id="zihin-haritasi" class="mb-12 md:mb-16 scroll-mt-20">
             <div class="card">
-                <h2 class="text-3xl font-bold section-title mb-6 text-center">4. Etkileşimli Süreç Zihin Haritası</h2>
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">5. Etkileşimli Süreç Zihin Haritası</h2>
                 <p class="text-lg text-gray-700 leading-relaxed mb-6 text-center max-w-2xl mx-auto">
-                    Aşağıdaki etkileşimli zihin haritası, <code class="bg-gray-200 px-1 rounded">map.json</code> ve <code class="bg-gray-200 px-1 rounded">dump.txt</code> (Bölüm 4 ve 5) verilerinden faydalanarak kurumsal risk ve DÖF süreçlerindeki temel sorunları, kök nedenlerini ve bunlara yönelik çözüm önerilerini detaylı bir şekilde keşfetmenizi sağlar. Başlıkların yanındaki <span class="font-bold" style="color: #3E92CC;">▶</span> ikonuna tıklayarak ilgili alt başlıkları açabilir veya kapatabilirsiniz.
+                    Aşağıdaki etkileşimli zihin haritası, sağlanan verilerden faydalanarak kurumsal risk ve DÖF süreçlerindeki temel sorunları, kök nedenlerini ve bunlara yönelik çözüm önerilerini detaylı bir şekilde keşfetmenizi sağlar. Başlıkların yanındaki <span class="font-bold" style="color: #3E92CC;">▶</span> ikonuna tıklayarak ilgili alt başlıkları açabilir veya kapatabilirsiniz.
                 </p>
                 <div id="mindMapContainer" class="mind-map p-4 bg-slate-50 rounded-lg shadow-inner overflow-x-auto">
                     <p class="text-center text-gray-500">Zihin haritası yükleniyor...</p>
@@ -278,9 +494,9 @@
 
         <section id="sonuc" class="scroll-mt-20">
             <div class="card">
-                <h2 class="text-3xl font-bold section-title mb-6 text-center">5. Sonuç ve Gelecek Perspektifi</h2>
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">6. Sonuç ve Gelecek Perspektifi</h2>
                 <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                    <code class="bg-gray-200 px-1 rounded">dump.txt</code> dosyasında detaylandırılan analiz, Kurumsal Risk Yönetimi ve DÖF süreçlerinde önemli iyileştirme potansiyelleri olduğunu ortaya koymaktadır. Tespit edilen eksiklikler (veri yönetimi, standardizasyon, kurumsal bilinç, süreç sahipliği vb.) ve bunların kök nedenleri, kurumun verimliliğini, karar alma mekanizmalarını ve genel dayanıklılığını olumsuz etkileyebilmektedir.
+                    Detaylandırılan analizler, Kurumsal Risk Yönetimi ve DÖF süreçlerinde önemli iyileştirme potansiyelleri olduğunu ortaya koymaktadır. Tespit edilen eksiklikler (veri yönetimi, standardizasyon, kurumsal bilinç, süreç sahipliği vb.) ve bunların kök nedenleri, kurumun verimliliğini, karar alma mekanizmalarını ve genel dayanıklılığını olumsuz etkileyebilmektedir.
                 </p>
                 <p class="text-lg text-gray-700 leading-relaxed mb-4">
                     Önerilen çözümler, özellikle dijital araçların etkin kullanımı, süreç tanımlarının netleştirilmesi, çalışan katılımının ve bilincinin artırılması ile organizasyonel bağlantıların güçlendirilmesi üzerine odaklanmaktadır. Bu iyileştirmeler hayata geçirildiğinde, süreçlerin sadece bir "ISO gerekliliği" olmaktan çıkıp, gerçekten kurumsal performansı ve stratejik hedeflere ulaşmayı destekleyen değerli araçlara dönüşmesi hedeflenmektedir.
@@ -309,8 +525,14 @@
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
+                    // Adjust scroll position for sticky header
+                    const headerOffset = document.getElementById('navbar') ? document.getElementById('navbar').offsetHeight : 0;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 20; // 20px extra margin
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
                     });
                 }
             });
@@ -322,12 +544,12 @@
         if (navbar) {
             window.addEventListener('scroll', function() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                if (scrollTop > lastScrollTop && scrollTop > 80) { // Scroll Down and past 80px
-                    navbar.style.top = '-80px'; // Hide navbar
-                } else { // Scroll Up or at top
-                    navbar.style.top = '0'; // Show navbar
+                if (scrollTop > 80) { // Show/hide logic can be more sophisticated if needed
+                     // Example: navbar.classList.add('scrolled');
+                } else {
+                    // Example: navbar.classList.remove('scrolled');
                 }
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
             }, false);
         }
 
@@ -375,7 +597,7 @@
             ].map(label => wrapLabels(label, 16)),
             datasets: [{
                 label: 'Tahmini Etki Düzeyi (1-10)',
-                data: [8, 9, 7, 6, 7.5], // Mock data based on dump.txt qualitative assessment
+                data: [8, 9, 7, 6, 7.5], 
                 backgroundColor: ['#3E92CC', '#20C997', '#FFD100', '#F7882F', '#6F42C1'],
                 borderColor: '#FFFFFF',
                 borderWidth: 2
@@ -405,7 +627,7 @@
             labels: ['Düşük Maliyet / Yüksek Etki', 'Orta Maliyet / Yüksek Etki', 'Diğer Stratejik Öneriler'].map(label => wrapLabels(label, 16)),
             datasets: [{
                 label: 'Öneri Sayısı',
-                data: [65, 25, 10], // Mock data representing distribution
+                data: [65, 25, 10], 
                 backgroundColor: ['#20C997', '#3E92CC', '#FFD100'],
                 borderColor: '#FFFFFF',
                 borderWidth: 2,
@@ -436,7 +658,6 @@
 
         // Mind Map Functionality
         async function fetchMindMapData() {
-            // In a real scenario, you'd fetch map.json. Here, embedding it for single-file simplicity.
             const mindMapData = {
               "mindMap": {
                 "name": "Kurumsal Risk ve DÖF Süreçleri Analizi ve İyileştirme Alanları",
@@ -554,7 +775,7 @@
             
             const container = document.getElementById('mindMapContainer');
             if (container) {
-                container.innerHTML = ''; // Clear loading text
+                container.innerHTML = ''; 
                 const rootUl = createMindMapNode(mindMapData.mindMap, true);
                 container.appendChild(rootUl);
             }
@@ -563,7 +784,7 @@
         function createMindMapNode(nodeData, isRoot = false) {
             const ul = document.createElement('ul');
             if (isRoot) {
-                ul.classList.add('root-node'); // For potential root-specific styling
+                ul.classList.add('root-node'); 
             }
 
             const item = document.createElement('li');
@@ -573,7 +794,7 @@
             
             const toggleIcon = document.createElement('span');
             toggleIcon.classList.add('toggle-icon');
-            toggleIcon.innerHTML = '▶'; // Default to collapsed
+            toggleIcon.innerHTML = '▶'; 
 
             const nodeText = document.createElement('span');
             nodeText.classList.add('node-text');
@@ -596,13 +817,13 @@
                     toggleIcon.classList.toggle('expanded');
                 });
             } else {
-                toggleIcon.style.visibility = 'hidden'; // No children, no toggle
+                toggleIcon.style.visibility = 'hidden'; 
                 nodeDiv.style.cursor = 'default';
             }
             
             ul.appendChild(item);
-            if(isRoot && nodeData.children) { // If it's the root node object, iterate its children directly
-                ul.innerHTML = ''; // Clear the root item itself, we only want its children
+            if(isRoot && nodeData.children) { 
+                ul.innerHTML = ''; 
                  nodeData.children.forEach(childNode => {
                     ul.appendChild(createMindMapNode(childNode));
                 });
