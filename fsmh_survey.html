@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İnteraktif Toplantı Notları</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .prose-custom ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+        }
+        .prose-custom p {
+            margin-bottom: 0.5rem;
+        }
+        .question-block {
+            border: 1px solid #e5e7eb; /* Tailwind gray-200 */
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .question-block:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        textarea {
+            resize: vertical;
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+    <div class="sticky-header py-4 px-6 md:px-10">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-sky-700 mb-2 sm:mb-0">Sınai Mülkiyet Hakları Toplantı Notları</h1>
+            <button onclick="downloadNotes()" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-150 ease-in-out">
+                Kaydet ve İndir (.md)
+            </button>
+        </div>
+    </div>
+
+    <div id="notesContainer" class="container mx-auto p-4 md:p-8">
+        <section class="section-block mb-12">
+            <h2 class="text-2xl font-bold text-gray-700 border-b-2 border-sky-500 pb-2 mb-6">Genel Süreç ve Kapsam</h2>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q1">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">1.</span> <span class="question-title-text">Firmanızda/kurumunuzda hangi sınai mülkiyet hakları (patent, faydalı model, marka, tasarım vb.) ile ilgili süreçler yönetiliyor? Bunların iş hacmi yaklaşık olarak nedir?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklar, şirketinizde/kurumunuzda patent, faydalı model [1] ve marka [295] ile ilgili süreçlerin yönetildiğini göstermektedir.</li>
+                            <li>Ayrıca, tasarım haklarından bahsedilmemektedir. Toplantı notları, belirli patent (Türk [303-306], Avrupa [304], PCT [296-299]) ve marka (Türkiye [304], Katar [300], Tunus [301], Vietnam [302], Mısır [307]) işlemleri yürüttüğünüzü belirtmektedir.</li>
+                            <li>İş hacmine (toplam başvuru/tescil sayısı, yıllık işlem sayısı vb.) dair yaklaşık bir rakam kaynaklarda yer almamaktadır.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Yönetilen diğer sınai mülkiyet hakları (tasarım, coğrafi işaret vb.) var mı?</li>
+                            <li>Patent, faydalı model ve marka başvurularının/tescillerinin yıllık yaklaşık sayısı nedir? Devam eden toplam aktif dosya (başvuru veya tescilli) sayısı nedir?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Farklı sınai mülkiyet türlerinin iş hacminin anlaşılması, ilgili birimlerin iş yükünü ve stratejik öncelikleri belirlemek açısından kritiktir.</li>
+                            <li>Bu veriyi toplayarak her bir hak türü için süreç analizi kapsamını netleştirebilirsiniz.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q1" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q1" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q2">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">2.</span> <span class="question-title-text">Patent ve marka süreçlerinin genel hedefleri nelerdir? (Örn: Tescil sayısını artırmak, hakları etkin korumak, maliyetleri düşürmek, süreleri kısaltmak vb.)</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                     <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklarda bu süreçlerin genel hedeflerine dair açık bir ifade bulunmamaktadır.</li>
+                            <li>Ancak, PCT'nin birden çok ülkede koruma elde etmeyi kolaylaştırma ve ekonomik hale getirme amacı [113], EPO seçiminin yenileme ücretlerinde tasarruf sağlama potansiyeli [299] ve ön araştırma yapmanın maliyet ve zaman kaybını önleme önemi [21] gibi detaylar, maliyet etkinliği ve küresel koruma gibi bazı zımni hedeflere işaret etmektedir.</li>
+                            <li>Tunus marka yenilemesi ile ilgili görüşte belirtilen "markayı boşta bulurlarsa tescil ettirip bizi o bölgeye sokmazlar" ifadesi [301], pazar hakimiyetini koruma gibi bir hedefi ima etmektedir.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Patent, faydalı model ve marka süreçleri için belirlenmiş spesifik, ölçülebilir hedefler var mıdır?</li>
+                            <li>(Örn: Yılda X adet patent tescil etmek, kritik pazarlarda marka portföyünü tamamlamak, işlem sürelerini Y güne indirmek, dış vekil maliyetlerini Z% azaltmak).</li>
+                            <li>Bu hedefler hangi stratejik önceliklerle (Ar-Ge yatırımları, pazar genişlemesi, rekabet avantajı vb.) uyumludur?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Süreçlerin hedeflerinin netleştirilmesi, mevcut süreçlerin etkinliğinin bu hedeflere göre değerlendirilmesini sağlayacaktır.</li>
+                            <li>Süreç performansını ölçmek için kullanılacak metrikler de bu hedeflere göre belirlenmelidir.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q2" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q2" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q3">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">3.</span> <span class="question-title-text">Bu süreçlerde hangi departmanlar/birimler rol alıyor? (Örn: Ar-Ge, Hukuk, Pazarlama, Yönetim, Teknik Ofis vb.) Her bir birimin süreçteki temel sorumlulukları nelerdir?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklarda süreçlerde rol alan departmanlara dair açık bir bilgi bulunmamaktadır.</li>
+                            <li>Ancak, toplantı notunda "Dizayn pazarlama birimi" [300] ve "NURSEMİN BALCI Hanım" (ödeme yapan kişi) [307] gibi isimler geçmekte, bu da pazarlama veya ilgili bir finans/idari birimin süreçlerde rol aldığını düşündürmektedir.</li>
+                            <li>Ar-Ge ve Hukuk/Vekil birimlerinin doğal olarak süreçlerin içinde olduğu varsayılsa da, kaynaklarda bu açıkça belirtilmemiştir.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Patent/faydalı model ve marka süreçlerinde hangi departmanlar/kişiler yer alıyor?</li>
+                            <li>(Örn: Buluşçu/Ar-Ge, Teknik Departman, Hukuk Departmanı, Pazarlama Departmanı, Finans Departmanı, Yönetim, Sınai Mülkiyet Uzmanı/Birimi).</li>
+                            <li>Her bir departmanın/kişinin sürecin hangi aşamalarında (buluş bildirimi, ön araştırma, tarifname yazımı, başvuru yapma, bildirim takibi, yıllık ücret ödeme, itiraz, tecavüz takibi vb.) ne gibi spesifik sorumlulukları bulunuyor?</li>
+                            <li>Süreçteki karar noktalarında (başvuru yapma kararı, araştırma raporu sonrası devam etme kararı, ülke seçimi vb.) kimler yetkilidir?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Süreç haritalama (Process Mapping) çalışması yapmak için bu bilgiyi kullanabilirsiniz.</li>
+                            <li>Adım adım sürecin kim tarafından yürütüldüğünü görselleştirmek, darboğazları veya sorumluluk belirsizliklerini ortaya çıkarabilir.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q3" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q3" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q4">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">4.</span> <span class="question-title-text">Süreçlerin takibi için kullanılan herhangi bir yazılım veya sistem var mı?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>TÜRKPATENT'in çevrimiçi başvuru ve işlem sistemi olan EPATS (Elektronik Başvuru Sistemi) [24, 66, 91] ve dosya takibi için kullanılan çevrimiçi araştırma sayfası [31, 92] kaynaklarda sıkça geçmektedir.</li>
+                            <li>Başvuruların EPATS üzerinden yapıldığı [24, 66, 91] ve birçok başvuru sonrası işlemin (tamamlama [70], araştırma talebi [72, 87], erken yayım [78, 88], inceleme talebi [80], belge düzenleme [83, 90], itiraz [84, 89], hukuki işlemler [99, 101, 103, 104], kullanma/kullanmama bildirimi [105], lisans teklifi [105], unvan/adres değişikliği [106, 108], suret/rüçhan belgesi [109, 110], dönüşüm [111, 112], yıllık ücret [122, 123], telafi ücreti [125, 126], işlemlerin devamı [126, 127], hakların tesisi [128, 129], geri çekme/vazgeçme [129, 130], PCT ulusal faza giriş [114]) bu sistem üzerinden yapıldığı belirtilmektedir.</li>
+                            <li>Ayrıca, uluslararası sistemler olan WIPO'nun ePCT-Filing [116, 117] ve EPO'nun çevrimiçi sistemleri (Espacenet [22], formları [120]) dolaylı olarak geçmektedir.</li>
+                            <li>Şirket içi özel bir takip yazılımı veya sistemine dair bilgi kaynaklarda yoktur. Dış vekillerin (AGIP, SABA) kendi sistemlerini kullanması olasıdır [300-302].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>TÜRKPATENT'in EPATS sistemi dışında, iç süreçleri takip etmek için kullanılan özel bir yazılım, veritabanı veya araç (örn: Excel dosyaları, özel IP yönetim yazılımları) var mı?</li>
+                            <li>Varsa, bu sistemlerin kapsamı (hangi bilgileri içeriyor, hangi aşamaları takip ediyor) nedir?</li>
+                            <li>Dış vekillerle bilgi akışı ve belge paylaşımı nasıl sağlanıyor, onların kullandığı sistemlerle bir entegrasyon var mı?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Kullanılan tüm sistemlerin (EPATS, dış vekil sistemleri, iç sistemler) listelenmesi ve iş akışında nerede kullanıldıklarının belirlenmesi, bilgi tutarlılığı, veri tekrarı ve manuel işlem adımlarının tespiti açısından önemlidir.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q4" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q4" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q5">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">5.</span> <span class="question-title-text">Süreçlerin performansını ölçmek için hangi metrikler kullanılıyor? (Örn: Başvuru sayısı, tescil oranı, süreç süreleri, maliyetler vb.)</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklarda süreç performansı ölçümüne dair herhangi bir metrikten bahsedilmemektedir.</li>
+                            <li>Başvuru sayısı [133], tescil ücretleri [131-134, 298-307] ve süreç süreleri (örn: başvuru tarihinin kesinleşmesi [67], eksik tamamlama [69], şekli eksiklik giderme [70, 86], araştırma talebi süresi [72, 87], yayın süresi [78, 88], inceleme talebi süresi [79], inceleme bildirim cevap süresi [82], itiraz süresi [83], yıllık ücret ödeme süresi [122, 123], telafi süresi [125], PCT ulusal faza giriş süresi [114, 115], EPC validasyon süresi [119]) kılavuzda detaylı olarak belirtilse de [40-42, 121-130], bunların şirket içinde performans metriği olarak takip edilip edilmediği bilgisi yoktur.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Süreçlerin etkinliğini ve verimliliğini ölçmek için şu an aktif olarak takip edilen metrikler var mıdır?</li>
+                            <li>(Örn: Buluş bildiriminden başvuruya geçiş oranı, başvuru tarihinden tescil tarihine ortalama süre, tescil oranı, reddedilen/geri çekilen başvuru oranı, yıllık ücret ödeme kaçak oranı, bütçelenen maliyet ile gerçekleşen maliyet farkı, dış vekil performansı).</li>
+                            <li>Bu metrikler düzenli olarak raporlanıyor mu ve kimlerle paylaşılıyor? Hedeflenen veya benchmark edilen (kıyaslama) değerler var mı?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Hedeflerle uyumlu temel performans göstergeleri (KPI'lar) belirleyin.</li>
+                            <li>Bu metriklerin toplanması ve analiz edilmesi, süreçteki iyileştirme alanlarını somutlaştırmanıza yardımcı olacaktır.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q5" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q5" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q6">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">6.</span> <span class="question-title-text">Patent ve faydalı model süreçleri ile marka süreçleri arasındaki temel farklar işleyiş açısından nelerdir?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklar, patent ve faydalı model arasındaki farkları net olarak ortaya koymaktadır: Faydalı model için buluş basamağı kriteri aranmaz [10, 87] ve tescil sürecinde inceleme raporu (esasa yönelik inceleme) aşaması yoktur [11, 87].</li>
+                            <li>Bu, faydalı model sürecini daha hızlı ve potansiyel olarak daha az maliyetli hale getirebilir.</li>
+                            <li>Marka süreçlerine ilişkin kaynaklarda başvuru ve inceleme adımları detaylandırılmamış, sadece yenileme işlemleri [295, 300-302, 304, 306, 307], tescil belgesi yeniden çıkarma ücreti [300] ve farklı ülkelerdeki maliyet/ajan farklılıkları [300-302] gibi operasyonel detaylar bulunmaktadır.</li>
+                            <li>Marka kullanım zorunluluğu veya tecavüzü gibi konular marka özelinde kaynaklarda geçmemektedir (patent için geçmektedir [96, 97, 104, 105]).</li>
+                            <li>Bu durum, marka süreçlerinin kaynaklarda çok daha az detaylı ele alındığını göstermektedir.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Marka başvurusu ve tescil süreci şirketinizde nasıl işliyor?</li>
+                            <li>TÜRKPATENT'in marka başvuru ve inceleme süreçleri, patent/faydalı model süreçlerinden temel olarak hangi adımlarda ve ne ölçüde farklılaşıyor?</li>
+                            <li>(Örn: Sınıflandırma, yayın ve itiraz süresi, benzerlik araştırması, kullanım ispatı vb.). Marka süreçlerinde karşılaşılan spesifik zorluklar veya fırsatlar nelerdir?</li>
+                            <li>Marka portföy yönetimi (yurtiçi/yurtdışı) nasıl yapılıyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Marka başvuru ve tescil süreçlerinin adımlarını ayrı bir akış şeması olarak çıkarmayı hedefleyin.</li>
+                            <li>Bu, patent/faydalı model süreçleriyle karşılaştırma yapmanızı ve her bir hak türü için özelleştirilmiş analizler yapmanızı sağlar.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q6" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q6" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-block mb-12">
+            <h2 class="text-2xl font-bold text-gray-700 border-b-2 border-sky-500 pb-2 mb-6">Patent/Faydalı Model Süreci Aşamaları</h2>
+            
+            <div class="question-item bg-white p-4 rounded-lg shadow-md mb-6 question-block" data-question-id="q7_main">
+                 <h3 class="text-lg font-semibold text-sky-700 mb-2">Başvuru Öncesi Hazırlık</h3>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q7">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">7.</span> <span class="question-title-text">Buluş ortaya çıktıktan sonra, başvuru yapmadan önce ne gibi hazırlıklar yapılıyor? (Örn: Ön araştırma, buluşun detaylı tarif edilmesi, istemlerin yazılması, resimlerin hazırlanması)</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklar, başvuru yapmadan önce ön araştırma yapılmasını tavsiye eder [2, 21].</li>
+                            <li>Başvurunun tarifname [26], istemler [31], özet [57] ve resimler [57] gibi unsurlardan oluştuğunu ve bunların nasıl hazırlanması gerektiğine dair detaylı format ve içerik kuralları verdiğini belirtir [24-66].</li>
+                            <li>Ancak, buluş ortaya çıktıktan sonraki şirket içi buluşu detaylandırma, tarifname/istem yazımı gibi hazırlıkların kim tarafından, hangi adımlarla yapıldığına dair bilgi içermez.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Buluş ortaya çıktıktan sonraki ilk adımlar nelerdir? (Örn: Buluş bildirim formu dolduruluyor mu? Kim dolduruyor?).</li>
+                            <li>Buluşun detaylandırılması, tarifname, istem ve resimlerin hazırlanması süreçleri şirket içinde mi yapılıyor, yoksa dış vekil/uzman desteği alınıyor mu?</li>
+                            <li>Bu hazırlıklar için bir kontrol listesi veya standart prosedür var mı?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Buluş bildiriminden başvuru hazırlığına kadar olan iç süreç adımlarını belirleyerek, bu aşamada kimlerin ne yaptığını ve kullanılan araçları (formlar, şablonlar) dokümante edin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q7" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q7" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+            
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q8">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">8.</span> <span class="question-title-text">Ön araştırma süreci nasıl işliyor? Hangi veri tabanları kullanılıyor? Bu araştırmayı kimler yapıyor? Araştırma sonuçlarına göre başvuru kararı nasıl veriliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklar ön araştırma yapmanın tavsiye edildiğini [21] ve temel amacın buluşun yeni olup olmadığını belirlemek olduğunu [21] belirtir.</li>
+                            <li>Kullanılabilecek başlıca ücretsiz çevrimiçi veri tabanlarını listeler: TÜRKPATENT [22], Espacenet (EPO) [22], Patentscope (WIPO) [23], USPTO [23], Google Patents [23], ve WIPO ulusal/bölgesel ofis linkleri [23].</li>
+                            <li>Ön araştırmanın kimler tarafından yapıldığına dair bilgi kaynaklarda yoktur. Araştırma raporu sonrasında (yani TÜRKPATENT tarafından yapılan resmi araştırma sonrası) X veya Y dokümanları gibi olumsuz sonuçlara göre başvuruya devam edip etmeme kararı alınabildiği belirtilir [76, 77].</li>
+                            <li>Ön araştırma sonuçlarına göre başvuru kararının nasıl verildiği ise kaynaklarda detaylı değildir.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Başvuru öncesi ön araştırmayı kim/kimler (buluşçu, Ar-Ge, hukuk, dış vekil) yapıyor? Hangi veri tabanları ve yöntemler kullanılıyor?</li>
+                            <li>Ön araştırmanın çıktıları (rapor formatı vb.) nelerdir? Ön araştırma sonuçları nasıl değerlendiriliyor ve başvuru yapma kararı nasıl veriliyor?</li>
+                            <li>Bu kararı kim/kimler veriyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Ön araştırma sürecindeki adımları, kullanılan kaynakları ve karar mekanizmasını belirleyerek, bu aşamanın verimliliğini ve başvuru kalitesine etkisini değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q8" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q8" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q9">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">9.</span> <span class="question-title-text">Tarifname, istemler, özet ve resimler nasıl hazırlanıyor? Bunların içeriği ve formatı konusunda dikkat edilen özel hususlar nelerdir?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                     <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklar tarifname [26-31], istemler [31-56], özet [57] ve resimler [57-61] için çok detaylı hazırlık, içerik ve format kuralları sunmaktadır.</li>
+                            <li>Örneğin, tarifnamenin buluşu bir uzmanın uygulayabileceği açıklıkta olması [26], buluşun teknik alanını [27], tekniğin bilinen durumunu [27], buluşun amacını [28], şekil ve referans açıklamalarını [29, 30] ve buluşun sanayiye uygulanma biçimini [31] içermesi gerektiği belirtilir.</li>
+                            <li>İstemlerin koruma kapsamını belirlediği [31], tarifnameye dayanması gerektiği [32], bağımsız ve bağımlı istem yapıları [32], istem yazım kuralları ve örnekleri [33-56], dört istem kategorisi (ürün, yöntem, aparat, kullanım) [40], istemlerde sadece teknik özelliklerden bahsedilmesi gerektiği [44, 45], istemlerin tek cümle olması kuralı [47] gibi birçok detay verilmiştir.</li>
+                            <li>Resimlerin teknik çizim olması [58], numaralandırılması [58, 59], referans işaretlerinin gösterilmesi [60], yazılı ifade kullanılmaması [60] ve renk/gölgelendirme kullanılmaması [61] gibi kurallar da belirtilmiştir.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Tarifname takımının hazırlanması şirket içinde mi yapılıyor, dış vekilden destek mi alınıyor?</li>
+                            <li>Hazırlık sürecinde bu kılavuzdaki kurallara ne kadar titizlikle uyuluyor? Bu hazırlıkları yapanlar teknik/hukuki altyapıya sahip mi?</li>
+                            <li>Tarifname takımının kalitesini sağlamak için bir kontrol veya doğrulama adımı var mı?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Tarifname takımı hazırlık sürecini, ilgili kişileri ve kullanılan araçları/şablonları belgeleyerek, kalite kontrol mekanizmalarını ve iyileştirme potansiyellerini (örn: şablonların güncellenmesi, eğitim ihtiyacı) belirleyin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q9" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q9" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q10">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">10.</span> <span class="question-title-text">Başvuru unsurlarının (form, tarifname, istemler, özet, resimler) fiziksel özellikleri (yazı tipi, kenar boşlukları vb.) konusunda uyulan standartlar nelerdir?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklar başvuru unsurlarının genel fiziksel özellikleri için detaylı kurallar sunmaktadır [24, 62-66].</li>
+                            <li>Bilgisayar ile yazılması (istisnalar hariç) [62], her unsurun yeni sayfada başlaması [63], satır aralığı (1.5) [63], tablo/formül yerleşimi [63], ağırlık/ölçü birimleri (metrik, Celcius) [64], sayfa numaralandırması [64], satır numaralandırması (tarifname/özet, beşerli) [65] ve kenar boşlukları [65, 66] gibi standartlar açıkça belirtilmiştir.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Başvuru unsurları hazırlanırken bu fiziksel özellik kurallarına uymak için özel bir otomasyon veya şablon kullanılıyor mu?</li>
+                            <li>Yoksa bu kontrol manuel olarak mı yapılıyor? Şekli inceleme sırasında bu tür kurallara uyumsuzluktan kaynaklanan eksiklik bildirimleri sık karşılaşılan bir durum mudur?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Belirtilen formatlama kurallarına uyumu sağlamak için süreç adımlarını gözden geçirin.</li>
+                            <li>Şablon kullanımı veya otomatik kontrollerin entegrasyonu gibi iyileştirme fırsatlarını değerlendirebilirsiniz.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q10" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q10" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q11">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">11.</span> <span class="question-title-text">Başvuru ücretleri ve rüçhan hakkı süreçleri nasıl yönetiliyor? Rüçhan hakkı talebi ne zaman yapılıyor, ilgili belgeler ne zaman sunuluyor? Sergiden doğan rüçhan hakkı için süreç nasıl?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Başvuru ücretinin başvuruyla birlikte veya en geç 2 ay içinde ödenmesi gerektiği [25, 69] belirtilir.</li>
+                            <li>Rüçhanlı başvurularda rüçhan sayısına bağlı ek ücret alınır [12, 25]. Rüçhan hakkı talebinin başvuruyla birlikte veya 2 ay içinde ücreti ödenerek yapılması gerektiği [12] belirtilir.</li>
+                            <li>Rüçhan hakkı belgesi ve çevirisinin başvuru sırasında veya 3 ay içinde sunulması gerekir [12, 69].</li>
+                            <li>Sergiden doğan rüçhan hakkı için ürün fotoğrafı ve sergi düzenleyici onaylı belgenin (tarih, teknik özellikler) sunulması gerektiği belirtilir [13, 14].</li>
+                            <li>Ücretlerin EPATS üzerinden ödenebildiği [122] ve güncel ücret bilgilerine TÜRKPATENT web sitesinden ulaşılabileceği [72, 80, 83, 84, 90, 131, 132] belirtilir.</li>
+                            <li>Toplantı notunda ödeme yöntemlerine dair bir pratik zorluktan bahsedilir (sadece Ziraat Bankası veya kredi kartı, iş avansı kullanımı) [307].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Başvuru ve rüçhan ücretlerinin ödeme süreci kim tarafından, nasıl yönetiliyor?</li>
+                            <li>Ücret takibi ve ödeme süreçlerinde karşılaşılan zorluklar (örn: ödeme yöntemi [307]) var mı? Rüçhan hakkı talebi yapılıp yapılmayacağına nasıl karar veriliyor?</li>
+                            <li>Rüçhan belgelerinin temini ve çevirisi süreci nasıl işliyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Ücret ödeme ve rüçhan takibi süreçlerindeki manuel adımları ve olası gecikme nedenlerini analiz ederek, otomasyon veya süreç iyileştirme fırsatlarını belirleyin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q11" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q11" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+            
+            <div class="question-item bg-white p-4 rounded-lg shadow-md mb-6 question-block" data-question-id="q12_main">
+                 <h3 class="text-lg font-semibold text-sky-700 mb-2">Başvuru Yapılması ve İlk İnceleme</h3>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q12">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">12.</span> <span class="question-title-text">Başvuru işlemi hangi sistem üzerinden (EPATS vb.) ve nasıl yapılıyor? Çevrimiçi başvurunun adımları nelerdir?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                     <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Başvuruların yalnızca EPATS sistemi üzerinden çevrimiçi olarak yapıldığı açıkça belirtilir [24, 66, 91].</li>
+                            <li>Sisteme e-Devlet şifresi, elektronik imza, mobil imza veya internet bankacılığı ile giriş yapılabildiği [24, 66, 91] ve "Yeni Başvuru" işlem adımının kullanıldığı [24, 68, 78, 114, 119] belirtilir.</li>
+                            <li>Çevrimiçi başvurunun spesifik adımları (ekranlar, veri girişleri vb.) detaylı olarak anlatılmamıştır, ancak "ilgili adımlar doldurulmalıdır" [24] ve "ilgili alanlar doldurularak ve gerekli belgeler sisteme eklenerek Kuruma sunulur" [68] gibi ifadeler yer alır.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Çevrimiçi başvuru sürecinde kimler yetkilidir ve başvuruyu kim yapar?</li>
+                            <li>Başvuru sırasında belge yükleme ve bilgi girişi adımlarında karşılaşılan zorluklar var mı?</li>
+                            <li>Başvuru işleminin tamamlandığından emin olmak için bir kontrol mekanizması mevcut mu?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Çevrimiçi başvuru arayüzünün kullanımına dair bir demo veya ekran görüntüleri üzerinden süreç akışını anlamak, bu aşamadaki potansiyel hataları veya verimsizlikleri tespit etmeye yardımcı olabilir.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q12" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q12" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+            
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q13">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">13.</span> <span class="question-title-text">Başvuru tarihinin kesinleşmesi için hangi unsurların eksiksiz olması gerekiyor? Bu unsurlardan biri eksikse süreç nasıl ilerliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Başvuru tarihinin kesinleşmesi için şu unsurların sunulması gerektiği belirtilir: Yazılı talep, başvuru sahibi kimlik ve iletişim bilgileri, Türkçe veya kabul edilen yabancı dilde tarifname veya önceki başvuruya atıf [67, 68].</li>
+                            <li>Bu unsurlardan herhangi biri eksikse, başvuru işleme alınmaz ve başvuru sahibine bildirilir [68].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Başvuru tarihi kesinleşmeden önce sıklıkla karşılaşılan eksiklikler nelerdir?</li>
+                            <li>Bu tür eksiklik bildirimleri alındığında şirket içi reaksiyon süreci nasıl işliyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Başvuru dosyası hazırlık sürecine, başvuru tarihi kesinleşmesi için gerekli unsurların eksiksiz olduğundan emin olacak kontrol adımları eklenip eklenemeyeceğini değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q13" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q13" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q14">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">14.</span> <span class="question-title-text">Başvuru unsurlarında (tarifname, istemler, özet, resimler) sonradan eksiklik fark edildiğinde tamamlama süreci nasıl işliyor? Türkçe çeviri gereksinimi nasıl yönetiliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                     <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Başvuru işleme alındıktan sonra tarifname, istemler, özet, resimler (atıf yapılmışsa) ve başvuru ücreti bilgisi eksikse, bu eksikliklerin bildirim yapılmaksızın başvuru tarihinden itibaren 2 ay içinde tamamlanması gerektiği belirtilir [69].</li>
+                            <li>Yabancı dilde sunulan unsurların Türkçe çevirilerinin de aynı 2 ay içinde sunulması gerekir [25, 69]. Süresinde tamamlanmazsa başvuru geri çekilmiş sayılır [70].</li>
+                            <li>Tamamlama işlemi EPATS'ta "Başvuru Unsurlarını Tamamlama" bölümünden yapılır [70].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Başvuru unsurlarında eksiklik veya çeviri ihtiyacı olduğunda takip ve tamamlama süreci kim tarafından yürütülüyor?</li>
+                            <li>Çeviri hizmetleri şirket içinde mi sağlanıyor, dışarıdan mı alınıyor? Bu 2 aylık süreyi kaçırmamak için alınan önlemler nelerdir?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Süre takibi ve eksik belge/çeviri tamamlama süreçlerini dokümante edin.</li>
+                            <li>Bu aşamada olası gecikme veya hata kaynaklarını belirleyerek süreç takibini iyileştirebilirsiniz.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q14" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q14" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q15">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">15.</span> <span class="question-title-text">Şekli inceleme süreci nasıl yürütülüyor? Şekli eksiklikler tespit edilirse bildirim ve giderme süreci nasıl işliyor? Başvuruda yapılan değişikliklerin ilk kapsamı aşmaması kuralına nasıl dikkat ediliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Başvuru unsurları tamamlandıktan sonra şekli inceleme yapılır [70, 85].</li>
+                            <li>Şekli eksiklikler tespit edilirse başvuru sahibine bildirilir ve gidermesi için 2 ay süre verilir [70, 86].</li>
+                            <li>Süresinde giderilmezse veya Kurum kabul etmezse başvuru reddedilir [71, 86]. Şekli uygunluk sonrası (eğer araştırma talebi yapılmamışsa) araştırma talebi için 12 aylık süre (patent) veya 2 aylık süre (faydalı model) bildirilir [71, 86].</li>
+                            <li>Başvuruda yapılan değişikliklerin başvurunun ilk kapsamını aşmaması gerektiği kuralı belirtilir [71, 87, 211, 229].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Şekli eksiklik bildirimleri sıklıkla alınıyor mu? En sık karşılaşılan şekli eksiklikler nelerdir?</li>
+                            <li>Bu bildirimlerin takibi ve eksikliklerin giderilmesi süreci nasıl yürütülüyor? Başvuruda değişiklik yapılması gerektiğinde (örn: şekli eksiklik gidermek için) kapsam aşılmaması kuralına dikkat etmek için özel bir kontrol yapılıyor mu?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Şekli eksikliklerin kök nedenlerini analiz edin.</li>
+                            <li>Belki başvuru hazırlık sürecindeki bir adım (örn: format kontrolü) iyileştirilerek bu tür eksiklikler azaltılabilir.</li>
+                            <li>Kapsam aşımı riskine karşı bir iç kontrol mekanizması geliştirmeyi düşünebilirsiniz.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q15" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q15" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-4 rounded-lg shadow-md mb-6 question-block" data-question-id="q16_main">
+                 <h3 class="text-lg font-semibold text-sky-700 mb-2">Araştırma ve İnceleme Süreci (Patent Farklılıkları Belirtilmeli)</h3>
+            </div>
+            
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q16">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">16.</span> <span class="question-title-text">Araştırma talebi ne zaman ve nasıl yapılıyor? Ücreti ne zaman ödeniyor? Bu talebin süresi içinde yapılmaması durumunda ne oluyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                     <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Patent için araştırma talebi başvuruyla birlikte veya başvuru tarihinden itibaren 12 ay içinde ücreti ödenerek yapılır [71, 72].</li>
+                            <li>Faydalı model için ise başvuruyla birlikte veya şekli uygunluk bildirim tarihinden itibaren 2 ay içinde ücreti ödenerek yapılır [86, 87].</li>
+                            <li>Talep ve ödeme süresi içinde yapılmazsa başvuru geri çekilmiş sayılır [72, 89]. Talep EPATS üzerinden yapılır [72, 87].</li>
+                            <li>Araştırma ve İnceleme talebi birlikte de yapılabilir [85, 306].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Araştırma talebinin zamanlamasına (başvuruyla birlikte mi, yoksa süre içinde mi) nasıl karar veriliyor?</li>
+                            <li>Bu kararı etkileyen faktörler nelerdir? (Örn: Bütçe, Ar-Ge'nin devam etmesi, stratejik öncelik).</li>
+                            <li>Araştırma talebi ve ödemesinin süresinde yapıldığından emin olmak için nasıl bir takip sistemi kullanılıyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Araştırma talebi zamanlamasına ilişkin karar verme sürecini ve bu kararların süreç maliyetleri ve süreleri üzerindeki etkilerini analiz edin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q16" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q16" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q17">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">17.</span> <span class="question-title-text">Araştırma raporu nasıl hazırlanıyor ve başvuru sahibine nasıl bildiriliyor? Raporda kullanılan kodlar (X, Y, A vb.) ne anlama geliyor? Faydalı model araştırma raporu düzenlenirken buluş basamağı kriteri dikkate alınmıyor, bu durum süreci nasıl etkiliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Araştırma raporu, buluş konusuyla ilgili en yakın tekniğin bilinen durumu dokümanlarını (başvuru tarihinden önceki yayımlanmış tüm dokümanlar) listeler [73].</li>
+                            <li>Dokümanların istemlerle ilişkisi uluslararası kodlarla (X, Y, A, P, E, O, T, L) ifade edilir [74, 75].</li>
+                            <li>X: tek başına yenilik veya buluş basamağını zedeleyen doküman; Y: başka dokümanlarla birlikte buluş basamağını zedeleyen; A: buluşla doğrudan ilgili olmayan genel bilgi veren doküman [74]. Rapor başvuru sahibine bildirilir [75].</li>
+                            <li>Faydalı model araştırma raporunda yenilik ve sanayiye uygulanabilirlik dikkate alınır, ancak buluş basamağı dikkate alınmaz [87].</li>
+                            <li>Özet ve buluş başlığı gerekirse Kurum tarafından yeniden düzenlenerek rapora eklenir [87].</li>
+                            <li>Tarifname/istemler yeterince açık değilse veya konu faydalı modelle korunamazsa rapor düzenlenemeyebilir [87].</li>
+                            <li>Rapor düzenlenemezse başvuru sahibi 3 ay içinde itiraz/değişiklik sunabilir, aksi takdirde başvuru reddedilir [87].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Araştırma raporları şirket içinde kimler tarafından inceleniyor? Rapordaki kodlar ve dokümanlar nasıl yorumlanıyor?</li>
+                            <li>Faydalı model başvurularında buluş basamağının dikkate alınmaması karar verme sürecini nasıl etkiliyor?</li>
+                            <li>Araştırma raporu düzenlenememesi gibi durumlarla karşılaşıldı mı, nasıl yönetildi?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Araştırma raporu inceleme sürecini ve bu raporun başvuru stratejisi (devam etme, değiştirme, geri çekme) üzerindeki etkilerini analiz edin.</li>
+                            <li>Karar ağacı formatında görselleştirmek faydalı olabilir.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q17" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q17" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q18">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">18.</span> <span class="question-title-text">Araştırma raporuna göre başvuruya devam edip etmeme kararı nasıl alınıyor? Rapordaki olumsuzluklara (X veya Y dokümanları) karşı ne gibi aksiyonlar alınıyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Başvuru sahibi, araştırma raporunu ve dokümanları inceleyerek devam etme veya geri çekme kararı alabilir [76].</li>
+                            <li>X veya Y dokümanları varsa geri çekme kararı alınabilir [76]. Olumsuz dokümanlara rağmen devam kararı verilirse, tarifname takımında değişiklik yapılabilir (nedenleriyle veya nedensiz) veya değişiklik yapılmayabilir (nedenleriyle veya nedensiz) [77, 78].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Araştırma raporu sonrası devam kararı hangi kriterlere (teknik, ticari, hukuki) göre alınıyor?</li>
+                            <li>Bu kararı kim/kimler (örn: Ar-Ge lideri, hukuk müşaviri, üst yönetim) veriyor?</li>
+                            <li>Tarifname takımında değişiklik yapılması süreci nasıl işliyor, bu değişiklikleri kim hazırlıyor ve kapsam aşımı kontrolü nasıl yapılıyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Araştırma raporu sonrası karar alma sürecindeki tüm paydaşları ve adımları belirleyin.</li>
+                            <li>Bu karar alma sürecinin hızlandırılması veya etkinleştirilmesi için yapılabilecekleri (örn: net karar kriterleri, yetki matrisi) değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q18" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q18" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q19">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">19.</span> <span class="question-title-text">Başvuru yayımı ne zaman gerçekleşiyor? Erken yayım talebi süreci nasıl işliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Başvuru yayımı, başvuru (veya rüçhan) tarihinden itibaren 18 ay sonra TÜRKPATENT Resmi Bülteninde yapılır [78, 88].</li>
+                            <li>Başvuru sahibi 18 ay dolmadan erken yayım talep edebilir [78, 88].</li>
+                            <li>Erken yayım talebi başvuru sırasında veya sonrasında EPATS üzerinden yapılır [78, 88].</li>
+                            <li>Erken yayım talebi yapılırsa, yayın şekli uygunluk yazısından sonra gerçekleşir [79].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Erken yayım talebi yapılıyor mu? Hangi durumlarda yapılıyor? (Örn: Hızlı koruma ihtiyacı, pazarlama amaçlı).</li>
+                            <li>Erken yayımın avantaj ve dezavantajları şirket içinde nasıl değerlendiriliyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Erken yayım kararının alınma sürecini ve bu kararın potansiyel ticari ve hukuki etkilerini değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q19" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q19" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q20">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">20.</span> <span class="question-title-text">Yayım sonrası üçüncü kişilerin görüş bildirme süreci nasıl yönetiliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Başvuru yayımından sonra üçüncü kişiler, buluşun patentlenebilirliğine ilişkin görüşlerini EPATS üzerinden TÜRKPATENT'e sunabilir [79, 89].</li>
+                            <li>Bu görüşler araştırma raporu hazırlama aşamasından önce gelmişse dikkate alınabilir [79].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Yayımlanmış başvurularınıza üçüncü kişilerden görüş geldi mi?</li>
+                            <li>Gelirse bu görüşler şirket içinde kimler tarafından inceleniyor ve nasıl değerlendiriliyor?</li>
+                            <li>Üçüncü kişilerin görüş bildirme süreci proaktif olarak takip ediliyor mu (örn: rakiplerin başvurularını izleyerek)?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Üçüncü kişi görüşlerinin takibi ve değerlendirilmesi için bir süreç tanımlayın.</li>
+                            <li>Rakiplerin yayınlarını takip etme stratejisini gözden geçirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q20" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q20" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q21">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">21.</span> <span class="question-title-text">Patentler için: İnceleme talebi ne zaman ve nasıl yapılıyor? Başarısızlık durumunda ne olur? Süreç adımları nelerdir? Kriterler nelerdir? Olumsuz bulgular, bildirimler, yanıtlar, değişiklikler nasıl yönetiliyor? Bildirim sayısı nedir? Red, itiraz süreçleri nasıl işliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                     <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Patent başvuruları için inceleme talebi, araştırma raporunun bildirim tarihinden itibaren 3 ay içinde ücreti ödenerek talep edilir [79, 80].</li>
+                            <li>Süresinde talep ve ödeme yapılmazsa başvuru geri çekilmiş sayılır [80]. İnceleme talebi geri çekilemez [79]. Talep EPATS üzerinden yapılır [80].</li>
+                            <li>İnceleme aşamasında buluş, patentlenebilirlik kriterleri (yenilik, buluş basamağı, sanayiye uygulanabilirlik) bakımından incelenir [81].</li>
+                            <li>Araştırma raporu, varsa ek dokümanlar, başvuru sahibinin görüşleri ve değişiklikler dikkate alınır [81].</li>
+                            <li>İnceleme sonucu olumlu ise patent verilme kararı verilir, rapor ve karar başvuru sahibine bildirilir [81].</li>
+                            <li>Olumsuz ise bildirim yapılır, patent verilememe nedenleri (gerekçeli) belirtilir [81, 82].</li>
+                            <li>Başvuru sahibine her bildirim tarihinden itibaren 3 ay süre verilir [82] (toplam 3 bildirim hakkı olduğu belirtilir [82]).</li>
+                            <li>Bu süre içinde görüş sunulmalı veya kapsam aşılmaması şartıyla değişiklik yapılmalıdır [82]. Cevap verilmez veya değişiklik yapılmazsa başvuru geri çekilir [82].</li>
+                            <li>İnceleme sonrası hala uygun değilse başvuru reddedilir, bu karar bültende yayımlanır [82].</li>
+                            <li>Kurum değişiklik isterse 2 ay süre verilir, değişiklikler kabul edilirse patent verilir, edilmezse veya yapılmazsa başvuru geri çekilir [82].</li>
+                            <li>İnceleme raporuna itiraz işlemleri kaynaklarda patent süreci altında ayrıca detaylandırılmamıştır, faydalı model süreci altında reddedilen başvuruya itirazdan bahsedilir [89].</li>
+                            <li>Patent verilmesi kararına itiraz (YİDD - Yeniden İnceleme ve Değerlendirme Dairesi?) bültende yayımdan itibaren 6 ay içinde üçüncü kişilerce yapılabilir [83, 84].</li>
+                            <li>Bu itiraz patent sahibine bildirilir, 3 ay görüş süresi verilir [84].</li>
+                            <li>İtiraz, patent sahibi görüşleri ve değişiklikleri dikkate alınarak Kurul (yeniden inceleme) tarafından incelenir [84].</li>
+                            <li>Kurul kısmen uygun bulursa değişiklik isteyebilir (2 ay süre), yapılmazsa veya kabul edilmezse patent hükümsüz sayılır [84].</li>
+                            <li>Kabul edilirse değiştirilmiş haliyle devamına karar verilir [84]. Kurul itirazı reddederse nihai karar bültende yayımlanır [85].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>İnceleme süreci sırasında TÜRKPATENT'ten gelen bildirimler (olumlu/olumsuz) nasıl takip ediliyor?</li>
+                            <li>Olumsuz bildirimlere karşı görüş hazırlama ve değişiklik yapma süreci (kim hazırlıyor, kim onaylıyor) nasıl işliyor?</li>
+                            <li>3 bildirim hakkı stratejik olarak nasıl kullanılıyor? Reddedilen patent başvurularına karşı Kurul'a itiraz ediliyor mu, bu süreç nasıl yönetiliyor?</li>
+                            <li>Üçüncü kişilerin patent verilmesi kararına itirazları şirket içinde nasıl ele alınıyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Patent inceleme sürecindeki tüm bildirim ve yanıt adımlarını, süre kısıtlarını ve karar noktalarını belirleyin.</li>
+                            <li>Bu sürecin yönetimi için bir standart operasyon prosedürü (SOP) oluşturulup oluşturulmadığını veya gerekliliğini değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q21" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q21" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q22">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">22.</span> <span class="question-title-text">Faydalı Modeller için: Araştırma raporu sonrası inceleme talebi yok; süreç nasıl ilerliyor? Araştırma raporuna itiraz ve görüş sunma süreci nasıl yönetiliyor? Faydalı model verilmesi kararı nasıl alınıyor? Değişiklik yapılması gereken durumlar nasıl ele alınıyor? Faydalı model verildikten sonra itiraz prosedürü var mı, yoksa sadece hükümsüzlük davası mı açılabilir?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Faydalı modelde araştırma raporu sonrası patentteki gibi bir inceleme talebi ve esasa yönelik inceleme raporu aşaması yoktur [11, 87].</li>
+                            <li>Araştırma raporunun yayımlanmasından itibaren 3 ay içinde başvuru sahibi rapora itiraz edebilir, üçüncü kişiler görüş bildirebilir [88, 89].</li>
+                            <li>Bu işlemler EPATS üzerinden yapılır [89]. TÜRKPATENT değerlendirme sonucunda faydalı model verilmesine karar verebilir veya değişiklik isteyebilir (2 ay süre) [89].</li>
+                            <li>Değişiklikler kabul edilirse faydalı model verilir, yapılmazsa veya kabul edilmezse başvuru geri çekilir [89].</li>
+                            <li>Faydalı model verildikten sonra Kanunun 99. maddesindeki itiraz usulü işletilemez [89]. Sadece mahkemeden hükümsüzlük talep edilebilir [89].</li>
+                            <li>Eğer TÜRKPATENT başvurunun Kanuna uygun olmadığına karar verirse başvuruyu reddeder ve bu karara karşı itiraz edilebilir (100. maddeye göre) [89].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Faydalı model araştırma raporlarına başvuru sahibi olarak itiraz edildi mi? Hangi durumlarda itiraz ediliyor?</li>
+                            <li>Faydalı model verilmesi kararı sonrası üçüncü kişiler tarafından hükümsüzlük davası açılması riskine karşı ne gibi önlemler alınıyor?</li>
+                            <li>Faydalı model başvurularının reddedilmesi durumunda Kurum kararına karşı itiraz süreci nasıl yönetiliyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Faydalı model sürecinin basitliğinin sunduğu hız ve maliyet avantajlarını, buluş basamağı koruması eksikliğinin getirdiği risklerle karşılaştırın.</li>
+                            <li>Portföyünüzdeki buluşlar için patent mi faydalı model mi yolunun izleneceğine dair bir karar matrisi oluşturulmasını değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q22" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q22" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q23">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">23.</span> <span class="question-title-text">Belge düzenlenme ücreti ve belgenin alınması süreci nasıl işliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Patent verilmesine ilişkin yayımdan sonra [83], faydalı model verilmesine ilişkin yayımdan sonra [90], patent/faydalı model sahibinin talebi ve Tebliğde belirtilen ücretin ödenmesi halinde belge düzenlenerek gönderilir [83, 90].</li>
+                            <li>Belge talebi ve ücret ödemesi EPATS üzerinden "Tescil Belge/Suret/Sicil Düzenlenmesi" işlemi ile yapılır [83, 90].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Tescil belgesi talebi otomatik olarak yapılıyor mu, yoksa bu talep için bir karar süreci var mı?</li>
+                            <li>Belge düzenleme ücreti ödeme süreci nasıl işliyor? Fiziksel belge takibi nasıl yapılıyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Tescil sonrası belge düzenleme ve takibi süreçlerinin ne kadar otomatikleştiğini veya manuel takip gerektirdiğini değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q23" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q23" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-4 rounded-lg shadow-md mb-6 question-block" data-question-id="q24_main">
+                 <h3 class="text-lg font-semibold text-sky-700 mb-2">Tescil Sonrası Yönetim (Patent ve Faydalı Model)</h3>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q24">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">24.</span> <span class="question-title-text">Koruma süresi patent ve faydalı model için ne kadardır ve bu süreler nasıl takip ediliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Patent koruma süresi başvuru tarihinden itibaren 20 yıl [11, 92], faydalı model koruma süresi başvuru tarihinden itibaren 10 yıldır [11, 92].</li>
+                            <li>Bu süreler uzatılamaz [92]. Sürelerin şirket içinde nasıl takip edildiği bilgisi kaynaklarda yer almamaktadır.</li>
+                            <li>Toplantı notları, yenileme tarihlerinin (yıllık ücret ödeme tarihleri) takip edildiğini göstermektedir [303-307].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Tüm patent ve faydalı model dosyaları için koruma süreleri ve yıllık ücret vade tarihleri nasıl takip ediliyor?</li>
+                            <li>Bu takip için kullanılan bir sistem (iç yazılım, elektronik tablo, dış vekil sistemi) var mı?</li>
+                            <li>Vade tarihlerinin yaklaşması durumunda ilgili kişilere otomatik bildirim yapılıyor mu?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Süre takip sistemlerinin güvenilirliğini ve otomasyon seviyesini değerlendirin.</li>
+                            <li>Kritik tarihlerde (yıllık ücret, koruma süresi sonu) hak kaybı riskini minimize etmek için süreç iyileştirmeleri planlayın.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q24" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q24" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q25">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">25.</span> <span class="question-title-text">Yıllık ücret ödemeleri süreci nasıl yönetiliyor? Ödeme tarihleri nasıl belirleniyor ve takip ediliyor? Süresi içinde ödenmemesi durumunda ne oluyor? Telafi ücreti ile hakların yeniden tesisi süreçleri ne zaman ve nasıl kullanılıyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Yıllık ücretler Kurum bildirimine gerek olmaksızın, koruma süresi boyunca, başvuru tarihinden itibaren 2. yılın sonunda başlamak üzere her yıl peşin ödenir [122].</li>
+                            <li>Vade tarihi, başvuru tarihine tekabül eden ay ve gündür [122]. EPATS üzerinden ödenebilir [122, 123].</li>
+                            <li>Vadesinde ödenmezse ek ücretle (ek %25) vadeyi takip eden 6 ay içinde ödenebilir [122, 123].</li>
+                            <li>Bu ek sürede de ödenmezse patent hakkı sona erer [96, 125].</li>
+                            <li>Sona erme bildirim tarihinden itibaren 2 ay içinde telafi ücreti ödenirse hak yeniden geçerlilik kazanır [125].</li>
+                            <li>Telafi ücreti ödemesi EPATS üzerinden yapılır [125, 126]. Toplantı notu Türkiye için ödemelerde banka havalesi veya kredi kartı kullanıldığını ve iş avansı ile yapıldığını belirtir [307].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Yıllık ücret ödeme takvimi nasıl oluşturuluyor ve güncelleniyor? Ödemeler için bütçeleme süreci nasıl işliyor? Ödeme yetkisi kimdedir?</li>
+                            <li>Ödeme takibinde karşılaşılan spesifik zorluklar (örn: Türkiye için banka havalesi [307]) var mı?</li>
+                            <li>Telafi ücreti ile hakların yeniden tesisi durumuyla karşılaşıldı mı? Karşılaşıldıysa bu süreci başlatan nedenler nelerdi ve süreç nasıl yönetildi?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Yıllık ücret ödeme süreci, ilgili roller (finans, hukuk, yönetim) ve kullanılan araçlar (takip sistemi, bankacılık arayüzleri) açısından analiz edilerek, ödeme kaçaklarını ve ek ücret maliyetlerini önlemeye yönelik iyileştirmeler belirlenmelidir.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q25" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q25" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q26">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">26.</span> <span class="question-title-text">Patentin sağladığı haklar nelerdir? Bu hakların ihlali durumunda (tecavüz) ne gibi aksiyonlar alınıyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Patent sahibine buluşun izinsiz olarak üretilmesini, satılmasını, kullanılmasını, ithal edilmesini veya bu amaçlarla elde bulundurulmasını engelleme tekeli tanır [8, 93, 94].</li>
+                            <li>Ayrıca buluş konusu usulün izinsiz kullanımını ve bu usulle doğrudan elde edilen ürünlerin ticaretini engelleme hakkı verir [94, 95].</li>
+                            <li>Patent/faydalı model hakkına tecavüz sayılan fiiller listelenmiştir (taklit ürün üretimi/satışı, usulün izinsiz kullanımı/ürünlerinin ticareti, hakkın gaspı, lisans kapsamını aşma) [96, 97].</li>
+                            <li>Ancak kaynaklar tecavüz durumunda şirket içinde ne gibi aksiyonlar alındığına dair bilgi içermemektedir.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Patent/faydalı model haklarının ihlali (tecavüz) durumunda nasıl bir süreç izleniyor?</li>
+                            <li>(Örn: İhlal tespiti nasıl yapılıyor? Uyarı mektubu gönderiliyor mu? Dava açma kararı nasıl veriliyor? Hukuki süreçler kim tarafından yönetiliyor - şirket içi hukuk, dış avukat?).</li>
+                            <li>Rakip veya üçüncü kişi ürün/süreç takibi yapılıyor mu?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Hak koruma (enforcement) sürecini, ihlal tespiti, delil toplama, hukuki değerlendirme ve aksiyon alma adımları açısından analiz edin.</li>
+                            <li>Bu sürecin proaktif mi yoksa reaktif mi yönetildiğini değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q26" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q26" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q27">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">27.</span> <span class="question-title-text">Patentin hükümsüzlük veya sona ermesi durumları nasıl yönetiliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Patentin hükümsüzlüğü mahkeme kararıyla olur ve belirli şartlara (patentlenebilirlik yokluğu, yetersiz açıklama, kapsam aşımı, hak sahipliği yanlışlığı, koruma kapsamı aşımı) dayanır [95].</li>
+                            <li>Patent hakkı koruma süresinin dolması, patent sahibinin vazgeçmesi veya yıllık ücretlerin ödenmemesiyle sona erer [96].</li>
+                            <li>Kaynaklar bu durumların şirket içinde nasıl yönetildiğine dair bilgi içermemektedir.</li>
+                            <li>Sona erme veya hükümsüzlük durumlarının sicile kaydedilmesi gerekebilir, ancak bu spesifik işlem kaynaklarda açıkça belirtilmemiştir (genel olarak hukuki işlemlerin kaydedilmesi belirtilir [6, 98]).</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Hükümsüzlük davası açılan patentleriniz oldu mu? Bu davalar nasıl yönetildi?</li>
+                            <li>Patent haklarının sona ermesi durumunda (süre dolumu, yıllık ücret ödenmemesi) bu bilgi ilgili birimlere (Ar-Ge, Pazarlama, Hukuk) nasıl iletiliyor?</li>
+                            <li>Sona eren/hükümsüz kılınan patentlerin kaydı şirket içinde tutuluyor mu?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Hükümsüzlük ve sona erme süreçlerinin şirket içindeki bilgi akışını ve karar mekanizmasını belirleyin.</li>
+                            <li>Bu durumların ticari operasyonlar üzerindeki etkisini yönetmek için bir prosedür tanımlayın.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q27" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q27" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q28">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">28.</span> <span class="question-title-text">Tescilli patent/faydalı modelin lisans, devir, miras yoluyla intikal, rehin gibi hukuki işlemler sicile nasıl kaydediliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Patent/faydalı model başvurusu veya belgesi lisans [6, 98], devir [6, 99], miras yoluyla intikal [6, 102], rehin [6, 104] gibi hukuki işlemlere konu olabilir.</li>
+                            <li>Bu işlemlerin geçerli olabilmesi için sicile kaydedilmesi ve Bültende yayımlanması gerekir [6, 98, 99, 101, 103, 104].</li>
+                            <li>Sicile kayıt için gerekli belgeler (sözleşme, çeviri, noter onayı/apostil) [98, 100, 103, 104] ve ücretin ödenmesi [98, 99, 101-104] gerektiği belirtilir.</li>
+                            <li>İşlemler EPATS üzerinden "Hukuki İşlemler" bölümünden yapılır [99, 101, 103, 104]. Devir sözleşmesinde devir bedelinin belirtilmesi zorunludur [100].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Tescilli patent/faydalı modelleriniz için lisans veya devir anlaşmaları yapılıyor mu? Bu anlaşmaların müzakeresi ve hazırlanması süreci nasıl işliyor?</li>
+                            <li>Hukuki işlemlerin (lisans, devir vb.) TÜRKPATENT siciline kaydı süreci şirket içinde kimler tarafından yönetiliyor?</li>
+                            <li>Gerekli belgelerin (sözleşme, çeviri, onay) temini nasıl sağlanıyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Hukuki işlem süreçlerini (müzakere, sözleşme hazırlığı, sicile kayıt) belgeleyin.</li>
+                            <li>Bu süreçlerin standardizasyonu ve hızlandırılması için yapılabilecekleri belirleyin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q28" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q28" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q29">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">29.</span> <span class="question-title-text">Hak sahibinin unvan/nev'i veya adres değişikliği gibi bilgileri sicile nasıl güncelleniyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                     <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Hak sahibinin unvan/nev'i [6, 106] veya adres değişikliğinin [6, 107] ilgili sicile kaydedilmesi gerekir. Bu değişiklikler EPATS üzerinden talep edilir [106, 108].</li>
+                            <li>Unvan/nev'i değişikliği için Ticaret Sicil Gazetesi veya yetkili merci belgesi (ve çevirisi) sunulmalıdır [106].</li>
+                            <li>Bu değişiklikler, hak sahibine ait tüm sınai mülkiyet haklarına uygulanır [107, 108].</li>
+                            <li>Yeni bir başvuruda veya talepte belirtilen adres/unvanın Kurum kayıtlarından farklı olması durumunda, yeni bilgilerin sicile otomatik olarak kaydedildiği belirtilir [108].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Şirket bilgilerinde (unvan, adres) değişiklik olduğunda bu bilgilerin TÜRKPATENT siciline güncellenmesi süreci nasıl işliyor? Bu takibi kim yapıyor?</li>
+                            <li>Tüm aktif dosyalara (başvurular ve tesciller) bu değişikliğin doğru bir şekilde yansıtıldığından nasıl emin olunuyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Şirket bilgileri güncellemelerinin IP portföyüne doğru ve zamanında yansıtılması için iç kontrol mekanizmaları belirleyin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q29" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q29" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q30">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">30.</span> <span class="question-title-text">Patent konusu buluşun kullanma zorunluluğu var mı? Kullanma/kullanmama bildirimi süreci nasıl işliyor? Lisans verme teklifi yapılıyor mu?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Patent sahibi veya yetkili kıldığı kişi, patentle korunan buluşu kullanmak zorundadır [104].</li>
+                            <li>Kullanım süresi patent verilme kararının yayımlanmasından itibaren 3 yıl veya başvuru tarihinden itibaren 4 yıl (hangisi geç sona ererse) içinde başlar [104].</li>
+                            <li>Kullanmama için haklı sebepler (objektif teknik, ekonomik, hukuki sebepler) olabilir [104]. Kullanma/kullanmama bildirimi sicile kaydedilebilir (ücretli) [105].</li>
+                            <li>Kullanılmaması veya yetersiz kullanılması durumunda zorunlu lisans talebi yapılabilir [105]. Patent sahibi, yazılı taleple herkese lisans vereceğini bildirebilir (lisans verme teklifi), bu sicile kaydedilebilir (ücretsiz olduğu belirtilmemiş, sicile kayıt ücreti genel olarak bahsedilmiş) [105].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Tescilli patent/faydalı modeller şirket içinde kullanılıyor mu? Kullanılmayan buluşlar var mı?</li>
+                            <li>Kullanma zorunluluğu ve zorunlu lisans riski takip ediliyor mu? Kullanma/kullanmama bildirimi yapılıyor mu?</li>
+                            <li>Hangi durumlarda zorunlu lisans riskine karşı proaktif önlemler alınıyor (örn: kullanım bildirimi yapma, lisans verme teklifi)?</li>
+                            <li>Kamuoyuna lisans verme teklifi yapıldı mı? Hangi durumlarda böyle bir karar alınır?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Buluşların kullanım durumlarının takibi ve zorunlu lisans riskinin yönetimi için bir prosedür oluşturun.</li>
+                            <li>Portföyünüzdeki kullanılmayan ancak stratejik önemi olan buluşlar için potansiyel kullanım yollarını veya lisanslama fırsatlarını değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q30" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q30" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="section-block mb-12">
+            <h2 class="text-2xl font-bold text-gray-700 border-b-2 border-sky-500 pb-2 mb-6">Uluslararası Başvurular (PCT ve EPC)</h2>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q31">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">31.</span> <span class="question-title-text">Hangi durumlarda ulusal başvuru yerine veya ulusal başvuruya ek olarak PCT veya EPC yolları tercih ediliyor? Ülke seçimi stratejisi nedir? Maliyetler bu kararda ne kadar etkili?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>PCT birden çok ülkede korumayı kolaylaştırmak ve ekonomik hale getirmek için kullanılır [113, 114].</li>
+                            <li>Tek bir başvuru ile 154 üye ülke için geçerli olabilme potansiyeli sunar [113].</li>
+                            <li>PCT ile ulusal faza girmek, her ülkede ayrı araştırma/inceleme raporu hazırlatma zorunluluğunu azaltarak ekonomik tasarruf sağlayabilir [114].</li>
+                            <li>EPC, tek bir başvuru ile üye ülkelerde patent elde etmeyi sağlar [119].</li>
+                            <li>Avrupa ülkelerinde daha kısa zamanda ve az maliyetle koruma elde etme yolu olarak tanımlanır [119].</li>
+                            <li>Toplantı notu, ülke seçimi stratejisi için "Şirketin stratejisi doğrultusunda hangi pazarlar ele alınmalı?", "AB'nin tamamı mı yoksa seçili ülkeler mi?", "AB dışında ABD, Japonya, İngiltere dahil olacak mı?" gibi soruları listeler [297]. Ayrıca "Patent için açılacak pazarlar maliyeti karşılar mı?" sorusuyla maliyetlerin ülke seçiminde etkili bir faktör olduğunu belirtir [297].</li>
+                            <li>PCT ulusal faza giriş için farklı ülkelerdeki maliyet örnekleri (EPO, Almanya, Türkiye, Bosna Hersek, Karadağ, Fas, Moldova, Tunus, Kamboçya) verilmiştir [298, 299].</li>
+                            <li>EPO seçimi ile yıllık yenileme ücretlerinde tasarruf sağlanabileceği belirtilir [299].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Uluslararası başvuru stratejiniz nedir?</li>
+                            <li>Hangi buluşlar/pazarlar için uluslararası koruma (PCT/EPC/doğrudan ulusal) hedefleniyor? Ülke seçimi karar süreci nasıl işliyor, hangi kriterler (pazar büyüklüğü, rekabet durumu, üretim/satış planları, maliyet, hukuki riskler) dikkate alınıyor?</li>
+                            <li>Maliyet/fayda analizi yapılıyor mu?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Farklı uluslararası başvuru yollarının (ulusal, PCT, EPC) avantaj ve dezavantajlarını maliyet, süre ve kapsama alanı açısından karşılaştırın.</li>
+                            <li>Şirketin genel stratejisi ile uyumlu bir uluslararası IP başvuru stratejisi geliştirilmesine yönelik öneriler hazırlayın.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q31" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q31" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q32">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">32.</span> <span class="question-title-text">PCT başvurusu süreci nasıl işliyor? Uluslararası araştırma ve geçici inceleme aşamaları ulusal süreci nasıl etkiliyor? Belirlenmiş (Designated) ve Seçilmiş (Elected) Devlet kavramları nasıl yönetiliyor? Ulusal aşamaya giriş (National Phase) süreci nasıl yürütülüyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>PCT, tek bir uluslararası başvuru ile birçok ülkede koruma talebinde bulunmayı sağlayan bir anlaşmadır [113, 135].</li>
+                            <li>Başvuru dilekçe, tarifname, istemler, resimler (varsa) ve özeti kapsar [143]. Başvuru Kurumu'na (Türkiye'de TÜRKPATENT [116], WIPO [116], EPO [116]) yapılır [116, 153].</li>
+                            <li>Başvuru tarihi belirli unsurların sunulmasıyla kesinleşir [154-157]. Uluslararası araştırma yapılır [163-174]. İsteğe bağlı olarak uluslararası geçici inceleme yapılabilir [203-219].</li>
+                            <li>Başlangıçta tüm taraf devletler Belirlenmiş Devlettir [145]. Uluslararası geçici inceleme talep edilirse, bu incelemenin sonuçlarının kullanılacağı devletler Seçilmiş Devlet olarak belirtilir [205].</li>
+                            <li>Ulusal aşamaya giriş (national phase) için, başvuru sahibi uluslararası başvuru tarihinden (veya rüçhan tarihinden) itibaren genellikle 30 ay içinde koruma istediği her ülkede başvuruda bulunma hakkı kazanır [113, 114].</li>
+                            <li>Ulusal aşamaya giriş için ilgili ülkenin ulusal kurumuna başvurunun bir sureti, çevirisi ve ulusal ücretin sunulması gerekir [180-182, 225, 226].</li>
+                            <li>Bu genellikle 30 ay içinde yapılmalıdır, ek 3 ay süre tanınabilir [114, 115].</li>
+                            <li>Uluslararası araştırma ve inceleme raporları ulusal aşamada kullanılır [210, 230].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>PCT başvuruları şirket içinde mi hazırlanıyor, yoksa dış vekil aracılığıyla mı yapılıyor?</li>
+                            <li>Uluslararası araştırma ve geçici inceleme raporları ulusal aşamaya giriş kararını nasıl etkiliyor?</li>
+                            <li>Belirlenmiş ve Seçilmiş Devlet süreçleri nasıl yönetiliyor, hangi aşamada hangi ülkelerin sürece dahil edileceğine karar veriliyor?</li>
+                            <li>Ulusal aşamaya giriş işlemleri (çeviri, belge hazırlığı, ücret ödemesi) nasıl yürütülüyor? Ulusal aşamaya giriş süreleri nasıl takip ediliyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>PCT sürecinin uluslararası faz ve ulusal faz aşamalarını detaylıca haritalayın.</li>
+                            <li>Bu sürecin yönetimi için gerekli kaynakları (personel, yazılım, dış vekil) ve zaman çizelgesini analiz edin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q32" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q32" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q33">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">33.</span> <span class="question-title-text">Avrupa Patenti (EPC) başvuru süreci nasıl işliyor? Avrupa patentinin tescilinden sonra üye ülkelerde koruma sağlamak için yapılan validasyon ve çeviri işlemleri nasıl yönetiliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>EPC, tek bir başvuru ile üye ülkelerde patent elde etmeyi sağlar [119].</li>
+                            <li>Başvuru EPO'ya, TÜRKPATENT'e veya üye ülkelerin ulusal ofislerine yapılabilir [120]. Başvuru sahibi hangi ülkelerde koruma istediğine karar verir [119].</li>
+                            <li>Avrupa patentinin tescilinden sonra, koruma sağlamak istenen üye ülkelerde validasyon ve (ilgili ülkenin dilinde) çeviri işlemleri yapılması gerekir [119].</li>
+                            <li>Tarifname, istemler ve resimleri içeren Avrupa patentinin Türkçe çevirisi, Avrupa patenti fasikülünün verildiğinin ilanından itibaren 3 ay içinde TÜRKPATENT'e sunulmalıdır [119].</li>
+                            <li>Koruma süresi başvuru tarihinden itibaren 20 yıldır [119].</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Avrupa patent başvuru stratejiniz nedir (EPO yolu mu, yoksa PCT üzerinden mi)?</li>
+                            <li>Avrupa patenti tescil edildikten sonra hangi ülkelerde validasyon yapılacağına nasıl karar veriliyor?</li>
+                            <li>Validasyon ve çeviri işlemleri (kim yapıyor, kim onaylıyor, maliyet takibi) nasıl yönetiliyor?</li>
+                            <li>Farklı ülkelerin validasyon ve çeviri gereksinimleri nasıl takip ediliyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Avrupa patenti validasyon sürecindeki ülkeye özgü gereksinimleri ve maliyetleri analiz edin.</li>
+                            <li>Bu sürecin optimize edilmesi (örn: konsolide çeviri anlaşmaları) için fırsatları değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q33" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q33" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-block mb-12">
+            <h2 class="text-2xl font-bold text-gray-700 border-b-2 border-sky-500 pb-2 mb-6">Marka Süreçleri (Kaynaklarda Sınırlı Bilgi)</h2>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q34">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">34.</span> <span class="question-title-text">Marka başvuru süreçleri genel olarak nasıl işliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklarda marka başvuru süreçlerine dair detaylı bilgi bulunmamaktadır.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Marka başvuru süreci şirket içinde nasıl başlıyor ve ilerliyor?</li>
+                            <li>Marka tescili istenen işaretin belirlenmesi ve uygun sınıflandırmanın yapılması süreci nasıl işliyor? Başvuru öncesi marka araştırması (benzerlik araştırması) yapılıyor mu?</li>
+                            <li>Kimler yapıyor? Marka başvuruları TÜRKPATENT'e (veya yurtdışı ofislere) doğrudan mı yapılıyor, dış vekil aracılığıyla mı?</li>
+                            <li>Başvuru sonrası inceleme (şekli, esasa yönelik) ve yayın/itiraz süreçleri şirket içinde nasıl takip ediliyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Marka başvuru sürecinin temel adımlarını ve bu adımlardaki sorumlulukları belirleyerek bir akış şeması oluşturun.</li>
+                            <li>Bu süreçteki ana karar noktalarını (marka seçimi, sınıflandırma, araştırma, başvuru kararı) netleştirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q34" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q34" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q35">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">35.</span> <span class="question-title-text">Marka yenileme süreçleri nasıl yönetiliyor? Hangi ülkelerde ve ne zaman yenileme yapılması gerektiği nasıl takip ediliyor? Farklı ülkelerdeki yenileme maliyetleri nasıl değerlendiriliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklar Katar, Tunus, Vietnam, Rusya ve Türkiye'deki marka yenileme işlemlerinden bahseder [295, 300-302, 304, 306, 307].</li>
+                            <li>Yenileme tarihlerinin takip edildiğini (örn: 09.08.2024 Katar [301], 18.08.2024 Vietnam [302], 13.08.2024 Türkiye [304], 21.09.2024 Mısır [307]) ve maliyetlerin bilindiğini (örn: Katar AGIP/SABA [300], Tunus AGIP/SABA [301], Vietnam SABA/ASL LAV [302], Türkiye [304, 307]) göstermektedir.</li>
+                            <li>Farklı vekil/ülkelerdeki maliyet farklılıklarına dikkat çekilir [300, 302]. Yenileme kararında iş/pazar stratejisinin etkili olabileceği ima edilir [301].</li>
+                            <li>Takibin hangi sistemle yapıldığı bilgisi kaynaklarda yoktur.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Marka yenileme takip sistemi nasıl işliyor?</li>
+                            <li>Yenileme vadeleri nasıl takip ediliyor ve ilgili kişiler nasıl bilgilendiriliyor? Yenileme kararı hangi kriterlere göre alınıyor?</li>
+                            <li>(Örn: İlgili pazardaki faaliyet, markanın önemi, maliyet). Yenileme maliyetleri bütçelenirken ve değerlendirilirken nelere dikkat ediliyor?</li>
+                            <li>Farklı ülkelerdeki dış vekillerin yenileme maliyetleri ve hizmet kalitesi karşılaştırılıyor mu?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Marka yenileme takip ve karar alma sürecini detaylandırın.</li>
+                            <li>Farklı ülkelerdeki yenileme maliyetlerini ve kullanılan dış vekillerin performansını karşılaştırarak, potansiyel maliyet tasarrufu veya verimlilik artışı alanlarını belirleyin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q35" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q35" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q36">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">36.</span> <span class="question-title-text">Marka kullanım zorunluluğu ve kullanmama durumları takip ediliyor mu?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklarda patent kullanımı zorunluluğundan bahsedilir [104, 105], ancak marka kullanım zorunluluğu veya takibi hakkında bilgi yer almaz.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Tescilli markaların kullanımı takip ediliyor mu? Özellikle kullanım zorunluluğu olan ülkelerdeki markalar için bir risk değerlendirmesi yapılıyor mu?</li>
+                            <li>Kullanılmayan markalar için ne gibi aksiyonlar alınıyor (örn: devretme, terkin)?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Marka kullanımı takibi ve ilgili risk/fırsatların yönetimi için bir prosedür oluşturulmasını değerlendirin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q36" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q36" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q37">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">37.</span> <span class="question-title-text">Marka haklarına tecavüz durumlarında nasıl bir süreç izleniyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklarda patent/faydalı model haklarına tecavüzden bahsedilir [96, 97], ancak marka haklarına tecavüz hakkında bilgi yer almaz.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Marka haklarına tecavüz (taklit, izinsiz kullanım vb.) durumunda nasıl bir süreç izleniyor? (Örn: Tespit, delil toplama, uyarı, dava).</li>
+                            <li>Pazarda marka takibi (sahte ürünler, benzer markalar) yapılıyor mu? Kim yapıyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Marka hak koruma (enforcement) sürecini, potansiyel ihlalleri tespit etme, değerlendirme ve aksiyon alma adımları açısından analiz edin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q37" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q37" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q38">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">38.</span> <span class="question-title-text">Marka devir, lisans vb. işlemleri nasıl yönetiliyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklarda patent/faydalı model devir, lisans, miras, rehin gibi hukuki işlemlerden ve bunların sicile kaydından bahsedilir [6, 98-104].</li>
+                            <li>Marka için benzer işlemlerin nasıl yönetildiğine dair bilgi yer almaz.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Tescilli markalar için devir, lisans veya diğer hukuki işlemler (örn: rehin, rehin kaldırma) yapılıyor mu?</li>
+                            <li>Bu işlemlerin (sözleşme hazırlığı, sicile kayıt) süreçleri nasıl işliyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Marka portföyünüzdeki potansiyel hukuki işlemlerin (lisanslama fırsatları, elden çıkarma stratejileri) değerlendirilmesi ve bu süreçlerin yönetimi için adımlar belirleyin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q38" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q38" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-block mb-12">
+            <h2 class="text-2xl font-bold text-gray-700 border-b-2 border-sky-500 pb-2 mb-6">Süreç İyileştirme ve Zorluklar</h2>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q39">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">39.</span> <span class="question-title-text">Patent/faydalı model ve marka süreçlerindeki en sık karşılaşılan zorluklar veya darboğazlar nelerdir?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklar genel zorluklara dair spesifik bir liste sunmaz.</li>
+                            <li>Ancak, bazı zorluklar zımnen belirtilir: Başvuru öncesi ön araştırma yapılmamasının patent sürecinde belge alamamaya veya dava konusu olmaya yol açması [21], süreli işlemlere uyulmaması durumunda hak kaybı yaşanması [121], yıllık ücretlerin süresinde ödenmemesiyle hakkın sona ermesi [125], TÜRKPATENT ödemelerinde banka havalesi/kredi kartı dışı seçeneklerin olmaması [307], marka tescil belgesinin bulunamaması [300].</li>
+                            <li>Faydalı model araştırma raporu düzenlenememesi [87] veya olumsuz gelmesi [303] gibi spesifik durumlar da zorluk kaynağı olabilir.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Süreçlerin herhangi bir aşamasında (buluş bildiriminden tescil sonrası takibe kadar) en sık gecikmeler veya hatalar nerede yaşanıyor?</li>
+                            <li>Süreçteki paydaşlar (Ar-Ge, Hukuk, Pazarlama vb.) arasındaki iletişimde veya bilgi akışında zorluklar var mı?</li>
+                            <li>Dış vekillerle çalışırken karşılaşılan spesifik zorluklar (örn: maliyet, iletişim, takip) var mı?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Süreç akış şemaları üzerinden potansiyel darboğazları ve hata noktalarını belirleyin.</li>
+                            <li>Bu noktalarda süreç ölçümü (süre, hata oranı) yaparak iyileştirme alanlarını somutlaştırabilirsiniz.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q39" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q39" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q40">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">40.</span> <span class="question-title-text">Süreçleri daha verimli veya etkin hale getirmek için geçmişte ne gibi iyileştirme çalışmaları yapıldı?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Kaynaklarda şirket içinde geçmişte yapılmış spesifik süreç iyileştirme çalışmalarına dair bilgi bulunmamaktadır.</li>
+                            <li>TÜRKPATENT'in işlem ücretlerinde indirimler yaptığı [133] ve öğrencilere yönelik destekler sunduğu [133, 134] belirtilmiştir.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Geçmişte süreçlerde yaşanan sorunlara yönelik olarak herhangi bir düzeltici veya önleyici faaliyet yapıldı mı?</li>
+                            <li>Yapıldıysa, bu çalışmaların sonuçları ne oldu? Süreç verimliliğini artırmaya yönelik (otomasyon, yazılım kullanımı vb.) gelecek planları var mı?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Geçmişteki iyileştirme çalışmalarından öğrenilen dersleri değerlendirerek, gelecekteki iyileştirme projeleri için bir yol haritası oluşturulmasına yönelik ilk adımları belirleyin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q40" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q40" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+
+            <div class="question-item bg-white p-6 rounded-lg shadow-lg mb-8 question-block" data-question-id="q41">
+                <h3 class="text-xl font-semibold text-sky-800 mb-3">
+                    <span class="question-number">41.</span> <span class="question-title-text">Dış hizmet sağlayıcılar (patent vekilleri, avukatlar) ile çalışma süreci nasıl yönetiliyor? Hangi aşamalarda dış destek alınıyor?</span>
+                </h3>
+                <div class="prose-custom text-gray-700 space-y-2">
+                    <div class="kaynak-bilgi">
+                        <p><strong>Kaynaklardan Edinilen Bilgi:</strong></p>
+                        <ul>
+                            <li>Patent/faydalı model işlemlerinin vekil aracılığıyla yürütme zorunluluğu olmadığı, başvuru sahibinin de yürütebileceği belirtilir [131].</li>
+                            <li>Vekil ile çalışılıyorsa Kurum nezdinde işlem yapma yetkisinin olması gerektiği vurgulanır [131]. TÜRKPATENT siciline kayıtlı vekillere web sitesinden ulaşılabildiği belirtilir [131, 132].</li>
+                            <li>Toplantı notlarında AGIP, SABA, ASL LAV gibi dış vekil/şirket isimleri geçer [300-302, 307].</li>
+                            <li>Bu şirketlerin özellikle yurtdışı marka yenilemeleri [300-302] ve Türkiye içi ödemeler [307] gibi operasyonel işlemlerde kullanıldığı görülmektedir.</li>
+                            <li>Vekillik işlemlerine ilişkin broşürün EPATS'ta yer aldığı belirtilir [92]. Ancak, dış vekillerle çalışma süreci, seçimi, sözleşme yönetimi, performans değerlendirmesi gibi detaylar kaynaklarda yoktur.</li>
+                        </ul>
+                    </div>
+                    <div class="toplantida-sorulmali">
+                        <p><strong>Toplantıda Sorulmalı:</strong></p>
+                        <ul>
+                            <li>Dış vekil/avukat seçim kriterleriniz nelerdir? Dış vekillerle çalışmaya başlama ve sonlandırma süreci nasıl işliyor?</li>
+                            <li>Dış vekillerle iletişim ve bilgi/belge paylaşımı hangi kanallarla yapılıyor? Dış vekillerin performansı (hız, doğruluk, maliyet etkinliği) düzenli olarak değerlendiriliyor mu?</li>
+                            <li>Hangi spesifik işlem türleri veya ülkeler için dış destek alınması tercih ediliyor?</li>
+                        </ul>
+                    </div>
+                    <div class="analiz-oneri">
+                        <p><strong>Analiz İçin Sonraki Adım Önerisi:</strong></p>
+                        <ul>
+                            <li>Dış vekil yönetim sürecini (seçim, sözleşme, iletişim, performans, maliyet) analiz edin.</li>
+                            <li>Dış kaynak kullanımının maliyet ve verimlilik üzerindeki etkisini değerlendirerek, iç süreçlerle dış kaynak kullanımının en etkin dengesini belirleyin.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="answer_q41" class="block text-md font-semibold text-gray-700 mb-1">Toplantı Notları / Cevaplar:</label>
+                    <textarea id="answer_q41" rows="5" class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 text-sm"></textarea>
+                </div>
+            </div>
+        </section>
+        </div>
+
+    <script>
+        // Sayfa içindeki HTML'den metinleri düzgünce almak için yardımcı fonksiyon
+        function getFormattedTextFromDiv(divElement) {
+            if (!divElement) return "";
+            let text = "";
+            // p ve ul/li yapılarını koruyarak metin çıkarımı
+            divElement.querySelectorAll('p, ul').forEach(el => {
+                if (el.tagName === 'P') {
+                    text += el.textContent.trim() + "\\n";
+                } else if (el.tagName === 'UL') {
+                    el.querySelectorAll('li').forEach(li => {
+                        text += "- " + li.textContent.trim() + "\\n";
+                    });
+                }
+            });
+            return text.trim() + "\\n";
+        }
+
+        function downloadNotes() {
+            let markdownContent = "# Sınai Mülkiyet Hakları Süreçleri Soru-Cevap Toplantı Notları\\n\\n";
+            const sections = document.querySelectorAll('.section-block');
+
+            sections.forEach(section => {
+                const sectionTitle = section.querySelector('h2').textContent;
+                markdownContent += `## ${sectionTitle}\\n\\n`;
+
+                const questions = section.querySelectorAll('.question-item');
+                questions.forEach(questionDiv => {
+                    // Ana başlıklar (örn: "Başvuru Öncesi Hazırlık") için özel durum
+                    const mainTitleElement = questionDiv.querySelector('h3.text-lg');
+                    if (mainTitleElement) {
+                         markdownContent += `### ${mainTitleElement.textContent.trim()}\\n\\n`;
+                         return; // Bu div sadece bir alt başlık içeriyor, diğer kısımları atla
+                    }
+
+
+                    const questionNumberElement = questionDiv.querySelector('.question-number');
+                    const questionTitleTextElement = questionDiv.querySelector('.question-title-text');
+                    
+                    // Eğer soru numarası veya başlığı yoksa bu bloğu atla (örn: sadece alt başlık içeren div'ler için)
+                    if (!questionNumberElement || !questionTitleTextElement) return;
+
+                    const questionNumber = questionNumberElement.textContent;
+                    const questionTitle = questionTitleTextElement.textContent;
+                    markdownContent += `### ${questionNumber} ${questionTitle}\\n`;
+
+                    const kaynakBilgiDiv = questionDiv.querySelector('.kaynak-bilgi');
+                    if (kaynakBilgiDiv) {
+                        markdownContent += getFormattedTextFromDiv(kaynakBilgiDiv);
+                    }
+
+                    const toplantidaSorulmaliDiv = questionDiv.querySelector('.toplantida-sorulmali');
+                    if (toplantidaSorulmaliDiv) {
+                        markdownContent += getFormattedTextFromDiv(toplantidaSorulmaliDiv);
+                    }
+
+                    const analizOneriDiv = questionDiv.querySelector('.analiz-oneri');
+                    if (analizOneriDiv) {
+                        markdownContent += getFormattedTextFromDiv(analizOneriDiv);
+                    }
+
+                    const answerTextareaId = `answer_${questionDiv.dataset.questionId}`;
+                    const answerTextarea = document.getElementById(answerTextareaId);
+                    const answer = answerTextarea ? answerTextarea.value : "";
+
+                    markdownContent += `**Toplantı Notları / Cevaplar:**\\n${answer}\\n\\n---\\n\\n`;
+                });
+            });
+
+            const blob = new Blob([markdownContent.replace(/\\n/g, '\\n')], { type: 'text/markdown;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'toplanti_notlari.md';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
     <!-- 
     Application Structure Plan: 
     Hedef, "Mir Holding Süreç İyileştirme Projesi" anasayfasını, ilgi çekici bir hikaye anlatan dinamik ve profesyonel bir tek sayfa uygulamasına dönüştürmektir. "Yaklaşımımız" bölümü, stratejik hedeflerden dijital inovasyonlara doğru ilerleyen, kullanıcı kaydırdıkça ilerleyen ve görsellerin değiştiği bir "serüven" veya "patika" olarak yeniden tasarlandı.
@@ -38,201 +39,6 @@
     - İçerik: Mevcut içerik korunmuş, "Yaklaşımımız" bölümü yeni konsepte göre uyarlanmıştır.
     -->
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
-            color: #212529;
-            scroll-behavior: smooth;
-        }
-        .hero-bg {
-            background: linear-gradient(135deg, #0A2463 0%, #3E92CC 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-bg::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
-            animation: heroShine 15s linear infinite;
-        }
-        @keyframes heroShine {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .nav-link {
-            @apply px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-700 hover:text-white transition-colors;
-        }
-        .nav-link-active {
-            @apply bg-gray-900 text-white;
-        }
-        .section-title {
-            @apply text-3xl sm:text-4xl font-bold text-[#0A2463] mb-4 text-center;
-        }
-        .section-subtitle {
-            @apply text-lg text-gray-600 mb-10 md:mb-12 text-center max-w-2xl mx-auto;
-        }
-        .cta-button {
-            @apply bg-[#FFD100] text-[#0A2463] hover:bg-yellow-400 transition-all duration-300 ease-in-out;
-        }
-        .cta-button-secondary {
-            @apply bg-[#0A2463] text-white hover:bg-blue-800 transition-all duration-300 ease-in-out;
-        }
-        .modal {
-            background-color: rgba(0, 0, 0, 0.75);
-            transition: opacity 0.3s ease-in-out;
-        }
-        .modal-content {
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            max-height: 90vh; 
-            max-width: 700px;
-        }
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-in-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px; 
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px; 
-            max-height: 350px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
-        }
-        .counter-number {
-            font-size: 3rem; 
-            font-weight: 800;
-            color: #0A2463; 
-        }
-         .animated-underline {
-            position: relative;
-            display: inline-block;
-        }
-        .animated-underline::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 3px;
-            display: block;
-            margin-top: 5px;
-            right: 0;
-            background: #FFD100; 
-            transition: width .3s ease;
-            -webkit-transition: width .3s ease;
-        }
-        .animated-underline:hover::after, .nav-link-active::after {
-             width: 100%;
-            left: 0;
-            background: #FFD100;
-        }
-
-        /* Journey Section Styles */
-        .journey-container {
-            position: relative;
-            min-height: 100vh; /* Ensure enough scroll space for journey */
-        }
-        .journey-path-container {
-            position: sticky;
-            top: 120px; /* Adjust based on navbar height */
-            height: calc(100vh - 160px); /* Adjust based on navbar height and some padding */
-            max-height: 600px; /* Limit path height */
-        }
-        .journey-path {
-            position: relative;
-            width: 4px;
-            background-color: #e0e0e0; /* Light gray for the path */
-            margin: 0 auto;
-            height: 100%;
-        }
-        .journey-progress {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #3E92CC; /* Medium blue for progress */
-            height: 0%; /* Initially 0, will be updated by JS */
-            transition: height 0.2s linear;
-        }
-        .journey-milestone-indicator {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background-color: #e0e0e0;
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 0 0 3px #3E92CC;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        .journey-milestone-indicator.active {
-            background-color: #FFD100; /* Yellow when active */
-            box-shadow: 0 0 0 3px #0A2463;
-        }
-        .journey-stage {
-            min-height: 80vh; /* Make each stage take significant scroll space */
-            padding-top: 80px; /* Space for sticky elements */
-            padding-bottom: 80px;
-            opacity: 0.3; /* Non-active stages are faded */
-            transition: opacity 0.5s ease-in-out;
-            position: relative; /* For z-indexing if needed */
-        }
-        .journey-stage.active-stage {
-            opacity: 1;
-        }
-        .journey-stage-content {
-            background-color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px);
-            border-radius: 0.75rem;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        .journey-stage-image-container {
-            position: relative;
-            overflow: hidden; /* For sliding effect */
-            border-radius: 0.5rem;
-            min-height: 300px; /* Ensure container has height */
-        }
-        .journey-stage-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.7s ease-in-out;
-            transform: translateX(100%); /* Start off-screen to the right */
-            opacity: 0;
-        }
-        .journey-stage-image.active-image {
-            transform: translateX(0%);
-            opacity: 1;
-        }
-        .journey-stage-image.previous-image {
-            transform: translateX(-100%); /* Slide out to the left */
-            opacity: 0;
-        }
-         .journey-stage-icon {
-            font-size: 3rem;
-            color: #3E92CC;
-            margin-bottom: 1rem;
-        }
-    </style>
 </head>
 <body class="antialiased">
 
@@ -312,7 +118,7 @@
                     </p>
                 </div>
                 <div class="fade-in-up rounded-lg overflow-hidden shadow-xl">
-                    <img src="https://placehold.co/600x400/0A2463/F8F9FA?text=Stratejik+%C4%B0lerleme" alt="Stratejik İlerleme" class="w-full h-auto object-cover" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=G%C3%B6rsel+Y%C3%BCklenemedi';">
+                    <img src="logo.png" alt="Stratejik İlerleme" class="w-full h-auto object-cover" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=G%C3%B6rsel+Y%C3%BCklenemedi';">
                 </div>
             </div>
         </div>
@@ -458,7 +264,7 @@
                     icon: "🎯",
                     description: "İşletmenizin uzun vadeli hedeflerini netleştiriyor, bu hedeflere ulaşmak için stratejik yol haritaları oluşturuyoruz.",
                     details: "Stratejik planlama sürecimiz, pazar analizi, rakip değerlendirmesi, SWOT analizi ve paydaş beklentilerinin belirlenmesi gibi adımları içerir. Bu sayede, işletmenizin vizyonuyla uyumlu, gerçekçi ve ölçülebilir hedefler tanımlanır. Bu hedefler, tüm iyileştirme çabalarımızın temelini oluşturur ve başarıyı ölçmek için net kriterler sunar. Örneğin, bir üretim şirketi için %15 pazar payı artışı hedefi belirlenebilir ve bu hedefe yönelik olarak yeni ürün geliştirme, pazarlama stratejileri ve dağıtım kanalı optimizasyonu gibi alt stratejiler oluşturulur.",
-                    image: "https://placehold.co/800x500/0A2463/FFFFFF?text=Stratejik+Hedefler"
+                    image: "chess.jpeg"
                 },
                 {
                     id: 2,
@@ -466,7 +272,7 @@
                     icon: "📊",
                     description: "Mevcut süreçlerinizi derinlemesine analiz ediyor, darboğazları, verimsizlikleri ve iyileştirme fırsatlarını belirliyoruz.",
                     details: "Kapsamlı bir mevcut durum analizi yaparak süreçlerinizin performansını objektif bir şekilde değerlendiriyoruz. Veri toplama, süreç haritalama (Value Stream Mapping gibi), performans metrikleri analizi (örneğin, çevrim süresi, hata oranları) ve çalışanlarla yapılan odak grup görüşmeleri gibi yöntemlerle güçlü ve zayıf yönlerinizi ortaya koyuyoruz. Bu analiz, iyileştirme çabalarının hangi alanlara odaklanması gerektiğini (örneğin, en çok zaman kaybının yaşandığı veya en yüksek maliyetli adıma) netleştirir.",
-                    image: "https://placehold.co/800x500/3E92CC/FFFFFF?text=Analiz+ve+Değerlendirme"
+                    image: "current.jpeg"
                 },
                 {
                     id: 3,
@@ -474,7 +280,7 @@
                     icon: "⚙️",
                     description: "Verimliliği artırmak, maliyetleri düşürmek ve kaliteyi yükseltmek için süreçlerinizi yeniden tasarlıyor ve optimize ediyoruz.",
                     details: "Analiz sonuçlarına dayanarak, süreçlerinizi daha yalın, daha hızlı ve daha etkili hale getirmek için yeniden tasarlıyoruz. Yalın (Lean) prensipleri, Altı Sigma (Six Sigma) metodolojileri ve en iyi endüstri uygulamalarını kullanarak gereksiz adımları (israfı) ortadan kaldırıyor, otomasyon fırsatlarını (RPA gibi) değerlendiriyor ve süreç akışlarını optimize ediyoruz. Amaç, kaynaklarınızı (zaman, insan, malzeme) en verimli şekilde kullanmanızı ve müşteri değerini maksimize etmenizi sağlamaktır.",
-                    image: "https://placehold.co/800x500/F7882F/FFFFFF?text=Optimizasyon"
+                    image: "redo.jpeg"
                 },
                 {
                     id: 4,
@@ -482,7 +288,7 @@
                     icon: "🚀",
                     description: "Yeniden tasarlanan süreçlerin etkin bir şekilde uygulanmasını sağlıyor, değişim yönetimi stratejileriyle çalışan adaptasyonunu destekliyoruz.",
                     details: "Yeni süreçlerin başarılı bir şekilde hayata geçirilmesi, detaylı bir uygulama planı ve güçlü bir değişim yönetimi stratejisi (örneğin, Kotter'ın 8 Adımlı Değişim Modeli) gerektirir. Çalışanlarınızı yeni süreçlere hazırlamak, kapsamlı eğitim programları düzenlemek, açık ve sürekli iletişim kanalları kurmak, pilot uygulamalar yapmak ve olası dirençleri proaktif bir şekilde yönetmek bu aşamanın kritik unsurlarıdır. Uygulama sürecini yakından takip ederek ve performans göstergelerini izleyerek sorunsuz bir geçiş ve sürdürülebilir başarı sağlıyoruz.",
-                    image: "https://placehold.co/800x500/FFD100/0A2463?text=Uygulama+Aşaması"
+                    image: "change.jpeg"
                 },
                 {
                     id: 5,
@@ -490,7 +296,7 @@
                     icon: "📈",
                     description: "Uygulanan süreçlerin performansını düzenli olarak izliyor, sürekli iyileştirme kültürü oluşturarak kalıcı başarı sağlıyoruz.",
                     details: "İyileştirme bir defalık bir proje değil, sürekli bir yolculuktur (Kaizen). Uygulanan yeni süreçlerin performansını belirlediğimiz anahtar performans göstergeleri (KPI'lar) ile düzenli olarak izliyor, çalışanlardan ve müşterilerden geri bildirimler topluyor ve elde edilen sonuçları periyodik olarak (örneğin, aylık veya üç aylık) değerlendiriyoruz. Bu veriler ışığında, süreçlerinizi sürekli olarak daha iyi hale getirmek için PDCA (Planla-Uygula-Kontrol Et-Önlem Al) döngüsüyle hareket ediyor ve organizasyonunuzda bir sürekli iyileştirme kültürü yerleştiriyoruz.",
-                    image: "https://placehold.co/800x500/0A2463/F8F9FA?text=Sürekli+Gelişim"
+                    image: "kpi.jpeg"
                 },
                  {
                     id: 6,
@@ -498,7 +304,7 @@
                     icon: "💻",
                     description: "Süreçlerinizi dijitalleştirerek ve yenilikçi teknolojileri entegre ederek rekabet avantajı ve geleceğe yönelik çözümler üretiyoruz.",
                     details: "Günümüz iş dünyasında dijital dönüşüm ve teknolojik inovasyon kaçınılmazdır. Süreçlerinizi analiz ederek, hangi adımların dijitalleştirilebileceğini, hangi teknolojilerin (örneğin, ERP sistemleri, CRM yazılımları, yapay zeka, IoT, blockchain) en fazla değer katabileceğini belirliyoruz. Doğru teknoloji çözümlerini seçerek, mevcut sistemlerinize entegre ederek ve çalışanların bu teknolojileri etkin kullanmasını sağlayarak operasyonel verimliliğinizi artırıyor, karar alma süreçlerinizi iyileştiriyor ve işletmenizi geleceğe taşıyacak dijital inovasyonları hayata geçiriyoruz.",
-                    image: "https://placehold.co/800x500/3E92CC/212529?text=Dijital+İnovasyon"
+                    image: "digital.jpeg"
                 }
             ];
 
