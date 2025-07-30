@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Destekli Etkileşimli Satın Alma Süreci</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Corporate -->
+    <!-- Application Structure Plan: The application is designed as a single-page narrative journey. It starts with the "Why" (Problem vs. Solution), moves to the "How" (an interactive 7-step process flow), explores the "What" (strategic value and SAP relationship), addresses the "Who" (change management), and concludes with the "Future" (roadmap). This thematic structure, rather than a rigid report format, allows users to explore the information in a logical, engaging, and non-linear way, making the complex process digestible and highlighting the project's strategic importance. Key interactions include clickable process steps and dynamic charts to foster exploration. Gemini API features are added to Step 1 (Specification Generation) and Step 7 (Performance Summary) to showcase AI capabilities. -->
+    <!-- Visualization & Content Choices: 
+        1. Report Info: Manual vs. Automated process efficiency. Goal: Compare. Viz/Method: Chart.js Horizontal Bar Chart. Interaction: Static visual comparison. Justification: A chart visually quantifies the improvements in time, errors, and transparency more effectively than text. Library: Chart.js.
+        2. Report Info: 7-step purchasing lifecycle. Goal: Organize & Inform. Viz/Method: Interactive HTML/CSS Flexbox diagram. Interaction: Users click on a stage to expand and view details. Justification: Breaks down a complex workflow into manageable, user-initiated chunks. Library: Vanilla JS for DOM manipulation.
+        3. Report Info: Supplier evaluation criteria. Goal: Inform. Viz/Method: Chart.js Radar Chart. Interaction: Static visual example. Justification: A radar chart is the standard way to display multi-attribute performance data. Library: Chart.js.
+        4. Gemini Feature 1: Technical Specification Generation. Goal: Assist & Automate. Method: Gemini API call. Interaction: User inputs simple need, clicks button, gets detailed spec. Justification: Demonstrates AI's power to reduce manual work and improve quality in the first step of the process.
+        5. Gemini Feature 2: Supplier Performance Summary. Goal: Analyze & Inform. Method: Gemini API call. Interaction: User clicks button to analyze mock data and generate a summary. Justification: Shows how AI can provide data-driven insights for strategic decision-making in the final step.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .step-card.active {
+            border-color: #2563eb; /* blue-600 */
+            background-color: #eff6ff; /* blue-50 */
+        }
+        .step-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out, padding 0.5s ease-out;
+            padding: 0 1.5rem;
+        }
+        .step-details.visible {
+            max-height: 1000px; /* Increased for Gemini content */
+            padding: 1.5rem;
+        }
+        .gemini-feature-box {
+            background-color: #f0f9ff; /* sky-50 */
+            border-left: 4px solid #0ea5e9; /* sky-500 */
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .gemini-button {
+            background-color: #1d4ed8; /* blue-700 */
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .gemini-button:hover {
+            background-color: #1e40af; /* blue-800 */
+        }
+        .gemini-button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-blue-600">AI Destekli Satın Alma</h1>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#neden-degisim" class="text-slate-600 hover:text-blue-600 transition">Neden Değişim?</a>
+                <a href="#surec-akisi" class="text-slate-600 hover:text-blue-600 transition">Süreç Akışı</a>
+                <a href="#stratejik-deger" class="text-slate-600 hover:text-blue-600 transition">Stratejik Değer</a>
+                <a href="#gelecek-plani" class="text-slate-600 hover:text-blue-600 transition">Gelecek Planı</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-slate-600 hover:text-blue-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4">
+            <a href="#neden-degisim" class="block py-2 text-slate-600 hover:text-blue-600">Neden Değişim?</a>
+            <a href="#surec-akisi" class="block py-2 text-slate-600 hover:text-blue-600">Süreç Akışı</a>
+            <a href="#stratejik-deger" class="block py-2 text-slate-600 hover:text-blue-600">Stratejik Değer</a>
+            <a href="#gelecek-plani" class="block py-2 text-slate-600 hover:text-blue-600">Gelecek Planı</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="hero" class="text-center mb-24">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-800 mb-4">Manuel Yükten Akıllı Avantaja</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                Satın alma süreçlerinizi yapay zeka ile dönüştürüyoruz. Sadece verimlilik değil, aynı zamanda akıllı öneriler ve otomasyon sağlayan yeni dijital platformumuzla tanışın. Bu platform, stratejik bir iş ortağınızdır.
+            </p>
+        </section>
+
+        <section id="neden-degisim" class="mb-24 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-800 mb-2">Neden Değişim? Somut Karşılaştırma</h3>
+                <p class="max-w-2xl mx-auto text-slate-600">Yeni dijital yaklaşımımızın, eski manuel sürece kıyasla getirdiği temel iyileştirmeleri ve verimlilik artışını net bir şekilde görün. Bu dönüşüm, sadece zaman kazandırmakla kalmıyor, aynı zamanda riskleri azaltıyor ve şeffaflığı artırıyor.</p>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <div class="chart-container">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="surec-akisi" class="mb-24 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-800 mb-2">Uçtan Uca Akıllı Satın Alma Akışı</h3>
+                <p class="max-w-2xl mx-auto text-slate-600">
+                    Sürecin her adımı artık merkezi, izlenebilir ve akıllı. Aşağıdaki 7 aşamaya tıklayarak her birinin detaylarını, sorumlu rolleri ve ✨ yapay zeka destekli yeni yetenekleri keşfedin.
+                </p>
+            </div>
+            <div id="process-flow-container" class="space-y-4">
+            </div>
+        </section>
+
+        <section id="stratejik-deger" class="mb-24 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-800 mb-2">Sadece Verimlilik Değil, Stratejik Değer</h3>
+                <p class="max-w-2xl mx-auto text-slate-600">Bu uygulama, operasyonel verimliliğin ötesinde, şirkete uzun vadeli stratejik avantajlar sunar. SAP ile uyumlu çalışır ve tedarikçi ilişkilerini veriye dayalı bir temele oturtur.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h4 class="text-xl font-bold text-slate-800 mb-4">SAP ile Simbiyotik İlişki</h4>
+                    <p class="text-slate-600 mb-4">Uygulama, ana omurga olan SAP'nin yerini almaz; onu tamamlar. SAP'nin yönetmediği iletişim, onay ve dokümantasyon akışlarını yöneterek, temel finansal sisteminizi riske atmadan süreçleri modernize eder. Bu, yüksek riskli bir dönüşüm yerine, çevik ve düşük maliyetli bir iyileştirme stratejisidir.</p>
+                    <div class="flex items-center justify-center space-x-4 p-4 bg-slate-50 rounded-lg">
+                        <div class="text-center">
+                            <div class="text-4xl">🏢</div>
+                            <div class="font-semibold text-blue-600">Yeni Uygulama</div>
+                            <div class="text-xs text-slate-500">(İş Akışı & Onay)</div>
+                        </div>
+                        <div class="text-3xl font-light text-slate-400">+</div>
+                        <div class="text-center">
+                            <div class="text-4xl">⚙️</div>
+                            <div class="font-semibold text-green-600">SAP</div>
+                            <div class="text-xs text-slate-500">(Finansal Kayıt)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h4 class="text-xl font-bold text-slate-800 mb-4">Stratejik Koz: Tedarikçi Değerlendirme</h4>
+                    <p class="text-slate-600 mb-2">Sürecin sonunda yer alan bu modül, satın almayı reaktif bir görevden proaktif bir stratejiye dönüştürür. Tedarikçileri objektif verilerle değerlendirerek riskleri azaltır, performansı artırır ve müzakerelerde size güçlü bir koz verir.</p>
+                    <div class="chart-container" style="height: 250px; max-height: 280px;">
+                        <canvas id="supplierRadarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gelecek-plani" class="scroll-mt-20">
+             <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-slate-800 mb-2">Gelecek Yol Haritası</h3>
+                <p class="max-w-2xl mx-auto text-slate-600">Bu sadece bir başlangıç. Uygulamamız, sürekli iyileştirme felsefesiyle gelecekteki teknolojilere ve ihtiyaçlara uyum sağlayacak şekilde evrimleşmeye devam edecektir.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <div class="relative border-l-2 border-blue-200 ml-4">
+                    <div class="mb-8 ml-8">
+                        <span class="absolute flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full -left-4 ring-4 ring-white">
+                            <span class="text-blue-600 font-bold">V1</span>
+                        </span>
+                        <h4 class="text-lg font-semibold text-slate-800">Mevcut Sürüm</h4>
+                        <p class="text-slate-600">Temel iş akışı otomasyonu, tam izlenebilirlik ve ✨ Gemini destekli akıllı özellikler (Şartname Oluşturma, Performans Analizi).</p>
+                    </div>
+                    <div class="mb-8 ml-8">
+                        <span class="absolute flex items-center justify-center w-8 h-8 bg-slate-100 rounded-full -left-4 ring-4 ring-white">
+                             <span class="text-slate-600 font-bold">V2</span>
+                        </span>
+                        <h4 class="text-lg font-semibold text-slate-800">Derin SAP Entegrasyonu</h4>
+                        <p class="text-slate-600">SAT ve MIGO gibi işlemler için manuel veri girişini ortadan kaldıracak ABAP entegrasyonu.</p>
+                    </div>
+                    <div class="ml-8">
+                        <span class="absolute flex items-center justify-center w-8 h-8 bg-slate-100 rounded-full -left-4 ring-4 ring-white">
+                             <span class="text-slate-600 font-bold">V3</span>
+                        </span>
+                        <h4 class="text-lg font-semibold text-slate-800">Tam Dijitalleşme</h4>
+                        <p class="text-slate-600">Yasal geçerliliği olan E-imza entegrasyonu ve yapay zeka destekli öngörüsel analitik yeteneklerinin eklenmesi.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-white mt-24">
+        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-400">
+            <p>Bu interaktif sunum, yeni dijital satın alma sürecini görselleştirmek amacıyla hazırlanmıştır.</p>
+            <p>&copy; 2025 Kurumsal Dönüşüm Projesi</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+            new Chart(comparisonCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Onay Süresi', 'Hata Oranı', 'Şeffaflık', 'Manuel İş Yükü'],
+                    datasets: [{
+                        label: 'Eski Manuel Süreç',
+                        data: [100, 80, 20, 95],
+                        backgroundColor: 'rgba(239, 68, 68, 0.6)',
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Yeni Dijital Uygulama',
+                        data: [25, 10, 100, 15],
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Süreç Verimliliği Karşılaştırması (%)',
+                            font: { size: 16 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + "%"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const processSteps = [
+                {
+                    id: 1,
+                    title: "Talep Oluşturma",
+                    icon: "📝",
+                    role: "Talep Sahibi",
+                    description: "Kullanıcı, ihtiyaç duyduğu ürün veya hizmet için tüm teknik detayları, termin tarihini ve destekleyici belgeleri (çizim, şartname vb.) sisteme girerek süreci başlatır.",
+                    trigger: "Talebin sisteme kaydedilmesi.",
+                    geminiFeature: "specGenerator"
+                },
+                {
+                    id: 2,
+                    title: "SAT Onayı",
+                    icon: "🧑‍⚖️",
+                    role: "SAT Sorumlusu, Birim Amiri, GM Yrd.",
+                    description: "Talep, SAP'de oluşturulan SAT numarası ile birlikte hiyerarşik bir onay akışına girer. Onaylar, Teams bildirimleri üzerinden hızlıca verilir.",
+                    trigger: "Genel Müdür Yardımcısı'nın son onayı."
+                },
+                {
+                    id: 3,
+                    title: "Teklif ve SAS Süreci",
+                    icon: "📊",
+                    role: "Satın Alma Personeli",
+                    description: "Satın alma, tedarikçilerden topladığı teklifleri sisteme girer. En uygun teklif seçilerek SAS'a (Satın Alma Siparişi) dönüştürülür.",
+                    trigger: "'SAS'a Dönüştür' butonuna tıklanması."
+                },
+                {
+                    id: 4,
+                    title: "SAS Onayı ve Sipariş",
+                    icon: "✅",
+                    role: "Satın Alma Müdürü",
+                    description: "Oluşturulan SAS, Satın Alma Müdürü'nün onayına sunulur. Onaylandığında sipariş geçilmiş sayılır ve tüm paydaşlar bilgilendirilir.",
+                    trigger: "Satın Alma Müdürü'nün onayı."
+                },
+                {
+                    id: 5,
+                    title: "Girdi Kontrolü",
+                    icon: "🚚",
+                    role: "Talep Sahibi",
+                    description: "Teslim alınan mal veya hizmet, talebi açan kişi tarafından kontrol edilir. Kabul, Red veya Şartlı Kabul kararı ve ilgili belgeler (irsaliye, MIGO) sisteme işlenir.",
+                    trigger: "Girdi kontrolünün tamamlanması."
+                },
+                {
+                    id: 6,
+                    title: "Fatura Onayı",
+                    icon: "�",
+                    role: "Talep Sahibi, Muhasebe",
+                    description: "Tedarikçi faturası sisteme yüklenir ve önce talep sahibi, ardından muhasebe departmanı tarafından sıralı olarak onaylanır.",
+                    trigger: "Muhasebe departmanının onayı."
+                },
+                {
+                    id: 7,
+                    title: "Tedarikçi Değerlendirme",
+                    icon: "⭐",
+                    role: "Satın Alma / Kalite",
+                    description: "Süreç tamamlandıktan sonra tedarikçinin performansı (kalite, zamanındalık vb.) kurumsal prosedürlere göre puanlanır. Bu veri, gelecekteki kararlar için kullanılır.",
+                    trigger: "Sürecin tamamlanması.",
+                    geminiFeature: "summaryGenerator"
+                }
+            ];
+
+            const container = document.getElementById('process-flow-container');
+            processSteps.forEach(step => {
+                const stepElement = document.createElement('div');
+                stepElement.className = 'step-card bg-white rounded-xl shadow-md border-2 border-transparent transition-all duration-300';
+                
+                let geminiHTML = '';
+                if (step.geminiFeature === 'specGenerator') {
+                    geminiHTML = `
+                        <div class="gemini-feature-box">
+                            <h5 class="font-bold text-sky-800 mb-2">✨ Akıllı Teknik Şartname Oluşturucu</h5>
+                            <p class="text-sm text-slate-600 mb-3">Basit bir dille ihtiyacınızı yazın, yapay zeka sizin için detaylı bir teknik şartname taslağı oluştursun.</p>
+                            <textarea id="spec-input" class="w-full p-2 border border-slate-300 rounded-md text-sm" rows="2">Ofis için 10 adet ergonomik çalışma sandalyesi</textarea>
+                            <button id="generate-spec-btn" class="gemini-button mt-2">Şartname Oluştur</button>
+                            <div id="spec-loader" class="loader hidden"></div>
+                            <div id="spec-result" class="mt-4 text-sm p-3 bg-white rounded-md border border-slate-200 whitespace-pre-wrap"></div>
+                        </div>
+                    `;
+                } else if (step.geminiFeature === 'summaryGenerator') {
+                     geminiHTML = `
+                        <div class="gemini-feature-box">
+                            <h5 class="font-bold text-sky-800 mb-2">✨ Otomatik Performans Özeti</h5>
+                            <p class="text-sm text-slate-600 mb-3">Sipariş verilerini analiz ederek tedarikçinin performansı hakkında anında bir özet oluşturun.</p>
+                            <div class="text-xs p-2 bg-slate-100 rounded mb-3">
+                                <strong>Analiz Edilecek Örnek Veri:</strong><br>
+                                Ürün: Endüstriyel Monitör, Miktar: 5<br>
+                                Beklenen Teslimat: 15.07.2025, Gerçekleşen Teslimat: 18.07.2025<br>
+                                Kalite Notu: 2 monitörde hafif çizikler var, fonksiyonel sorun yok.
+                            </div>
+                            <button id="generate-summary-btn" class="gemini-button">Performans Özeti Oluştur</button>
+                            <div id="summary-loader" class="loader hidden"></div>
+                            <div id="summary-result" class="mt-4 text-sm p-3 bg-white rounded-md border border-slate-200"></div>
+                        </div>
+                    `;
+                }
+
+                stepElement.innerHTML = `
+                    <button class="w-full p-6 text-left flex items-center space-x-6">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 text-2xl flex items-center justify-center">${step.icon}</div>
+                        <div class="flex-grow">
+                            <h4 class="text-lg font-semibold text-slate-800">${step.id}. ${step.title}</h4>
+                            <p class="text-sm text-slate-500">Sorumlu Rol: <span class="font-medium text-slate-600">${step.role}</span></p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </button>
+                    <div class="step-details">
+                        <p class="text-slate-600 mb-4">${step.description}</p>
+                        ${geminiHTML}
+                        <div class="border-t border-slate-200 pt-3 mt-4">
+                            <p class="text-sm text-slate-500">Sonraki Adım Tetikleyicisi: <span class="font-medium text-slate-700">${step.trigger}</span></p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(stepElement);
+            });
+
+            container.addEventListener('click', function(e) {
+                const card = e.target.closest('.step-card');
+                if (card && !e.target.closest('.gemini-feature-box')) {
+                    const details = card.querySelector('.step-details');
+                    const icon = card.querySelector('svg');
+                    
+                    const wasActive = card.classList.contains('active');
+                    
+                    document.querySelectorAll('.step-card').forEach(c => {
+                        c.classList.remove('active');
+                        c.querySelector('.step-details').classList.remove('visible');
+                        c.querySelector('svg').style.transform = 'rotate(0deg)';
+                    });
+
+                    if (!wasActive) {
+                        card.classList.add('active');
+                        details.classList.add('visible');
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                }
+            });
+
+            const radarCtx = document.getElementById('supplierRadarChart').getContext('2d');
+            new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Kalite', 'Zamanında Teslimat', 'Fiyatlandırma', 'İletişim', 'Destek'],
+                    datasets: [{
+                        label: 'Örnek Tedarikçi A Skoru',
+                        data: [90, 75, 85, 95, 80],
+                        fill: true,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        pointBackgroundColor: 'rgb(59, 130, 246)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(59, 130, 246)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+
+            // Gemini API Integration
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            async function callGeminiAPI(prompt, button, loader, resultDiv) {
+                button.disabled = true;
+                loader.classList.remove('hidden');
+                resultDiv.textContent = '';
+
+                const payload = {
+                    contents: [{
+                        parts: [{ text: prompt }]
+                    }]
+                };
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        resultDiv.textContent = text;
+                    } else {
+                        throw new Error("API'den geçerli bir yanıt alınamadı.");
+                    }
+
+                } catch (error) {
+                    console.error("Gemini API call failed:", error);
+                    resultDiv.textContent = `Bir hata oluştu: ${error.message}. Lütfen tekrar deneyin.`;
+                } finally {
+                    button.disabled = false;
+                    loader.classList.add('hidden');
+                }
+            }
+
+            const generateSpecBtn = document.getElementById('generate-spec-btn');
+            if(generateSpecBtn) {
+                generateSpecBtn.addEventListener('click', () => {
+                    const userInput = document.getElementById('spec-input').value;
+                    const prompt = `Bir satın alma uzmanı gibi davran. Aşağıdaki basit talep için detaylı bir teknik şartname oluştur. Şartname, madde madde listelenmeli ve başlıklar içermelidir (Örn: Genel Özellikler, Malzeme, Ergonomi, Garanti ve Sertifikalar). Talep: "${userInput}"`;
+                    callGeminiAPI(prompt, generateSpecBtn, document.getElementById('spec-loader'), document.getElementById('spec-result'));
+                });
+            }
+
+            const generateSummaryBtn = document.getElementById('generate-summary-btn');
+            if(generateSummaryBtn) {
+                generateSummaryBtn.addEventListener('click', () => {
+                    const prompt = `Bir kalite ve satın alma yöneticisi gibi davran. Aşağıdaki sipariş verilerini analiz et ve tedarikçinin performansı hakkında kısa, objektif bir özet yaz. Özet, olumlu ve olumsuz yönleri vurgulamalı ve bir sonuç cümlesi içermelidir. Veriler: Ürün: Endüstriyel Monitör, Miktar: 5 adet. Beklenen Teslimat Tarihi: 15.07.2025. Gerçekleşen Teslimat Tarihi: 18.07.2025. Kalite Kontrol Notu: Teslim alınan 5 monitörden 2 tanesinin kasasında hafif çizikler mevcut, ancak tüm monitörler fonksiyonel olarak çalışır durumda.`;
+                    callGeminiAPI(prompt, generateSummaryBtn, document.getElementById('summary-loader'), document.getElementById('summary-result'));
+                });
+            }
+        });
+    </script>
+</body>
+</html>

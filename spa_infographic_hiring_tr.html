@@ -29,12 +29,32 @@
 
         SVG/Mermaid JS Kullanım Durumu:
         BU ÇIKTIDA NE MERMAID JS NE DE SVG GRAFİKLERİ KULLANILMIŞTIR.
-    -->
+    --><style>
+.raci-r  { background-color: #d1fae5; color: #065f46; font-weight: 600; text-align: center; }
+.raci-a  { background-color: #dbeafe; color: #1e3a8a; font-weight: 600; text-align: center; }
+.raci-c  { background-color: #fef3c7; color: #92400e; font-weight: 600; text-align: center; }
+.raci-i  { background-color: #e5e7eb; color: #374151; font-weight: 600; text-align: center; }
+.raci-rc { background-color: #b9aaff; color: #5b21b6; font-weight: 600; text-align: center; }
+</style>
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #F8F9FA; 
             color: #212529; 
+        }
+        .mermaid {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1100px;
+            width: 100%;
+            min-width: 320px;
+            font-size: 1.1rem;
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 24px 0 rgba(62,146,204,0.08);
+            padding: 1.5rem 1rem;
         }
         .chart-container {
             position: relative;
@@ -258,54 +278,74 @@
                     Mir Holding işe alım süreci, kaynaklara göre 15 ana adımdan oluşmaktadır. Süreç, "Yeni Pozisyon Açılması", "Mevcut Pozisyonun Boşalması" veya "Üst Yönetim / Proje Talebi" gibi tetikleyicilerle başlar. Ancak, süreç boyunca manuel işlemlerin yoğunluğu, dijitalleşme eksiklikleri ve kayıt tutma sorunları dikkat çekmektedir.
                 </p>
                 <h3 class="text-2xl font-semibold mb-6 text-center" style="color: #3E92CC;">İşe Alım Süreci Genel Akış Şeması (Özet)</h3>
-                <div class="flowchart-container space-y-2 md:space-y-0 md:grid md:grid-cols-3 lg:grid-cols-5 md:gap-x-4 md:gap-y-6 items-stretch">
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">1. Personel Talebi</div>
-                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="md:hidden text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">2. Görev Tanımı & Yetkinlikler</div>
-                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="md:hidden text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">3. İlan Hazırlama & Yayınlama</div>
-                    <div class="hidden lg:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="lg:hidden md:col-span-3 text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">4. Başvuru Toplama & Ön Eleme</div>
-                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="md:hidden text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">5. Telefon Ön Görüşmesi</div>
-                    
-                    <div class="hidden md:col-span-5 text-center flowchart-arrow my-2 md:my-0">↓</div>
+                
+<pre class="mermaid">
+flowchart TD
+    %% Başlangıç Süreci
+    A1([1- Personel Talebi])
+    A2([2- Görev Tanımı ve Yetkinlik Belirleme])
+    A3([3- İlan Hazırlama ve Yayınlama])
+    A4([4- Başvuru Toplama ve Ön Eleme])
+    A5([5- Telefon Mülakatı ve İlk Mülakat Planlama])
+    A6([6- İlk Yüz Yüze Mülakat])
+    A7([7- Teknik & Uyum Mülakatı])
+    A8([8- GM Ön Değerlendirme ve Teklif Hazırlığı])
+    A9([9- Üçüncü Görüşme - Teklif Sunumu])
+    A10([10- Evrak Teslimi ve Sözleşme Hazırlığı])
+    A11([11- İşe Başlama Tarihi Belirleme])
+    A12([12- Oryantasyon Planlama ve Eğitim Tedariki])
+    A13([13- Oryantasyon Uygulaması])
+    A14([14- Sürecin Raporlanması])
+    A15([15- Süreç Tamamlandı])
 
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">6. İlk Mülakat</div>
-                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="md:hidden text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">7. İkinci Mülakat (Opsiyonel)</div>
-                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="md:hidden text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">8. Maaş Teklifi & GM Onayı</div>
-                     <div class="hidden lg:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="lg:hidden md:col-span-3 text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">9. Üçüncü Mülakat & Mutabakat</div>
-                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="md:hidden text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">10. Evrak Teslimi</div>
+    %% Karar noktaları
+    B1{{İlk Mülakat Sonucu}}
+    B2{{Teknik Mülakat Sonucu}}
+    B3{{GM Onayı Alındı mı?}}
+    B4{{Aday Teklifi Kabul Etti mi?}}
+    B5{{Pozisyon Halen Açık mı?}}
+    B6{{Yedek Aday Var mı?}}
 
-                    <div class="hidden md:col-span-5 text-center flowchart-arrow my-2 md:my-0">↓</div>
-                    
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">11. İşe Başlama Tarihi Belirleme</div>
-                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="md:hidden text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">12. Oryantasyon Planı</div>
-                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
-                     <div class="md:hidden text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">13. Ekipman & Hesaplar</div>
-                     <div class="hidden lg:flex items-center justify-center flowchart-arrow">→</div>
-                    <div class="lg:hidden md:col-span-3 text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">14. Oryantasyon Tamamlama</div>
-                    <div class="hidden md:flex items-center justify-center flowchart-arrow">→</div>
-                     <div class="md:hidden text-center flowchart-arrow">↓</div>
-                    <div class="flowchart-step p-3 rounded-lg text-center shadow">15. Süreç Kapanışı & İyileştirme</div>
-                </div>
+    %% Alternatif yollar
+    C2([Pozisyon Alım Olmadan Kapatılır])
+    C1([Yedek Aday ile Görüşme])
+    C3([Süreç Sonlandırılır])
 
+    %% Akış
+    A1 --> A2 --> A3 --> A4 --> A5 --> A6 --> B1
+    B1 -->|Olumlu| A7
+    B1 -->|Olumsuz| B5
+
+    A7 --> B2
+    B2 -->|Olumlu| A8
+    B2 -->|Olumsuz| B5
+
+    A8 --> B3
+    B3 -->|Evet| A9
+    B3 -->|Hayır| B5
+
+    A9 --> B4
+    B4 -->|Kabul| A10
+    B4 -->|Red| B5
+
+    A10 --> A11 --> A12 --> A13 --> A14 --> C3
+
+    %% Karar ağacı - pozisyon kapatma ya da yedek
+    B5 -->|Hayır| C2 --> C3
+    B5 -->|Evet| B6
+    B6 -->|Yok| C2 --> A14
+    B6 -->|Var| C1 --> A6
+
+    %% Stil tanımları
+    classDef process fill:#dff0f9,stroke:#1e8dab,color:#000,stroke-width:1px;
+    classDef decision fill:#fff3cd,stroke:#b68f00,color:#000,font-weight:bold;
+    classDef term fill:#e0e0e0,stroke:#777,color:#333;
+
+    class A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,C1 process;
+    class B1,B2,B3,B4,B5,B6 decision;
+    class C2,C3 term;
+
+    </pre>
                 <div class="mt-8 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-md">
                     <h4 class="font-bold">Temel Sorun Alanları:</h4>
                     <ul class="list-disc list-inside ml-4 mt-2">
@@ -383,30 +423,44 @@
                 </div>
 
                 <div>
-                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">İşe Alım Süreci: RACI Matrisi (Özet)</h3>
-                    <div class="table-container">
-                        <table class="custom-table">
-                            <thead>
-                                <tr>
-                                    <th>Süreç Adımı/Görev</th>
-                                    <th>Birim Yöneticisi</th>
-                                    <th>İK Departmanı</th>
-                                    <th>İK Sorumlusu</th>
-                                    <th>Departman Yöneticisi (İlgili)</th>
-                                    <th>GM</th>
-                                    <th>Aday</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>Personel Talebi</td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">I<span class="tooltiptext">Bilgilendirilen</span></td><td></td><td class="tooltip">C<span class="tooltiptext">Danışılan (Yeni Poz.)</span></td><td></td></tr>
-                                <tr><td>Görev Tanımı (JD) Belirleme</td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td></td><td></td></tr>
-                                <tr><td>İlan Yayını</td><td></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td></td><td></td><td></td></tr>
-                                <tr><td>Başvuru Ön Eleme</td><td></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td></td><td></td></tr>
-                                <tr><td>İlk Mülakat</td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td class="tooltip">R/C<span class="tooltiptext">Sorumlu/Danışılan</span></td><td></td><td class="tooltip">R<span class="tooltiptext">Sorumlu (Katılımcı)</span></td></tr>
-                                <tr><td>Maaş Teklifi & GM Onayı</td><td></td><td class="tooltip">R<span class="tooltiptext">Sorumlu</span></td><td></td><td class="tooltip">C<span class="tooltiptext">Danışılan</span></td><td class="tooltip">A<span class="tooltiptext">Hesap Veren</span></td><td></td></tr>
-                                <tr><td>Evrak Teslimi</td><td></td><td class="tooltip">R<span class="tooltiptext">Sorumlu (Takip)</span></td><td></td><td></td><td></td><td class="tooltip">R<span class="tooltiptext">Sorumlu (Temin)</span></td></tr>
-                            </tbody>
-                        </table>
+                    <h3 class="text-2xl font-semibold mb-4 text-center" style="color: #3E92CC;">İşe Alım Süreci: RACI Matrisi (Güncel)</h3>
+<div class="table-container">
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>Process Step</th>
+        <th>Birim Yöneticisi</th>
+        <th>İK Departmanı</th>
+        <th>İK Sorumlusu</th>
+        <th>Endüstri Müh.</th>
+        <th>Departman Yöneticisi</th>
+        <th>Teknik Ekip</th>
+        <th>GM</th>
+        <th>IT</th>
+        <th>Özlük İşleri</th>
+        <th>İSG Eğitmen</th>
+        <th>PKY</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Personel Talebi</td><td class="raci-r">R</td><td class="raci-a">A</td><td  class="raci-i">I</td><td></td><td></td><td></td><td>C</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>JD &amp; Yetkinlik</td><td class="raci-c">C</td><td class="raci-a">A</td><td class="raci-r">R</td><td class="raci-c">C</td><td class="raci-c">C</td><td></td><td  class="raci-i">I</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>İlan Yayını</td><td class="raci-c">C</td><td class="raci-a">A</td><td class="raci-r">R</td><td></td><td></td><td></td><td  class="raci-i">I</td><td class="raci-c">C</td><td></td><td></td><td></td></tr>
+      <tr><td>Başvuru &amp; Ön Eleme</td><td></td><td class="raci-a">A</td><td class="raci-r">R</td><td></td><td class="raci-c">C</td><td></td><td  class="raci-i">I</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Telefon Görüş &amp; Planlama</td><td></td><td class="raci-a">A</td><td class="raci-r">R</td><td></td><td class="raci-c">C</td><td></td><td  class="raci-i">I</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>İlk Mülakat</td><td></td><td class="raci-c">C</td><td  class="raci-i">I</td><td></td><td class="raci-r">R</td><td class="raci-c">C</td><td  class="raci-i">I</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>İkinci Mülakat</td><td></td><td class="raci-a">A</td><td class="raci-rc">R/C</td><td></td><td class="raci-r">R</td><td class="raci-c">C</td><td  class="raci-i">I</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Maaş Teklifi &amp; GM Onayı</td><td></td><td class="raci-a">A</td><td class="raci-r">R</td><td></td><td class="raci-c">C</td><td></td><td class="raci-c">C</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Üçüncü Mülakat</td><td></td><td class="raci-a">A</td><td class="raci-r">R</td><td></td><td class="raci-c">C</td><td></td><td  class="raci-i">I</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>Evrak Teslimi</td><td></td><td class="raci-a">A</td><td class="raci-r">R</td><td></td><td></td><td></td><td  class="raci-i">I</td><td></td><td class="raci-c">C</td><td></td><td></td></tr>
+      <tr><td>İşe Başlama Tarihi</td><td class="raci-c">C</td><td class="raci-a">A</td><td class="raci-r">R</td><td></td><td class="raci-c">C</td><td></td><td  class="raci-i">I</td><td></td><td></td><td class="raci-c">C</td><td></td></tr>
+      <tr><td>Oryantasyon Planlama &amp; Eğitim</td><td></td><td class="raci-a">A</td><td class="raci-r">R</td><td></td><td></td><td class="raci-c">C</td><td  class="raci-i">I</td><td class="raci-c">C</td><td class="raci-c">C</td><td class="raci-c">C</td><td class="raci-c">C</td></tr>
+      <tr><td>Oryantasyon Uygulama &amp; Kapanış</td><td></td><td class="raci-a">A</td><td class="raci-r">R</td><td></td><td></td><td class="raci-c">C</td><td  class="raci-i">I</td><td class="raci-c">C</td><td class="raci-c">C</td><td class="raci-c">C</td><td class="raci-c">C</td></tr>
+      <tr><td>Sürekli İyileştirme</td><td class="raci-rc">A/R</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+
                     </div>
                      <p class="text-sm text-gray-600 mt-2"><b>RACI Analizi Çıkarımları:</b> Roller kağıt üzerinde tanımlı olsa da, pratikte kayıt tutma gibi kritik sorumluluklar aksamakta, hesap verebilirlik mekanizmaları zayıf kalmaktadır. İK üzerinde yoğun bir operasyonel yük bulunmaktadır.</p>
                 </div>
@@ -815,6 +869,9 @@
             }
             return ul;
         }
+    </script>
+        <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
     </script>
 </body>
 </html>
