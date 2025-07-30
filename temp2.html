@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detaylı Satın Alma Süreci İnfografiği</title>
+    <title>Kapsamlı ve Vizyoner Satın Alma Süreci İnfografiği</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Corporate -->
-    <!-- Application Structure Plan: A long-form, single-page infographic telling a complete story. It flows from Problem (chaos) -> Solution (digital order) -> Proof (data comparison) -> The Journey (a detailed 7-step vertical timeline) -> Strategic Layer (SAP & Data) -> Human Factor (Change Management) -> Future Vision (Roadmap). This structure is designed for narrative impact, guiding the user through a comprehensive overview. Gemini features are highlighted as key innovations within the timeline. -->
+    <!-- Application Structure Plan: A long-form, single-page infographic telling a complete story. It flows from Problem (chaos) -> Solution (digital order) -> Proof (data comparison) -> The Journey (a detailed 7-step vertical timeline) -> Strategic Layer (SAP & Data) -> Human Factor (Change Management) -> Future Vision (Roadmap & Alignment with Global Trends). This structure is designed for narrative impact, guiding the user through a comprehensive overview. Gemini features are highlighted as key innovations within the timeline. This version is significantly expanded with more text detail and new sections based on the source documents. -->
     <!-- Visualization & Content Choices: 
-        1. Problem/Solution: Uses strong iconography and contrasting layouts to visually establish the core conflict and resolution.
+        1. Problem/Solution: Uses strong iconography and contrasting layouts to visually establish the core conflict and resolution. Now includes more detailed text on hidden costs.
         2. Comparison: A large, central Chart.js Bar Chart serves as the quantitative anchor of the infographic.
-        3. Process Flow: A custom vertical timeline built with HTML/Tailwind replaces the simple accordion. This is the infographic's centerpiece, detailing roles, actions, and triggers for each step.
+        3. Process Flow: A custom vertical timeline built with HTML/Tailwind. This is the infographic's centerpiece, detailing roles, actions, and triggers for each step.
         4. Gemini Features: Integrated directly into the timeline steps with a distinct visual style (the "Spotlight") to showcase AI capabilities in context.
-        5. Strategic Layer: Uses a simple diagrammatic layout to explain the SAP relationship and a Chart.js Radar chart for supplier data visualization.
-        6. Human Factor & Roadmap: Employs icon-based lists and a timeline graphic to present this information clearly and visually.
+        5. Strategic Layer: Renamed and expanded to better explain the symbiotic SAP relationship and detail the benefits of the supplier evaluation module.
+        6. Human Factor: Greatly expanded into a new, detailed section on "The Psychology of Change" with subsections on resistance, communication, and ownership.
+        7. Roadmap: Expanded to detail V2/V3 features and a new final section on "Alignment with the Future of Procurement" to frame the project's long-term value for AI.
         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -139,7 +140,7 @@
     <section class="bg-white">
         <div class="infographic-container text-center py-24">
             <h1 class="text-5xl md:text-6xl font-extrabold text-slate-800 mb-4">Satın Almada Devrim</h1>
-            <p class="text-xl text-slate-600 max-w-3xl mx-auto">Manuel kaostan, yapay zeka destekli dijital düzene geçişin uçtan uca hikayesi.</p>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">Manuel kaostan, yapay zeka destekli dijital düzene geçişin uçtan uca stratejik hikayesi.</p>
             <div class="mt-12 text-6xl flex justify-center items-center space-x-6">
                 <span class="opacity-50">📧</span>
                 <span class="opacity-50">📞</span>
@@ -156,24 +157,29 @@
     <section class="infographic-section bg-slate-100">
         <div class="infographic-container">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-slate-800">Sorun: Manuel Süreçlerin Yarattığı Kaos</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">E-posta, telefon ve eksik bilgi üzerine kurulu mevcut sistem, hem zaman hem de kaynak israfına yol açıyordu.</p>
+                <h2 class="text-4xl font-bold text-slate-800">Sorun: Manuel Süreçlerin Gizli Maliyetleri</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">E-posta, telefon ve eksik bilgi üzerine kurulu mevcut sistem, sadece bir rahatsızlık değil, kurumsal performansı eriten somut maliyetler üretiyordu.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div class="bg-white p-8 rounded-lg shadow">
-                    <div class="text-5xl mb-4">⏳</div>
-                    <h3 class="text-xl font-bold mb-2">Gecikmeler ve Takipler</h3>
-                    <p class="text-slate-600">Onay bekleyen e-postalar, cevapsız telefonlar ve kimde olduğu bilinmeyen talepler nedeniyle tedarik süreçleri sürekli aksıyordu.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="text-4xl mb-4">⏳</div>
+                    <h3 class="text-lg font-bold mb-2">Bürokratik Yük</h3>
+                    <p class="text-sm text-slate-600">Değerli çalışan saatleri, e-posta takibi ve tekrar eden veri girişi gibi işlerle boşa harcanıyordu. Bu, sipariş başına 50-150$ arasında gizli bir işçilik maliyeti yaratıyordu.</p>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow">
-                    <div class="text-5xl mb-4">❌</div>
-                    <h3 class="text-xl font-bold mb-2">Eksik Bilgi ve Hatalar</h3>
-                    <p class="text-slate-600">Yetersiz teknik şartnameler ve yanlış anlaşılan talepler, hatalı satın alımlara ve maliyet artışlarına neden oluyordu.</p>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="text-4xl mb-4">🔗</div>
+                    <h3 class="text-lg font-bold mb-2">İletişim Darboğazları</h3>
+                    <p class="text-sm text-slate-600">Onayların manuel takibi, proje zaman çizelgelerini aksatan ve operasyonel verimsizliğe yol açan ciddi gecikmelere neden oluyordu.</p>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow">
-                    <div class="text-5xl mb-4">❓</div>
-                    <h3 class="text-xl font-bold mb-2">Şeffaflık Eksikliği</h3>
-                    <p class="text-slate-600">Bir talebin hangi aşamada olduğunu veya neden beklediğini öğrenmek, birden fazla kişiyle iletişim kurmayı gerektiriyordu.</p>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="text-4xl mb-4">💸</div>
+                    <h3 class="text-lg font-bold mb-2">Finansal Risk</h3>
+                    <p class="text-sm text-slate-600">Dağınık veriler, "başıboş harcamalara", kaçırılan indirimlere ve bütçe aşımlarına yol açarak finansal kontrolü zayıflatıyordu.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="text-4xl mb-4">❌</div>
+                    <h3 class="text-lg font-bold mb-2">Hata ve Uyumsuzluk</h3>
+                    <p class="text-sm text-slate-600">Manuel veri girişi, yinelenen siparişler gibi hatalara ve eksik dokümantasyon nedeniyle denetim risklerine yol açıyordu.</p>
                 </div>
             </div>
         </div>
@@ -269,31 +275,34 @@
     <section class="infographic-section">
         <div class="infographic-container">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-slate-800">Stratejik Katman: SAP ve Veri Gücü</h2>
+                <h2 class="text-4xl font-bold text-slate-800">Stratejik Mimari ve Veri Gücü</h2>
                 <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Bu platform, mevcut sistemleri riske atmadan onları tamamlayan ve veriyi stratejik bir güce dönüştüren bir katmandır.</p>
             </div>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-2xl font-bold mb-4 text-center">SAP ile Simbiyotik İlişki</h3>
-                    <p class="text-slate-600 mb-6">Uygulama, SAP'nin yerini almaz; onu güçlendirir. SAP finansal kayıtların ve ana verinin merkezi olmaya devam ederken, yeni uygulama bu omurganın etrafındaki tüm iletişim, onay ve dokümantasyon akışını yönetir.</p>
-                    <div class="space-y-4">
-                        <div class="p-4 bg-green-50 border-l-4 border-green-500 rounded">
-                            <h4 class="font-bold text-green-800">SAP (Ana Omurga)</h4>
-                            <p class="text-sm text-green-700">Finansal Kayıtlar, Malzeme Kodları, Ana Veri</p>
+            <div class="grid md:grid-cols-5 gap-8 items-start">
+                <div class="md:col-span-2 bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 text-center">SAP ile Simbiyotik İlişki</h3>
+                    <p class="text-slate-600 text-sm mb-4">Uygulama, SAP'nin yerini almaz; onu güçlendirir. Bu "destek katmanı" mimarisi, temel finansal sistemi bozmadan en acil iş akışı zorluklarına hızlı ve düşük riskli bir çözüm sunar.</p>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-green-50 border-l-4 border-green-500 rounded">
+                            <h4 class="font-semibold text-green-800">SAP (Ana Omurga)</h4>
+                            <p class="text-xs text-green-700">Finansal Kayıtlar, Malzeme Kodları, Ana Veri</p>
                         </div>
-                        <div class="text-center text-2xl font-bold text-slate-400">+</div>
-                        <div class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
-                            <h4 class="font-bold text-blue-800">Yeni Uygulama (Çevik Katman)</h4>
-                            <p class="text-sm text-blue-700">Talep, Onay Akışları, İletişim, Dokümantasyon, Analiz</p>
+                        <div class="text-center text-xl font-bold text-slate-400">+</div>
+                        <div class="p-3 bg-blue-50 border-l-4 border-blue-500 rounded">
+                            <h4 class="font-semibold text-blue-800">Yeni Uygulama (Çevik Katman)</h4>
+                            <p class="text-xs text-blue-700">Talep, Onay Akışları, İletişim, Dokümantasyon, Analiz</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                     <h3 class="text-2xl font-bold mb-4 text-center">Veriye Dayalı Tedarikçi Yönetimi</h3>
-                     <p class="text-slate-600 mb-2">Her sipariş sonrası toplanan değerlendirme verileri, tedarikçi performansını objektif bir şekilde ölçmenizi sağlar. Bu, müzakerelerde elinizi güçlendirir ve riskleri azaltır.</p>
-                    <div class="chart-container" style="height: 300px; max-height: 320px;">
-                        <canvas id="supplierRadarChart"></canvas>
-                    </div>
+                <div class="md:col-span-3 bg-white p-8 rounded-lg shadow-lg">
+                     <h3 class="text-xl font-bold mb-4 text-center">Stratejik Değer: Tedarikçi Değerlendirme</h3>
+                     <p class="text-slate-600 text-sm mb-4">Bu modül, satın almayı reaktif bir görevden, veriye dayalı proaktif bir stratejiye dönüştürür.</p>
+                     <ul class="space-y-2 text-sm">
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> <strong>Risk Azaltma:</strong> Tedarik zinciri kesintilerini öngörüp azaltmaya yardımcı olur.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> <strong>Performans İyileştirme:</strong> Objektif geri bildirimlerle tedarikçileri geliştirmeye teşvik eder.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> <strong>Maliyet Optimizasyonu:</strong> En düşük fiyat yerine en iyi toplam sahip olma maliyetine odaklanmayı sağlar.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> <strong>Güçlü Müzakere:</strong> Geçmiş performans verileri, sözleşme yenilemelerinde güçlü bir koz sağlar.</li>
+                     </ul>
                 </div>
             </div>
         </div>
@@ -303,55 +312,82 @@
     <section class="infographic-section bg-slate-100">
         <div class="infographic-container">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-slate-800">İnsan Faktörü: Değişim Yönetimi ve Adaptasyon</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Teknoloji kadar, kullanıcıların bu teknolojiyi benimsemesi de önemlidir. Bu süreçte tam destek sağlıyoruz.</p>
+                <h2 class="text-4xl font-bold text-slate-800">Değişimin Psikolojisi: Başarı için İnsan Odaklı Yaklaşım</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Teknolojinin başarısı, onu kullanan insanların başarısına bağlıdır. Bu nedenle, geçiş sürecini psikolojik engelleri anlayarak ve proaktif destekle yönetiyoruz.</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div class="bg-white p-8 rounded-lg shadow">
-                    <div class="text-5xl mb-4">🎓</div>
-                    <h3 class="text-xl font-bold mb-2">Kapsamlı Eğitim</h3>
-                    <p class="text-slate-600">Uygulama canlıya alınmadan önce tüm personele yönelik test ve eğitim seansları düzenlenerek, herkesin sisteme hazır olması sağlanır.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-center mb-4"><span class="text-4xl">🧠</span></div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Direnci Anlamak</h3>
+                    <p class="text-sm text-slate-600 mb-3">Değişime direnç doğaldır ve şu korkulardan kaynaklanır:</p>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600">
+                        <li>Bilinmeyenden korkma</li>
+                        <li>Kontrolü kaybetme hissi</li>
+                        <li>Artan iş yükü algısı</li>
+                        <li>Yetersizlik ve hata yapma korkusu</li>
+                    </ul>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow">
-                    <div class="text-5xl mb-4">🤝</div>
-                    <h3 class="text-xl font-bold mb-2">Sınırsız Destek</h3>
-                    <p class="text-slate-600">"Kullanıcılar takıldıkları noktada beş, altı, hatta yedi kere bile olsa destek alabilecekler." Adaptasyon sürecinde tüm sorular yanıtlanacaktır.</p>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-center mb-4"><span class="text-4xl">📣</span></div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Proaktif İletişim ve Eğitim</h3>
+                    <p class="text-sm text-slate-600 mb-3">Bu korkuları doğrudan ele alan bir strateji izliyoruz:</p>
+                     <ul class="list-disc list-inside space-y-1 text-sm text-slate-600">
+                        <li>Değişimin "neden"ini açıkça anlatmak</li>
+                        <li>"Yedi kez bile olsa destek" taahhüdü ile psikolojik güvenlik sağlamak</li>
+                        <li>Rol bazlı, uygulamalı eğitimler düzenlemek</li>
+                        <li>"Değişim şampiyonları" ile süreci desteklemek</li>
+                    </ul>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow">
-                    <div class="text-5xl mb-4">💡</div>
-                    <h3 class="text-xl font-bold mb-2">Geri Bildirime Açıklık</h3>
-                    <p class="text-slate-600">"Eleştirileriniz ve sorularınız benim için çok değerli. Ben de gelişiyorum, uygulama da iyileşiyor." Kullanıcı geri bildirimleri, sistemin sürekli gelişimi için kritiktir.</p>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-center mb-4"><span class="text-4xl">🏆</span></div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Sahiplenmeyi Teşvik Etme</h3>
+                    <p class="text-sm text-slate-600 mb-3">Kullanıcıları zorunluluktan sahiplenmeye taşıyoruz:</p>
+                     <ul class="list-disc list-inside space-y-1 text-sm text-slate-600">
+                        <li>Erişilebilir destek kanalları (Teams, ofis saatleri)</li>
+                        <li>Geri bildirimlerin dikkate alındığı ve değişikliğe yol açtığı bir döngü kurmak</li>
+                        <li>Benimseme oranlarını izlemek ve başarıları kutlamak</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ROADMAP -->
+    <!-- ROADMAP & FUTURE -->
     <section class="infographic-section">
         <div class="infographic-container">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-slate-800">Gelecek Vizyonu: Yol Haritası</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Bu sadece bir başlangıç. Platformumuz, geleceğin teknolojileriyle sürekli evrimleşecek.</p>
+                <h2 class="text-4xl font-bold text-slate-800">Gelecek Vizyonu: Sürekli Gelişim ve Stratejik Uyum</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Bu platform statik bir araç değil, geleceğin teknolojileriyle birlikte evrimleşecek dinamik bir temeldir.</p>
             </div>
-            <div class="relative border-l-4 border-blue-200">
-                <!-- V1 -->
-                <div class="mb-12 ml-8 pl-8">
-                    <span class="absolute -left-5 flex items-center justify-center w-10 h-10 bg-blue-600 rounded-full text-white font-bold ring-8 ring-white">V1</span>
-                    <h3 class="text-2xl font-bold text-blue-600">Mevcut Sürüm: Sağlam Temel</h3>
-                    <p class="mt-2 text-slate-600">Temel iş akışı otomasyonu, tam izlenebilirlik ve Gemini destekli akıllı şartname ve analiz özellikleriyle manuel süreçlerin tamamen dijitalleşmesi.</p>
+            
+            <div class="bg-white p-8 rounded-xl shadow-xl mb-12">
+                <h3 class="text-2xl font-bold text-center mb-8">Geliştirme Yol Haritası</h3>
+                <div class="relative border-l-4 border-blue-200">
+                    <!-- V1 -->
+                    <div class="mb-12 ml-8 pl-8">
+                        <span class="absolute -left-5 flex items-center justify-center w-10 h-10 bg-blue-600 rounded-full text-white font-bold ring-8 ring-white">V1</span>
+                        <h4 class="text-xl font-bold text-blue-600">Mevcut Sürüm: Sağlam Temel</h4>
+                        <p class="mt-1 text-slate-600">Temel iş akışı otomasyonu, tam izlenebilirlik ve Gemini destekli akıllı şartname/analiz özellikleriyle manuel süreçlerin tamamen dijitalleşmesi.</p>
+                    </div>
+                    <!-- V2 -->
+                    <div class="mb-12 ml-8 pl-8">
+                        <span class="absolute -left-5 flex items-center justify-center w-10 h-10 bg-slate-700 rounded-full text-white font-bold ring-8 ring-white">V2</span>
+                        <h4 class="text-xl font-bold text-slate-800">Yakında: Derin Entegrasyon</h4>
+                        <p class="mt-1 text-slate-600">SAT ve MIGO gibi işlemler için manuel veri girişini ortadan kaldıracak, çift yönlü ve tam otomatik ABAP entegrasyonu. SAP ve uygulama arasındaki sınırların ortadan kalkması.</p>
+                    </div>
+                    <!-- V3 -->
+                    <div class="ml-8 pl-8">
+                        <span class="absolute -left-5 flex items-center justify-center w-10 h-10 bg-slate-700 rounded-full text-white font-bold ring-8 ring-white">V3</span>
+                        <h4 class="text-xl font-bold text-slate-800">Gelecek: Tam Otonomi</h4>
+                        <p class="mt-1 text-slate-600">Yasal geçerliliği olan E-imza entegrasyonu ve yapay zekanın sadece analiz değil, aynı zamanda tedarikçi ve fiyat önerileri sunan öngörüsel bir motora dönüşmesi.</p>
+                    </div>
                 </div>
-                <!-- V2 -->
-                <div class="mb-12 ml-8 pl-8">
-                    <span class="absolute -left-5 flex items-center justify-center w-10 h-10 bg-slate-400 rounded-full text-white font-bold ring-8 ring-white">V2</span>
-                    <h3 class="text-2xl font-bold text-slate-700">Yakında: Derin Entegrasyon</h3>
-                    <p class="mt-2 text-slate-600">SAT ve MIGO gibi işlemler için manuel veri girişini ortadan kaldıracak, çift yönlü ve tam otomatik ABAP entegrasyonu. SAP ve uygulama arasındaki sınırların ortadan kalkması.</p>
-                </div>
-                <!-- V3 -->
-                <div class="ml-8 pl-8">
-                    <span class="absolute -left-5 flex items-center justify-center w-10 h-10 bg-slate-400 rounded-full text-white font-bold ring-8 ring-white">V3</span>
-                    <h3 class="text-2xl font-bold text-slate-700">Gelecek: Tam Otonomi</h3>
-                    <p class="mt-2 text-slate-600">Yasal geçerliliği olan E-imza entegrasyonu ile kağıdın tamamen ortadan kalkması. Yapay zekanın sadece analiz değil, aynı zamanda tedarikçi ve fiyat önerileri sunan öngörüsel bir motora dönüşmesi.</p>
-                </div>
+            </div>
+
+            <div class="bg-indigo-700 text-white p-8 rounded-xl shadow-xl">
+                 <h3 class="text-2xl font-bold text-center mb-4">Satın Almanın Geleceğiyle Uyum</h3>
+                 <p class="text-center text-indigo-200 max-w-2xl mx-auto mb-6">Bu uygulama, sadece bugünün sorunlarını çözmekle kalmaz, aynı zamanda bizi yarının teknolojilerine hazırlar.</p>
+                 <p class="text-center max-w-3xl mx-auto">Yapay zeka ve makine öğrenimi sistemleri, etkili olmak için büyük hacimli, temiz ve yapılandırılmış verilere ihtiyaç duyar. Eski manuel süreçler bu veriyi sağlayamazdı. Bu yeni uygulama ise, tüm satın alma geçmişini bozulmamış bir veri setine dönüştürerek, gelecekteki yapay zeka güdümlü satın alma araçlarını çalıştıracak olan en değerli varlığı, yani **veriyi** yaratmaktadır. Bu, projenin en önemli uzun vadeli yatırım getirisidir.</p>
             </div>
         </div>
     </section>
@@ -405,7 +441,7 @@
             const middleStepsData = [
                 { id: 2, icon: "🧑‍⚖️", title: "SAT Onayı", role: "SAT Sorumlusu, Birim Amiri, GM Yrd.", actions: ["Talep, SAP'de oluşturulan SAT numarası ile hiyerarşik onaya girer.", "Onaylar, Microsoft Teams bildirimleri üzerinden hızlıca verilir.", "Tüm onay geçmişi şeffaf bir şekilde kaydedilir."], trigger: "Genel Müdür Yardımcısı'nın son onayı." },
                 { id: 3, icon: "📊", title: "Teklif ve SAS Süreci", role: "Satın Alma Personeli", actions: ["Onaylı talep için tedarikçilerden teklifler toplanır.", "Tüm teklifler ve ekleri (proforma, katalog vb.) sisteme yüklenir.", "En uygun teklif seçilerek SAS'a (Satın Alma Siparişi) dönüştürülür."], trigger: "'SAS'a Dönüştür' butonuna tıklanması." },
-                { id: 4, icon: "✅", title: "SAS Onayı ve Sipariş", role: "Satın Alma Müdürü", actions: ["Oluşturulan SAS, Satın Alma Müdürü'nün onayına sunulur.", "Onaylandığında sipariş otomatik olarak geçilmiş sayılır.", "Tedarikçi ve talep sahibi anında bilgilendirilir."], trigger: "Satın Alma Müdürü'nün onayı." },
+                { id: 4, icon: "✅", title: "SAS Onayı ve Sipariş", role: "Satın Alma Müdürü", actions: ["Oluşturulan SAS, Satın Alma Müdürü'nün onayına sunulur.", "Onaylandığında sipariş otomatik olarak geçilmiş sayılır.", "Tedarikçi ve talep sahibi anında bilgilendirilir."], trigger: "Satın Alma Müdürünün onayı." },
                 { id: 5, icon: "🚚", title: "Girdi Kontrolü", role: "Talep Sahibi / Kalite Kontrol", actions: ["Teslim alınan mal/hizmet, talep sahibi tarafından kontrol edilir.", "Kabul, Red veya Şartlı Kabul kararı sisteme işlenir.", "İlgili belgeler (irsaliye, MIGO, fotoğraflar) sisteme yüklenir."], trigger: "Girdi kontrolünün tamamlanması." },
                 { id: 6, icon: "🧾", title: "Fatura Onayı", role: "Talep Sahibi, Muhasebe", actions: ["Tedarikçi faturası sisteme yüklenir.", "Fatura, önce talep sahibi sonra muhasebe tarafından onaylanır.", "Onay süreci tamamen dijital ve izlenebilirdir."], trigger: "Muhasebe departmanının onayı." }
             ];
@@ -426,28 +462,6 @@
                     </div>
                 </div>`;
                 middleStepsContainer.innerHTML += stepHTML;
-            });
-
-            // Radar Chart
-            const radarCtx = document.getElementById('supplierRadarChart').getContext('2d');
-            new Chart(radarCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['Kalite', 'Zamanında Teslimat', 'Fiyatlandırma', 'İletişim', 'Destek'],
-                    datasets: [{
-                        label: 'Örnek Tedarikçi A Skoru',
-                        data: [90, 75, 85, 95, 80],
-                        fill: true,
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        borderColor: 'rgb(59, 130, 246)',
-                        pointBackgroundColor: 'rgb(59, 130, 246)',
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { r: { suggestedMin: 0, suggestedMax: 100, pointLabels: { font: { size: 14 } } } }
-                }
             });
 
             // Gemini API Integration
